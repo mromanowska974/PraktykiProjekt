@@ -17,6 +17,7 @@ import { SortService } from 'app/shared/sort/sort.service';
   standalone: true,
   selector: 'jhi-internal-service',
   templateUrl: './internal-service.component.html',
+  styleUrls: ['./internal-service.component.css'],
   imports: [
     RouterModule,
     FormsModule,

@@ -12,11 +12,13 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, BusinessServiceService } from '../service/business-service.service';
 import { BusinessServiceDeleteDialogComponent } from '../delete/business-service-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
+import { InternalServiceComponent } from 'app/entities/internal-service/list/internal-service.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-business-service',
   templateUrl: './business-service.component.html',
+  styleUrls: ['./business-service.component.css'],
   imports: [
     RouterModule,
     FormsModule,
@@ -26,6 +28,7 @@ import { SortService } from 'app/shared/sort/sort.service';
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
+    InternalServiceComponent,
   ],
 })
 export class BusinessServiceComponent implements OnInit {

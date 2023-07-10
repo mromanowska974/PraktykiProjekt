@@ -10,6 +10,35 @@ Main page styles
   background-size: contain;
 }
 
+.row1 {
+  /*border: 1px solid black;*/
+  display: flex;
+  padding-top: 10px;
+}
+
+.row2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row3 {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  margin-bottom: 10px;
+  width: 17vw;
+  height: 7vh;
+  font-size: 2vmin;
+}
+
+select {
+  width: 40%;
+  height: 60%;
+  margin-left: 5%;
+}
+
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (-moz-min-device-pixel-ratio: 2),

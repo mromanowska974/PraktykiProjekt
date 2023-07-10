@@ -12,9 +12,9 @@
 
     <div [ngSwitch]="account !== null">
       <div class="alert alert-success" *ngSwitchCase="true">
-        <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" [translateValues]="{ username: account.login }"
+        <<span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message" [translateValues]="{ username: account.login }"
           >Jesteś zalogowany jako użytkownik "{{ account.login }}".</span
-        >
+        >>
       </div>
 
       <div class="alert alert-warning" *ngSwitchCase="false">
@@ -78,9 +78,30 @@
     </p>
   </div>
 </div> -->
-<div>
+
+<div class="container">
+  <div class="row1">
+    <p>Wybierz spółkę</p>
+    <select>
+      test
+    </select>
+  </div>
   <div>
-    <p>Wybierz spółkę:</p>
-    <select></select>
+    <div class="row2">
+      <p>Lista kart Usług Biznesowych:</p>
+      <button>Dodaj nową kartę</button>
+    </div>
+    <div>
+      <jhi-business-service></jhi-business-service>
+    </div>
+  </div>
+  <div>
+    <div>
+      <p>Powiązane usługi wewnętrzne:</p>
+    </div>
+    <div class="row3">
+      <jhi-internal-service></jhi-internal-service>
+      <button class="add">Dodaj usługę wewnętrzną</button>
+    </div>
   </div>
 </div>
