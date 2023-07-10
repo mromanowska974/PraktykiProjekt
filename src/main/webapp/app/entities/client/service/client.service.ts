@@ -39,6 +39,10 @@ export class ClientService {
     return this.http.get<IClient[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  findAll(): Observable<EntityArrayResponseType> {
+    return this.http.get<IClient[]>(this.resourceUrl, { observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

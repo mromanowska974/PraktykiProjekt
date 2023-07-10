@@ -83,7 +83,8 @@
   <div class="row1">
     <p>Wybierz spółkę</p>
     <select>
-      test
+      <option>Wszystkie</option>
+      <option *ngFor="let client of clients">{{ client.name }}</option>
     </select>
   </div>
   <div>

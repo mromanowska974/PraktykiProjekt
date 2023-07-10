@@ -6,6 +6,8 @@
     "strict": true,
     "strictNullChecks": true,
     "noImplicitReturns": true,
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,

@@ -8,6 +8,8 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { BusinessServiceComponent } from 'app/entities/business-service/list/business-service.component';
 import { InternalServiceComponent } from 'app/entities/internal-service/list/internal-service.component';
+import { IClient, NewClient } from 'app/entities/client/client.model';
+import { ClientService } from 'app/entities/client/service/client.service';
 
 @Component({
   standalone: true,
@@ -16,16 +18,17 @@ import { InternalServiceComponent } from 'app/entities/internal-service/list/int
   styleUrls: ['./home.component.scss'],
   imports: [SharedModule, RouterModule, BusinessServiceComponent, InternalServiceComponent],
 })
-export default class HomeComponent {
-  // account: Account | null = null;
+export default class HomeComponent implements OnInit {
+  clients: IClient[] | null;
+  //account: Account | null = null;
   // private readonly destroy$ = new Subject<void>();
-  // constructor(private accountService: AccountService, private router: Router) {}
-  // ngOnInit(): void {
-  //   this.accountService
-  //     .getAuthenticationState()
-  //     .pipe(takeUntil(this.destroy$))
-  //     .subscribe(account => (this.account = account));
-  // }
+  constructor(private clientService: ClientService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.clientService.findAll().subscribe(clients => {
+      this.clients = clients.body;
+    });
+  }
   // login(): void {
   //   this.router.navigate(['/login']);
   // }
