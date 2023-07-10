@@ -212,10 +212,10 @@
     <p class="item4">Status</p>
     <p class="item5">Akcje</p>
   </div>
-  <div class="rowX">
-    <p class="item1">UB-01-22</p>
-    <p class="item2">Nazwa</p>
-    <p class="item3">Jan Kowalski</p>
+  <div *ngFor="let businessService of businessServices; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
+    <p class="item1">{{ businessService.symbol }}</p>
+    <p class="item2">{{ businessService.name }}</p>
+    <p class="item3">{{ businessService.employee }}</p>
     <p class="item4">Aktywna</p>
     <p class="item5">
       <button>E</button>

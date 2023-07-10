@@ -6,10 +6,12 @@
 }
 
 .row1,
-.rowX {
+.rowN,
+.rowN1 {
   display: grid;
   width: 100%;
   grid-template-columns: 1fr 6fr 1fr 1fr 1fr;
+  padding-top: 10px;
 }
 
 .row1 {
@@ -19,8 +21,12 @@
   grid-row: 1;
 }
 
-.rowX {
-  grid-row: 2;
+.rowN {
+  background-color: rgb(213, 213, 213);
+}
+
+.rowN1 {
+  background-color: rgb(238, 238, 238);
 }
 
 .item1 {
