@@ -1,0 +1,33 @@
+{
+  "applications": "*",
+  "changelogDate": "20230710085004",
+  "entityTableName": "parameter",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "value",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Parameter",
+  "relationships": [
+    {
+      "otherEntityName": "businessService",
+      "otherEntityRelationshipName": "parameter",
+      "relationshipName": "businessService",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "internalService",
+      "otherEntityRelationshipName": "parameter",
+      "relationshipName": "internalService",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

@@ -1,0 +1,221 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-service-element-heading"
+        data-cy="ServiceElementCreateUpdateHeading"
+        jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.home.createOrEditLabel"
+      >
+        Dodaj lub edytuj: Service Element
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.price" for="field_price"
+            >Price</label
+          >
+          <input type="number" class="form-control" name="price" id="field_price" data-cy="price" formControlName="price" />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.description"
+            for="field_description"
+            >Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.valuationNumber"
+            for="field_valuationNumber"
+            >Valuation Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="valuationNumber"
+            id="field_valuationNumber"
+            data-cy="valuationNumber"
+            formControlName="valuationNumber"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.paymentType"
+            for="field_paymentType"
+            >Payment Type</label
+          >
+          <select class="form-control" name="paymentType" formControlName="paymentType" id="field_paymentType" data-cy="paymentType">
+            <option [ngValue]="null">{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.PaymentType.null' | translate }}</option>
+            <option *ngFor="let paymentType of paymentTypeValues" [value]="paymentType">
+              {{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.PaymentType.' + paymentType | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.startDate"
+            for="field_startDate"
+            >Start Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_startDate"
+              data-cy="startDate"
+              type="datetime-local"
+              class="form-control"
+              name="startDate"
+              formControlName="startDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.periodOfProvisionOfServiceInMonths"
+            for="field_periodOfProvisionOfServiceInMonths"
+            >Period Of Provision Of Service In Months</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="periodOfProvisionOfServiceInMonths"
+            id="field_periodOfProvisionOfServiceInMonths"
+            data-cy="periodOfProvisionOfServiceInMonths"
+            formControlName="periodOfProvisionOfServiceInMonths"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.typeOfPeriodOfProvisionOfService"
+            for="field_typeOfPeriodOfProvisionOfService"
+            >Type Of Period Of Provision Of Service</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="typeOfPeriodOfProvisionOfService"
+            id="field_typeOfPeriodOfProvisionOfService"
+            data-cy="typeOfPeriodOfProvisionOfService"
+            formControlName="typeOfPeriodOfProvisionOfService"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.endDate" for="field_endDate"
+            >End Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_endDate"
+              data-cy="endDate"
+              type="datetime-local"
+              class="form-control"
+              name="endDate"
+              formControlName="endDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.status" for="field_status"
+            >Status</label
+          >
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceElement.null' | translate }}</option>
+            <option *ngFor="let statusOfServiceElement of statusOfServiceElementValues" [value]="statusOfServiceElement">
+              {{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceElement.' + statusOfServiceElement | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.businessService"
+            for="field_businessService"
+            >Business Service</label
+          >
+          <select
+            class="form-control"
+            id="field_businessService"
+            data-cy="businessService"
+            name="businessService"
+            formControlName="businessService"
+            [compareWith]="compareBusinessService"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="businessServiceOption" *ngFor="let businessServiceOption of businessServicesSharedCollection">
+              {{ businessServiceOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.internalService"
+            for="field_internalService"
+            >Internal Service</label
+          >
+          <select
+            class="form-control"
+            id="field_internalService"
+            data-cy="internalService"
+            name="internalService"
+            formControlName="internalService"
+            [compareWith]="compareInternalService"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="internalServiceOption" *ngFor="let internalServiceOption of internalServicesSharedCollection">
+              {{ internalServiceOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anuluj</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Zapisz</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

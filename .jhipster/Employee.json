@@ -1,0 +1,33 @@
+{
+  "applications": "*",
+  "changelogDate": "20230710085001",
+  "entityTableName": "employee",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "surname",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Employee",
+  "relationships": [
+    {
+      "otherEntityName": "businessService",
+      "otherEntityRelationshipName": "employee",
+      "relationshipName": "businessService",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "internalService",
+      "otherEntityRelationshipName": "employee",
+      "relationshipName": "internalService",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

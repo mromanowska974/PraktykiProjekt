@@ -1,0 +1,34 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "serviceElement": {
+      "home": {
+        "title": "Service Element",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Dodaj Service Element",
+        "createOrEditLabel": "Dodaj lub edytuj: Service Element",
+        "notFound": "No Service Elements found"
+      },
+      "created": "Utworzono nowy obiekt typu Service Element z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono obiekt typu Service Element z identyfikatorem {{ param }}",
+      "deleted": "Usunięto obiekt typu Service Element z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć Service Element {{ id }}?"
+      },
+      "detail": {
+        "title": "Service Element"
+      },
+      "id": "ID",
+      "price": "Price",
+      "description": "Description",
+      "valuationNumber": "Valuation Number",
+      "paymentType": "Payment Type",
+      "startDate": "Start Date",
+      "periodOfProvisionOfServiceInMonths": "Period Of Provision Of Service In Months",
+      "typeOfPeriodOfProvisionOfService": "Type Of Period Of Provision Of Service",
+      "endDate": "End Date",
+      "status": "Status",
+      "businessService": "Business Service",
+      "internalService": "Internal Service"
+    }
+  }
+}

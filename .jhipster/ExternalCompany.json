@@ -1,0 +1,30 @@
+{
+  "applications": "*",
+  "changelogDate": "20230710085002",
+  "entityTableName": "external_company",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "contractNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "sLAParameters",
+      "fieldType": "String"
+    }
+  ],
+  "name": "ExternalCompany",
+  "relationships": [
+    {
+      "otherEntityName": "internalService",
+      "otherEntityRelationshipName": "externalCompany",
+      "relationshipName": "internalService",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

@@ -1,0 +1,22 @@
+{
+  "applications": "*",
+  "changelogDate": "20230710085000",
+  "entityTableName": "department",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Department",
+  "relationships": [
+    {
+      "otherEntityName": "businessService",
+      "otherEntityRelationshipName": "department",
+      "relationshipName": "businessService",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

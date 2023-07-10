@@ -1,0 +1,9 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "PaymentType": {
+      "null": "",
+      "DISPOSABLE": "DISPOSABLE",
+      "MONTHLY": "MONTHLY"
+    }
+  }
+}

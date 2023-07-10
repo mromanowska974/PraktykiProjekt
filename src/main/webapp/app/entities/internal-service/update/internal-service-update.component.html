@@ -1,0 +1,343 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-internal-service-heading"
+        data-cy="InternalServiceCreateUpdateHeading"
+        jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.home.createOrEditLabel"
+      >
+        Dodaj lub edytuj: Internal Service
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.name" for="field_name"
+            >Name</label
+          >
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.symbol" for="field_symbol"
+            >Symbol</label
+          >
+          <input type="text" class="form-control" name="symbol" id="field_symbol" data-cy="symbol" formControlName="symbol" />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.functionalDescription"
+            for="field_functionalDescription"
+            >Functional Description</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="functionalDescription"
+            id="field_functionalDescription"
+            data-cy="functionalDescription"
+            formControlName="functionalDescription"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.serviceComissions"
+            for="field_serviceComissions"
+            >Service Comissions</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="serviceComissions"
+            id="field_serviceComissions"
+            data-cy="serviceComissions"
+            formControlName="serviceComissions"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.exclusions"
+            for="field_exclusions"
+            >Exclusions</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="exclusions"
+            id="field_exclusions"
+            data-cy="exclusions"
+            formControlName="exclusions"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.dutiesAndResponsibilities"
+            for="field_dutiesAndResponsibilities"
+            >Duties And Responsibilities</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="dutiesAndResponsibilities"
+            id="field_dutiesAndResponsibilities"
+            data-cy="dutiesAndResponsibilities"
+            formControlName="dutiesAndResponsibilities"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.personResponsibleForService"
+            for="field_personResponsibleForService"
+            >Person Responsible For Service</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="personResponsibleForService"
+            id="field_personResponsibleForService"
+            data-cy="personResponsibleForService"
+            formControlName="personResponsibleForService"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.hoursOfService"
+            for="field_hoursOfService"
+            >Hours Of Service</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="hoursOfService"
+            id="field_hoursOfService"
+            data-cy="hoursOfService"
+            formControlName="hoursOfService"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.serviceActivatingCost"
+            for="field_serviceActivatingCost"
+            >Service Activating Cost</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="serviceActivatingCost"
+            id="field_serviceActivatingCost"
+            data-cy="serviceActivatingCost"
+            formControlName="serviceActivatingCost"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.priceListOfService"
+            for="field_priceListOfService"
+            >Price List Of Service</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="priceListOfService"
+            id="field_priceListOfService"
+            data-cy="priceListOfService"
+            formControlName="priceListOfService"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.notes" for="field_notes"
+            >Notes</label
+          >
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.status" for="field_status"
+            >Status</label
+          >
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceCard.null' | translate }}</option>
+            <option *ngFor="let statusOfServiceCard of statusOfServiceCardValues" [value]="statusOfServiceCard">
+              {{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceCard.' + statusOfServiceCard | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.criticalService"
+            for="field_criticalService"
+            >Critical Service</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="criticalService"
+            id="field_criticalService"
+            data-cy="criticalService"
+            formControlName="criticalService"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.guaranteedLevelsOfProvisionOfService"
+            for="field_guaranteedLevelsOfProvisionOfService"
+            >Guaranteed Levels Of Provision Of Service</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="guaranteedLevelsOfProvisionOfService"
+            id="field_guaranteedLevelsOfProvisionOfService"
+            data-cy="guaranteedLevelsOfProvisionOfService"
+            formControlName="guaranteedLevelsOfProvisionOfService"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.periodOfProvisionOfService"
+            for="field_periodOfProvisionOfService"
+            >Period Of Provision Of Service</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="periodOfProvisionOfService"
+            id="field_periodOfProvisionOfService"
+            data-cy="periodOfProvisionOfService"
+            formControlName="periodOfProvisionOfService"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.windowOfService"
+            for="field_windowOfService"
+            >Window Of Service</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="windowOfService"
+            id="field_windowOfService"
+            data-cy="windowOfService"
+            formControlName="windowOfService"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.levelOfAccessibility"
+            for="field_levelOfAccessibility"
+            >Level Of Accessibility</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="levelOfAccessibility"
+            id="field_levelOfAccessibility"
+            data-cy="levelOfAccessibility"
+            formControlName="levelOfAccessibility"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.planDisasterRecovery"
+            for="field_planDisasterRecovery"
+            >Plan Disaster Recovery</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="planDisasterRecovery"
+            id="field_planDisasterRecovery"
+            data-cy="planDisasterRecovery"
+            formControlName="planDisasterRecovery"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.rPO" for="field_rPO"
+            >R PO</label
+          >
+          <input type="text" class="form-control" name="rPO" id="field_rPO" data-cy="rPO" formControlName="rPO" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.rTO" for="field_rTO"
+            >R TO</label
+          >
+          <input type="text" class="form-control" name="rTO" id="field_rTO" data-cy="rTO" formControlName="rTO" />
+        </div>
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.employee"
+            for="field_employee"
+            >Employee</label
+          >
+          <select
+            class="form-control"
+            id="field_employee"
+            data-cy="employee"
+            name="employee"
+            formControlName="employee"
+            [compareWith]="compareEmployee"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="employeeOption" *ngFor="let employeeOption of employeesSharedCollection">{{ employeeOption.id }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anuluj</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Zapisz</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

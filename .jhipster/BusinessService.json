@@ -1,0 +1,93 @@
+{
+  "applications": "*",
+  "changelogDate": "20230710084958",
+  "entityTableName": "business_service",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "symbol",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "functionalDescription",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "exclusions",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dutiesAndResponsibilities",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "personResponsibleForService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "hoursOfService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serviceActivatingCost",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "priceListOfService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    }
+  ],
+  "name": "BusinessService",
+  "relationships": [
+    {
+      "otherEntityName": "parameter",
+      "otherEntityRelationshipName": "businessService",
+      "relationshipName": "parameter",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "serviceElement",
+      "otherEntityRelationshipName": "businessService",
+      "relationshipName": "serviceElement",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "internalService",
+      "otherEntityRelationshipName": "businessService",
+      "relationshipName": "internalService",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    },
+    {
+      "otherEntityName": "client",
+      "otherEntityRelationshipName": "businessService",
+      "relationshipName": "client",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "employee",
+      "otherEntityRelationshipName": "businessService",
+      "relationshipName": "employee",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "department",
+      "otherEntityRelationshipName": "businessService",
+      "relationshipName": "department",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

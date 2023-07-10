@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="parameter">
+      <h2 data-cy="parameterDetailsHeading">
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.parameter.detail.title">Parameter</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ parameter.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.parameter.name">Name</span></dt>
+        <dd>
+          <span>{{ parameter.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.parameter.value">Value</span></dt>
+        <dd>
+          <span>{{ parameter.value }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.parameter.businessService">Business Service</span></dt>
+        <dd>
+          <div *ngIf="parameter.businessService">
+            <a [routerLink]="['/business-service', parameter.businessService.id, 'view']">{{ parameter.businessService.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.parameter.internalService">Internal Service</span></dt>
+        <dd>
+          <div *ngIf="parameter.internalService">
+            <a [routerLink]="['/internal-service', parameter.internalService.id, 'view']">{{ parameter.internalService.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Wstecz</span>
+      </button>
+
+      <button type="button" [routerLink]="['/parameter', parameter.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edytuj</span>
+      </button>
+    </div>
+  </div>
+</div>

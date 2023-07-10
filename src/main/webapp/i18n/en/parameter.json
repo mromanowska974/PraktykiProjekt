@@ -1,0 +1,27 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "parameter": {
+      "home": {
+        "title": "Parameters",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Parameter",
+        "createOrEditLabel": "Create or edit a Parameter",
+        "notFound": "No Parameters found"
+      },
+      "created": "A new Parameter is created with identifier {{ param }}",
+      "updated": "A Parameter is updated with identifier {{ param }}",
+      "deleted": "A Parameter is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Parameter {{ id }}?"
+      },
+      "detail": {
+        "title": "Parameter"
+      },
+      "id": "ID",
+      "name": "Name",
+      "value": "Value",
+      "businessService": "Business Service",
+      "internalService": "Internal Service"
+    }
+  }
+}

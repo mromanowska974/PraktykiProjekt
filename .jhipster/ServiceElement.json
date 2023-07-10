@@ -1,0 +1,63 @@
+{
+  "applications": "*",
+  "changelogDate": "20230710085005",
+  "entityTableName": "service_element",
+  "fields": [
+    {
+      "fieldName": "price",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "valuationNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "paymentType",
+      "fieldType": "PaymentType",
+      "fieldValues": "DISPOSABLE,MONTHLY"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "periodOfProvisionOfServiceInMonths",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "typeOfPeriodOfProvisionOfService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "StatusOfServiceElement",
+      "fieldValues": "ACTIVE,NOT_ACTIVE"
+    }
+  ],
+  "name": "ServiceElement",
+  "relationships": [
+    {
+      "otherEntityName": "businessService",
+      "otherEntityRelationshipName": "serviceElement",
+      "relationshipName": "businessService",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "internalService",
+      "otherEntityRelationshipName": "serviceElement",
+      "relationshipName": "internalService",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

@@ -1,0 +1,27 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "employee": {
+      "home": {
+        "title": "Employee",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Dodaj Employee",
+        "createOrEditLabel": "Dodaj lub edytuj: Employee",
+        "notFound": "No Employees found"
+      },
+      "created": "Utworzono nowy obiekt typu Employee z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono obiekt typu Employee z identyfikatorem {{ param }}",
+      "deleted": "Usunięto obiekt typu Employee z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć Employee {{ id }}?"
+      },
+      "detail": {
+        "title": "Employee"
+      },
+      "id": "ID",
+      "name": "Name",
+      "surname": "Surname",
+      "businessService": "Business Service",
+      "internalService": "Internal Service"
+    }
+  }
+}

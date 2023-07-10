@@ -1,0 +1,174 @@
+<div>
+  <h2 id="page-heading" data-cy="ServiceElementHeading">
+    <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.home.title">Service Element</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-service-element"
+        [routerLink]="['/service-element/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.home.createLabel"> Dodaj Service Element </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="serviceElements?.length === 0">
+    <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.home.notFound">No Service Elements found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="serviceElements && serviceElements.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="price">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.price">Price</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.description">Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="valuationNumber">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.valuationNumber">Valuation Number</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="paymentType">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.paymentType">Payment Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="startDate">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.startDate">Start Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="periodOfProvisionOfServiceInMonths">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.periodOfProvisionOfServiceInMonths"
+                >Period Of Provision Of Service In Months</span
+              >
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="typeOfPeriodOfProvisionOfService">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.typeOfPeriodOfProvisionOfService"
+                >Type Of Period Of Provision Of Service</span
+              >
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="endDate">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.endDate">End Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="status">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.status">Status</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="businessService.id">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.businessService">Business Service</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="internalService.id">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.internalService">Internal Service</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let serviceElement of serviceElements; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/service-element', serviceElement.id, 'view']">{{ serviceElement.id }}</a>
+          </td>
+          <td>{{ serviceElement.price }}</td>
+          <td>{{ serviceElement.description }}</td>
+          <td>{{ serviceElement.valuationNumber }}</td>
+          <td jhiTranslate="{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.PaymentType.' + serviceElement.paymentType }}">
+            {{ serviceElement.paymentType }}
+          </td>
+          <td>{{ serviceElement.startDate | formatMediumDatetime }}</td>
+          <td>{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
+          <td>{{ serviceElement.typeOfPeriodOfProvisionOfService }}</td>
+          <td>{{ serviceElement.endDate | formatMediumDatetime }}</td>
+          <td jhiTranslate="{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceElement.' + serviceElement.status }}">
+            {{ serviceElement.status }}
+          </td>
+          <td>
+            <div *ngIf="serviceElement.businessService">
+              <a [routerLink]="['/business-service', serviceElement.businessService.id, 'view']">{{ serviceElement.businessService.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="serviceElement.internalService">
+              <a [routerLink]="['/internal-service', serviceElement.internalService.id, 'view']">{{ serviceElement.internalService.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/service-element', serviceElement.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Widok</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/service-element', serviceElement.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edytuj</span>
+              </button>
+
+              <button type="submit" (click)="delete(serviceElement)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Usuń</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

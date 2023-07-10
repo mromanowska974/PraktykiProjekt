@@ -1,0 +1,100 @@
+
+entity BusinessService{
+	name String,
+    symbol String,
+    functionalDescription String,
+    exclusions String,
+    dutiesAndResponsibilities String,
+    personResponsibleForService String,
+    hoursOfService String,
+    serviceActivatingCost String,
+    priceListOfService String,
+    notes String,
+}
+
+entity InternalService{
+	name String,
+    symbol String,
+    functionalDescription String,
+    serviceComissions String,
+    exclusions String,
+    dutiesAndResponsibilities String,
+    personResponsibleForService String,
+    hoursOfService String,
+    serviceActivatingCost String,
+    priceListOfService String,
+    notes String,
+    status StatusOfServiceCard,
+    criticalService Boolean,
+    guaranteedLevelsOfProvisionOfService String,
+    periodOfProvisionOfService String,
+    windowOfService String,
+    levelOfAccessibility String,
+    planDisasterRecovery String,
+    RPO String,
+    RTO String,
+}
+
+entity Client{
+	name String
+}
+
+entity Employee{
+	name String,
+    surname String,
+}
+
+entity Department{
+	name String
+}
+
+entity Parameter{
+	name String,
+    value String
+}
+
+entity ServiceElement{
+	price Float,
+	description String,
+    valuationNumber String,
+    paymentType PaymentType,
+    startDate Instant,
+    periodOfProvisionOfServiceInMonths Integer,
+    typeOfPeriodOfProvisionOfService String,
+    endDate Instant,
+    status StatusOfServiceElement
+}
+
+entity ExternalCompany {
+	name String,
+    contractNumber String,
+    SLAParameters String
+}
+
+enum PaymentType{
+	DISPOSABLE, MONTHLY
+}
+
+enum StatusOfServiceElement{
+	ACTIVE, NOT_ACTIVE
+}
+
+enum StatusOfServiceCard{
+	BINDING, NON_BINDING
+}
+
+relationship OneToMany {
+	BusinessService to Parameter,
+    InternalService to Parameter,
+	Client to BusinessService,
+    Employee to BusinessService,
+    Employee to InternalService,
+    Department to BusinessService,
+    BusinessService to ServiceElement,
+    InternalService to ServiceElement,
+    InternalService to ExternalCompany
+}
+
+relationship ManyToMany {
+	BusinessService to InternalService
+}

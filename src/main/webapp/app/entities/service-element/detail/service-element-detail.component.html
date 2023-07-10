@@ -1,0 +1,90 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="serviceElement">
+      <h2 data-cy="serviceElementDetailsHeading">
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.detail.title">Service Element</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ serviceElement.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.price">Price</span></dt>
+        <dd>
+          <span>{{ serviceElement.price }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.description">Description</span></dt>
+        <dd>
+          <span>{{ serviceElement.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.valuationNumber">Valuation Number</span></dt>
+        <dd>
+          <span>{{ serviceElement.valuationNumber }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.paymentType">Payment Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.PaymentType.' + serviceElement.paymentType }}">{{
+            serviceElement.paymentType
+          }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.startDate">Start Date</span></dt>
+        <dd>
+          <span>{{ serviceElement.startDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.periodOfProvisionOfServiceInMonths"
+            >Period Of Provision Of Service In Months</span
+          >
+        </dt>
+        <dd>
+          <span>{{ serviceElement.periodOfProvisionOfServiceInMonths }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.typeOfPeriodOfProvisionOfService"
+            >Type Of Period Of Provision Of Service</span
+          >
+        </dt>
+        <dd>
+          <span>{{ serviceElement.typeOfPeriodOfProvisionOfService }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.endDate">End Date</span></dt>
+        <dd>
+          <span>{{ serviceElement.endDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.status">Status</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceElement.' + serviceElement.status }}">{{
+            serviceElement.status
+          }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.businessService">Business Service</span></dt>
+        <dd>
+          <div *ngIf="serviceElement.businessService">
+            <a [routerLink]="['/business-service', serviceElement.businessService.id, 'view']">{{ serviceElement.businessService.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.internalService">Internal Service</span></dt>
+        <dd>
+          <div *ngIf="serviceElement.internalService">
+            <a [routerLink]="['/internal-service', serviceElement.internalService.id, 'view']">{{ serviceElement.internalService.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Wstecz</span>
+      </button>
+
+      <button type="button" [routerLink]="['/service-element', serviceElement.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edytuj</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "internalService": {
+      "home": {
+        "title": "InternalServices",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Internal Service",
+        "createOrEditLabel": "Créer ou éditer un Internal Service",
+        "notFound": "Aucun Internal Service trouvé"
+      },
+      "created": "Un nouveau Internal Service a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Internal Service avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Internal Service avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Internal Service {{ id }} ?"
+      },
+      "detail": {
+        "title": "Internal Service"
+      },
+      "id": "ID",
+      "name": "Name",
+      "symbol": "Symbol",
+      "functionalDescription": "Functional Description",
+      "serviceComissions": "Service Comissions",
+      "exclusions": "Exclusions",
+      "dutiesAndResponsibilities": "Duties And Responsibilities",
+      "personResponsibleForService": "Person Responsible For Service",
+      "hoursOfService": "Hours Of Service",
+      "serviceActivatingCost": "Service Activating Cost",
+      "priceListOfService": "Price List Of Service",
+      "notes": "Notes",
+      "status": "Status",
+      "criticalService": "Critical Service",
+      "guaranteedLevelsOfProvisionOfService": "Guaranteed Levels Of Provision Of Service",
+      "periodOfProvisionOfService": "Period Of Provision Of Service",
+      "windowOfService": "Window Of Service",
+      "levelOfAccessibility": "Level Of Accessibility",
+      "planDisasterRecovery": "Plan Disaster Recovery",
+      "rPO": "R PO",
+      "rTO": "R TO",
+      "parameter": "Parameter",
+      "serviceElement": "Service Element",
+      "externalCompany": "External Company",
+      "employee": "Employee",
+      "businessService": "Business Service"
+    }
+  }
+}

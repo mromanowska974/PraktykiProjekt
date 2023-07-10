@@ -1,0 +1,27 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "externalCompany": {
+      "home": {
+        "title": "External Company",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Dodaj External Company",
+        "createOrEditLabel": "Dodaj lub edytuj: External Company",
+        "notFound": "No External Companies found"
+      },
+      "created": "Utworzono nowy obiekt typu External Company z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono obiekt typu External Company z identyfikatorem {{ param }}",
+      "deleted": "Usunięto obiekt typu External Company z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć External Company {{ id }}?"
+      },
+      "detail": {
+        "title": "External Company"
+      },
+      "id": "ID",
+      "name": "Name",
+      "contractNumber": "Contract Number",
+      "sLAParameters": "S LA Parameters",
+      "internalService": "Internal Service"
+    }
+  }
+}

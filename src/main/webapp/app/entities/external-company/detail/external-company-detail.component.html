@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="externalCompany">
+      <h2 data-cy="externalCompanyDetailsHeading">
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.externalCompany.detail.title">External Company</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ externalCompany.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.externalCompany.name">Name</span></dt>
+        <dd>
+          <span>{{ externalCompany.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.externalCompany.contractNumber">Contract Number</span></dt>
+        <dd>
+          <span>{{ externalCompany.contractNumber }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.externalCompany.sLAParameters">S LA Parameters</span></dt>
+        <dd>
+          <span>{{ externalCompany.sLAParameters }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.externalCompany.internalService">Internal Service</span></dt>
+        <dd>
+          <div *ngIf="externalCompany.internalService">
+            <a [routerLink]="['/internal-service', externalCompany.internalService.id, 'view']">{{ externalCompany.internalService.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Wstecz</span>
+      </button>
+
+      <button type="button" [routerLink]="['/external-company', externalCompany.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edytuj</span>
+      </button>
+    </div>
+  </div>
+</div>

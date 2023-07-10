@@ -1,0 +1,158 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="internalService">
+      <h2 data-cy="internalServiceDetailsHeading">
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.detail.title">Internal Service</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ internalService.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.name">Name</span></dt>
+        <dd>
+          <span>{{ internalService.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.symbol">Symbol</span></dt>
+        <dd>
+          <span>{{ internalService.symbol }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.functionalDescription"
+            >Functional Description</span
+          >
+        </dt>
+        <dd>
+          <span>{{ internalService.functionalDescription }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.serviceComissions">Service Comissions</span>
+        </dt>
+        <dd>
+          <span>{{ internalService.serviceComissions }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.exclusions">Exclusions</span></dt>
+        <dd>
+          <span>{{ internalService.exclusions }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.dutiesAndResponsibilities"
+            >Duties And Responsibilities</span
+          >
+        </dt>
+        <dd>
+          <span>{{ internalService.dutiesAndResponsibilities }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.personResponsibleForService"
+            >Person Responsible For Service</span
+          >
+        </dt>
+        <dd>
+          <span>{{ internalService.personResponsibleForService }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.hoursOfService">Hours Of Service</span></dt>
+        <dd>
+          <span>{{ internalService.hoursOfService }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.serviceActivatingCost"
+            >Service Activating Cost</span
+          >
+        </dt>
+        <dd>
+          <span>{{ internalService.serviceActivatingCost }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.priceListOfService"
+            >Price List Of Service</span
+          >
+        </dt>
+        <dd>
+          <span>{{ internalService.priceListOfService }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.notes">Notes</span></dt>
+        <dd>
+          <span>{{ internalService.notes }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.status">Status</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceCard.' + internalService.status }}">{{
+            internalService.status
+          }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.criticalService">Critical Service</span></dt>
+        <dd>
+          <span>{{ internalService.criticalService }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.guaranteedLevelsOfProvisionOfService"
+            >Guaranteed Levels Of Provision Of Service</span
+          >
+        </dt>
+        <dd>
+          <span>{{ internalService.guaranteedLevelsOfProvisionOfService }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.periodOfProvisionOfService"
+            >Period Of Provision Of Service</span
+          >
+        </dt>
+        <dd>
+          <span>{{ internalService.periodOfProvisionOfService }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.windowOfService">Window Of Service</span>
+        </dt>
+        <dd>
+          <span>{{ internalService.windowOfService }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.levelOfAccessibility"
+            >Level Of Accessibility</span
+          >
+        </dt>
+        <dd>
+          <span>{{ internalService.levelOfAccessibility }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.planDisasterRecovery"
+            >Plan Disaster Recovery</span
+          >
+        </dt>
+        <dd>
+          <span>{{ internalService.planDisasterRecovery }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.rPO">R PO</span></dt>
+        <dd>
+          <span>{{ internalService.rPO }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.rTO">R TO</span></dt>
+        <dd>
+          <span>{{ internalService.rTO }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.employee">Employee</span></dt>
+        <dd>
+          <div *ngIf="internalService.employee">
+            <a [routerLink]="['/employee', internalService.employee.id, 'view']">{{ internalService.employee.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Wstecz</span>
+      </button>
+
+      <button type="button" [routerLink]="['/internal-service', internalService.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edytuj</span>
+      </button>
+    </div>
+  </div>
+</div>

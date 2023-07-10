@@ -1,0 +1,22 @@
+{
+  "applications": "*",
+  "changelogDate": "20230710084959",
+  "entityTableName": "client",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Client",
+  "relationships": [
+    {
+      "otherEntityName": "businessService",
+      "otherEntityRelationshipName": "client",
+      "relationshipName": "businessService",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

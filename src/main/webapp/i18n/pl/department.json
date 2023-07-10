@@ -1,0 +1,25 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "department": {
+      "home": {
+        "title": "Department",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Dodaj Department",
+        "createOrEditLabel": "Dodaj lub edytuj: Department",
+        "notFound": "No Departments found"
+      },
+      "created": "Utworzono nowy obiekt typu Department z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono obiekt typu Department z identyfikatorem {{ param }}",
+      "deleted": "Usunięto obiekt typu Department z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć Department {{ id }}?"
+      },
+      "detail": {
+        "title": "Department"
+      },
+      "id": "ID",
+      "name": "Name",
+      "businessService": "Business Service"
+    }
+  }
+}

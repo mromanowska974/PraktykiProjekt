@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity ExternalCompany.
+    -->
+    <changeSet id="20230710085002-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="internal_service_id"
+                                 baseTableName="external_company"
+                                 constraintName="fk_external_company__internal_service_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="internal_service"
+                                 />
+    </changeSet>
+</databaseChangeLog>

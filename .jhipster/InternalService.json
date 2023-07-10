@@ -1,0 +1,127 @@
+{
+  "applications": "*",
+  "changelogDate": "20230710085003",
+  "entityTableName": "internal_service",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "symbol",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "functionalDescription",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serviceComissions",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "exclusions",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dutiesAndResponsibilities",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "personResponsibleForService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "hoursOfService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serviceActivatingCost",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "priceListOfService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "StatusOfServiceCard",
+      "fieldValues": "BINDING,NON_BINDING"
+    },
+    {
+      "fieldName": "criticalService",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "guaranteedLevelsOfProvisionOfService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "periodOfProvisionOfService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "windowOfService",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "levelOfAccessibility",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "planDisasterRecovery",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "rPO",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "rTO",
+      "fieldType": "String"
+    }
+  ],
+  "name": "InternalService",
+  "relationships": [
+    {
+      "otherEntityName": "parameter",
+      "otherEntityRelationshipName": "internalService",
+      "relationshipName": "parameter",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "serviceElement",
+      "otherEntityRelationshipName": "internalService",
+      "relationshipName": "serviceElement",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "externalCompany",
+      "otherEntityRelationshipName": "internalService",
+      "relationshipName": "externalCompany",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "employee",
+      "otherEntityRelationshipName": "internalService",
+      "relationshipName": "employee",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "businessService",
+      "otherEntityRelationshipName": "internalService",
+      "relationshipName": "businessService",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

@@ -1,0 +1,115 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="businessService">
+      <h2 data-cy="businessServiceDetailsHeading">
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.detail.title">Business Service</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ businessService.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.name">Name</span></dt>
+        <dd>
+          <span>{{ businessService.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.symbol">Symbol</span></dt>
+        <dd>
+          <span>{{ businessService.symbol }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.functionalDescription"
+            >Functional Description</span
+          >
+        </dt>
+        <dd>
+          <span>{{ businessService.functionalDescription }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.exclusions">Exclusions</span></dt>
+        <dd>
+          <span>{{ businessService.exclusions }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.dutiesAndResponsibilities"
+            >Duties And Responsibilities</span
+          >
+        </dt>
+        <dd>
+          <span>{{ businessService.dutiesAndResponsibilities }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.personResponsibleForService"
+            >Person Responsible For Service</span
+          >
+        </dt>
+        <dd>
+          <span>{{ businessService.personResponsibleForService }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.hoursOfService">Hours Of Service</span></dt>
+        <dd>
+          <span>{{ businessService.hoursOfService }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.serviceActivatingCost"
+            >Service Activating Cost</span
+          >
+        </dt>
+        <dd>
+          <span>{{ businessService.serviceActivatingCost }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.priceListOfService"
+            >Price List Of Service</span
+          >
+        </dt>
+        <dd>
+          <span>{{ businessService.priceListOfService }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.notes">Notes</span></dt>
+        <dd>
+          <span>{{ businessService.notes }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.internalService">Internal Service</span></dt>
+        <dd>
+          <span *ngFor="let internalService of businessService.internalServices; let last = last">
+            <a [routerLink]="['/internal-service', internalService.id, 'view']">{{ internalService.id }}</a
+            >{{ last ? '' : ', ' }}
+          </span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.client">Client</span></dt>
+        <dd>
+          <div *ngIf="businessService.client">
+            <a [routerLink]="['/client', businessService.client.id, 'view']">{{ businessService.client.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.employee">Employee</span></dt>
+        <dd>
+          <div *ngIf="businessService.employee">
+            <a [routerLink]="['/employee', businessService.employee.id, 'view']">{{ businessService.employee.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.department">Department</span></dt>
+        <dd>
+          <div *ngIf="businessService.department">
+            <a [routerLink]="['/department', businessService.department.id, 'view']">{{ businessService.department.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Wstecz</span>
+      </button>
+
+      <button type="button" [routerLink]="['/business-service', businessService.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edytuj</span>
+      </button>
+    </div>
+  </div>
+</div>

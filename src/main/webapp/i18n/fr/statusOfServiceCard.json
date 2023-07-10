@@ -1,0 +1,9 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "StatusOfServiceCard": {
+      "null": "",
+      "BINDING": "BINDING",
+      "NON_BINDING": "NON_BINDING"
+    }
+  }
+}

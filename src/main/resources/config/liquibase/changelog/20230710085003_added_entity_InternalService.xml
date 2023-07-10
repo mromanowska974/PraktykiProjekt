@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity InternalService.
+    -->
+    <changeSet id="20230710085003-1" author="jhipster">
+        <createTable tableName="internal_service">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="symbol" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="functional_description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="service_comissions" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="exclusions" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="duties_and_responsibilities" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="person_responsible_for_service" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="hours_of_service" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="service_activating_cost" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="price_list_of_service" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="notes" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="critical_service" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="guaranteed_levels_of_provision_of_service" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="period_of_provision_of_service" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="window_of_service" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="level_of_accessibility" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="plan_disaster_recovery" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="r_po" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="r_to" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="employee_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20230710085003-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/internal_service.csv"
+                  separator=";"
+                  tableName="internal_service"
+                  usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="name" type="string"/>
+            <column name="symbol" type="string"/>
+            <column name="functional_description" type="string"/>
+            <column name="service_comissions" type="string"/>
+            <column name="exclusions" type="string"/>
+            <column name="duties_and_responsibilities" type="string"/>
+            <column name="person_responsible_for_service" type="string"/>
+            <column name="hours_of_service" type="string"/>
+            <column name="service_activating_cost" type="string"/>
+            <column name="price_list_of_service" type="string"/>
+            <column name="notes" type="string"/>
+            <column name="status" type="string"/>
+            <column name="critical_service" type="boolean"/>
+            <column name="guaranteed_levels_of_provision_of_service" type="string"/>
+            <column name="period_of_provision_of_service" type="string"/>
+            <column name="window_of_service" type="string"/>
+            <column name="level_of_accessibility" type="string"/>
+            <column name="plan_disaster_recovery" type="string"/>
+            <column name="r_po" type="string"/>
+            <column name="r_to" type="string"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

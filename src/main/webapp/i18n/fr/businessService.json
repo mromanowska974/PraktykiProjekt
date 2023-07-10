@@ -1,0 +1,39 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "businessService": {
+      "home": {
+        "title": "BusinessServices",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Business Service",
+        "createOrEditLabel": "Créer ou éditer un Business Service",
+        "notFound": "Aucun Business Service trouvé"
+      },
+      "created": "Un nouveau Business Service a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Business Service avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Business Service avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Business Service {{ id }} ?"
+      },
+      "detail": {
+        "title": "Business Service"
+      },
+      "id": "ID",
+      "name": "Name",
+      "symbol": "Symbol",
+      "functionalDescription": "Functional Description",
+      "exclusions": "Exclusions",
+      "dutiesAndResponsibilities": "Duties And Responsibilities",
+      "personResponsibleForService": "Person Responsible For Service",
+      "hoursOfService": "Hours Of Service",
+      "serviceActivatingCost": "Service Activating Cost",
+      "priceListOfService": "Price List Of Service",
+      "notes": "Notes",
+      "parameter": "Parameter",
+      "serviceElement": "Service Element",
+      "internalService": "Internal Service",
+      "client": "Client",
+      "employee": "Employee",
+      "department": "Department"
+    }
+  }
+}

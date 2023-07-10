@@ -1,0 +1,25 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "client": {
+      "home": {
+        "title": "Client",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Dodaj Client",
+        "createOrEditLabel": "Dodaj lub edytuj: Client",
+        "notFound": "No Clients found"
+      },
+      "created": "Utworzono nowy obiekt typu Client z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono obiekt typu Client z identyfikatorem {{ param }}",
+      "deleted": "Usunięto obiekt typu Client z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć Client {{ id }}?"
+      },
+      "detail": {
+        "title": "Client"
+      },
+      "id": "ID",
+      "name": "Name",
+      "businessService": "Business Service"
+    }
+  }
+}
