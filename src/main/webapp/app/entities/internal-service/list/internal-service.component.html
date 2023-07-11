@@ -254,10 +254,7 @@
 </div> -->
 
 <div class="container">
-  <div class="row1">
-    <p>Symbol Nazwa</p>
-  </div>
-  <div class="row1">
-    <p>Symbol Nazwa</p>
+  <div class="row1" *ngFor="let service of internalServices">
+    <p>{{ service.symbol }} {{ service.name }}</p>
   </div>
 </div>
