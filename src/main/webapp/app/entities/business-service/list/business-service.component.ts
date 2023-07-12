@@ -12,7 +12,6 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, BusinessServiceService } from '../service/business-service.service';
 import { BusinessServiceDeleteDialogComponent } from '../delete/business-service-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
-import { InternalServiceComponent } from 'app/entities/internal-service/list/internal-service.component';
 
 @Component({
   standalone: true,
@@ -28,12 +27,11 @@ import { InternalServiceComponent } from 'app/entities/internal-service/list/int
     DurationPipe,
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
-    InternalServiceComponent,
   ],
 })
 export class BusinessServiceComponent implements OnInit {
-  businessServices: IBusinessService[] | null;
-  // isLoading = false;
+  businessServices?: IBusinessService[] | null;
+  //isLoading = false;
 
   // predicate = 'id';
   // ascending = true;
@@ -46,7 +44,7 @@ export class BusinessServiceComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  // trackId = (_index: number, item: IBusinessService): number => this.businessServiceService.getBusinessServiceIdentifier(item);
+  //trackId = (_index: number, item: IBusinessService): number => this.businessServiceService.getBusinessServiceIdentifier(item);
 
   ngOnInit(): void {
     this.businessServiceService.query().subscribe(businessServices => {

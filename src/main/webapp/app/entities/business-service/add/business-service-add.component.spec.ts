@@ -18,11 +18,11 @@ import { EmployeeService } from 'app/entities/employee/service/employee.service'
 import { IDepartment } from 'app/entities/department/department.model';
 import { DepartmentService } from 'app/entities/department/service/department.service';
 
-import { BusinessServiceUpdateComponent } from './business-service-update.component';
+import { BusinessServiceAddComponent } from './business-service-add.component';
 
 describe('BusinessService Management Update Component', () => {
-  let comp: BusinessServiceUpdateComponent;
-  let fixture: ComponentFixture<BusinessServiceUpdateComponent>;
+  let comp: BusinessServiceAddComponent;
+  let fixture: ComponentFixture<BusinessServiceAddComponent>;
   let activatedRoute: ActivatedRoute;
   let businessServiceFormService: BusinessServiceFormService;
   let businessServiceService: BusinessServiceService;
@@ -44,10 +44,10 @@ describe('BusinessService Management Update Component', () => {
         },
       ],
     })
-      .overrideTemplate(BusinessServiceUpdateComponent, '')
+      .overrideTemplate(BusinessServiceAddComponent, '')
       .compileComponents();
 
-    fixture = TestBed.createComponent(BusinessServiceUpdateComponent);
+    fixture = TestBed.createComponent(BusinessServiceAddComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     businessServiceFormService = TestBed.inject(BusinessServiceFormService);
     businessServiceService = TestBed.inject(BusinessServiceService);

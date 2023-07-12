@@ -28,6 +28,7 @@ type BusinessServiceFormGroupContent = {
   serviceActivatingCost: FormControl<IBusinessService['serviceActivatingCost']>;
   priceListOfService: FormControl<IBusinessService['priceListOfService']>;
   notes: FormControl<IBusinessService['notes']>;
+  status: FormControl<IBusinessService['status']>;
   internalServices: FormControl<IBusinessService['internalServices']>;
   client: FormControl<IBusinessService['client']>;
   employee: FormControl<IBusinessService['employee']>;
@@ -61,6 +62,7 @@ export class BusinessServiceFormService {
       serviceActivatingCost: new FormControl(businessServiceRawValue.serviceActivatingCost),
       priceListOfService: new FormControl(businessServiceRawValue.priceListOfService),
       notes: new FormControl(businessServiceRawValue.notes),
+      status: new FormControl(businessServiceRawValue.status),
       internalServices: new FormControl(businessServiceRawValue.internalServices ?? []),
       client: new FormControl(businessServiceRawValue.client),
       employee: new FormControl(businessServiceRawValue.employee),

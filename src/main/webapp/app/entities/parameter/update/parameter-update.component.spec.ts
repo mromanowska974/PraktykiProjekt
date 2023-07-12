@@ -54,10 +54,10 @@ describe('Parameter Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call BusinessService query and add missing value', () => {
       const parameter: IParameter = { id: 456 };
-      const businessService: IBusinessService = { id: 21962 };
+      const businessService: IBusinessService = { id: 81499 };
       parameter.businessService = businessService;
 
-      const businessServiceCollection: IBusinessService[] = [{ id: 80225 }];
+      const businessServiceCollection: IBusinessService[] = [{ id: 20395 }];
       jest.spyOn(businessServiceService, 'query').mockReturnValue(of(new HttpResponse({ body: businessServiceCollection })));
       const additionalBusinessServices = [businessService];
       const expectedCollection: IBusinessService[] = [...additionalBusinessServices, ...businessServiceCollection];
@@ -98,7 +98,7 @@ describe('Parameter Management Update Component', () => {
 
     it('Should update editForm', () => {
       const parameter: IParameter = { id: 456 };
-      const businessService: IBusinessService = { id: 45401 };
+      const businessService: IBusinessService = { id: 99116 };
       parameter.businessService = businessService;
       const internalService: IInternalService = { id: 35209 };
       parameter.internalService = internalService;

@@ -10,6 +10,7 @@ import NavbarComponent from './layouts/navbar/navbar.component';
 import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { BusinessServiceAddComponent } from './entities/business-service/add/business-service-add.component';
 
 @NgModule({
   imports: [
@@ -45,6 +46,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
         {
           path: '',
           loadChildren: () => import(`./entities/entity-routing.module`).then(({ EntityRoutingModule }) => EntityRoutingModule),
+        },
+        {
+          path: 'new',
+          component: BusinessServiceAddComponent,
         },
         ...errorRoute,
       ],

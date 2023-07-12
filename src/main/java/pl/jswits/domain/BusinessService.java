@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import pl.jswits.domain.enumeration.StatusOfServiceElement;
 
 /**
  * A BusinessService.
@@ -52,6 +53,10 @@ public class BusinessService implements Serializable {
     @Column(name = "notes")
     private String notes;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusOfServiceElement status;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "businessService")
     @JsonIgnoreProperties(value = { "businessService", "internalService" }, allowSetters = true)
     private Set<Parameter> parameters = new HashSet<>();
@@ -83,6 +88,24 @@ public class BusinessService implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "businessServices" }, allowSetters = true)
     private Department department;
+
+    public BusinessService(
+        String name,
+        String symbol,
+        Set<InternalService> internalServices,
+        Client client,
+        Employee employee,
+        Department department
+    ) {
+        this.name = name;
+        this.symbol = symbol;
+        this.internalServices = internalServices;
+        this.client = client;
+        this.employee = employee;
+        this.department = department;
+    }
+
+    public BusinessService() {}
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -227,6 +250,19 @@ public class BusinessService implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public StatusOfServiceElement getStatus() {
+        return this.status;
+    }
+
+    public BusinessService status(StatusOfServiceElement status) {
+        this.setStatus(status);
+        return this;
+    }
+
+    public void setStatus(StatusOfServiceElement status) {
+        this.status = status;
     }
 
     public Set<Parameter> getParameters() {
@@ -389,6 +425,7 @@ public class BusinessService implements Serializable {
             ", serviceActivatingCost='" + getServiceActivatingCost() + "'" +
             ", priceListOfService='" + getPriceListOfService() + "'" +
             ", notes='" + getNotes() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

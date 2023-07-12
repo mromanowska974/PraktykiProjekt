@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jswits.IntegrationTest;
 import pl.jswits.domain.BusinessService;
+import pl.jswits.domain.enumeration.StatusOfServiceElement;
 import pl.jswits.repository.BusinessServiceRepository;
 
 /**
@@ -68,6 +69,9 @@ class BusinessServiceResourceIT {
     private static final String DEFAULT_NOTES = "AAAAAAAAAA";
     private static final String UPDATED_NOTES = "BBBBBBBBBB";
 
+    private static final StatusOfServiceElement DEFAULT_STATUS = StatusOfServiceElement.ACTIVE;
+    private static final StatusOfServiceElement UPDATED_STATUS = StatusOfServiceElement.NON_ACTIVE;
+
     private static final String ENTITY_API_URL = "/api/business-services";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -105,7 +109,8 @@ class BusinessServiceResourceIT {
             .hoursOfService(DEFAULT_HOURS_OF_SERVICE)
             .serviceActivatingCost(DEFAULT_SERVICE_ACTIVATING_COST)
             .priceListOfService(DEFAULT_PRICE_LIST_OF_SERVICE)
-            .notes(DEFAULT_NOTES);
+            .notes(DEFAULT_NOTES)
+            .status(DEFAULT_STATUS);
         return businessService;
     }
 
@@ -126,7 +131,8 @@ class BusinessServiceResourceIT {
             .hoursOfService(UPDATED_HOURS_OF_SERVICE)
             .serviceActivatingCost(UPDATED_SERVICE_ACTIVATING_COST)
             .priceListOfService(UPDATED_PRICE_LIST_OF_SERVICE)
-            .notes(UPDATED_NOTES);
+            .notes(UPDATED_NOTES)
+            .status(UPDATED_STATUS);
         return businessService;
     }
 
@@ -160,6 +166,7 @@ class BusinessServiceResourceIT {
         assertThat(testBusinessService.getServiceActivatingCost()).isEqualTo(DEFAULT_SERVICE_ACTIVATING_COST);
         assertThat(testBusinessService.getPriceListOfService()).isEqualTo(DEFAULT_PRICE_LIST_OF_SERVICE);
         assertThat(testBusinessService.getNotes()).isEqualTo(DEFAULT_NOTES);
+        assertThat(testBusinessService.getStatus()).isEqualTo(DEFAULT_STATUS);
     }
 
     @Test
@@ -203,7 +210,8 @@ class BusinessServiceResourceIT {
             .andExpect(jsonPath("$.[*].hoursOfService").value(hasItem(DEFAULT_HOURS_OF_SERVICE)))
             .andExpect(jsonPath("$.[*].serviceActivatingCost").value(hasItem(DEFAULT_SERVICE_ACTIVATING_COST)))
             .andExpect(jsonPath("$.[*].priceListOfService").value(hasItem(DEFAULT_PRICE_LIST_OF_SERVICE)))
-            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)));
+            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -244,7 +252,8 @@ class BusinessServiceResourceIT {
             .andExpect(jsonPath("$.hoursOfService").value(DEFAULT_HOURS_OF_SERVICE))
             .andExpect(jsonPath("$.serviceActivatingCost").value(DEFAULT_SERVICE_ACTIVATING_COST))
             .andExpect(jsonPath("$.priceListOfService").value(DEFAULT_PRICE_LIST_OF_SERVICE))
-            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES));
+            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
     }
 
     @Test
@@ -276,7 +285,8 @@ class BusinessServiceResourceIT {
             .hoursOfService(UPDATED_HOURS_OF_SERVICE)
             .serviceActivatingCost(UPDATED_SERVICE_ACTIVATING_COST)
             .priceListOfService(UPDATED_PRICE_LIST_OF_SERVICE)
-            .notes(UPDATED_NOTES);
+            .notes(UPDATED_NOTES)
+            .status(UPDATED_STATUS);
 
         restBusinessServiceMockMvc
             .perform(
@@ -300,6 +310,7 @@ class BusinessServiceResourceIT {
         assertThat(testBusinessService.getServiceActivatingCost()).isEqualTo(UPDATED_SERVICE_ACTIVATING_COST);
         assertThat(testBusinessService.getPriceListOfService()).isEqualTo(UPDATED_PRICE_LIST_OF_SERVICE);
         assertThat(testBusinessService.getNotes()).isEqualTo(UPDATED_NOTES);
+        assertThat(testBusinessService.getStatus()).isEqualTo(UPDATED_STATUS);
     }
 
     @Test
@@ -400,6 +411,7 @@ class BusinessServiceResourceIT {
         assertThat(testBusinessService.getServiceActivatingCost()).isEqualTo(DEFAULT_SERVICE_ACTIVATING_COST);
         assertThat(testBusinessService.getPriceListOfService()).isEqualTo(DEFAULT_PRICE_LIST_OF_SERVICE);
         assertThat(testBusinessService.getNotes()).isEqualTo(UPDATED_NOTES);
+        assertThat(testBusinessService.getStatus()).isEqualTo(DEFAULT_STATUS);
     }
 
     @Test
@@ -424,7 +436,8 @@ class BusinessServiceResourceIT {
             .hoursOfService(UPDATED_HOURS_OF_SERVICE)
             .serviceActivatingCost(UPDATED_SERVICE_ACTIVATING_COST)
             .priceListOfService(UPDATED_PRICE_LIST_OF_SERVICE)
-            .notes(UPDATED_NOTES);
+            .notes(UPDATED_NOTES)
+            .status(UPDATED_STATUS);
 
         restBusinessServiceMockMvc
             .perform(
@@ -448,6 +461,7 @@ class BusinessServiceResourceIT {
         assertThat(testBusinessService.getServiceActivatingCost()).isEqualTo(UPDATED_SERVICE_ACTIVATING_COST);
         assertThat(testBusinessService.getPriceListOfService()).isEqualTo(UPDATED_PRICE_LIST_OF_SERVICE);
         assertThat(testBusinessService.getNotes()).isEqualTo(UPDATED_NOTES);
+        assertThat(testBusinessService.getStatus()).isEqualTo(UPDATED_STATUS);
     }
 
     @Test

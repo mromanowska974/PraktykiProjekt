@@ -42,6 +42,11 @@
     {
       "fieldName": "notes",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "StatusOfServiceElement",
+      "fieldValues": "ACTIVE,NON_ACTIVE"
     }
   ],
   "name": "BusinessService",

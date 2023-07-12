@@ -2,6 +2,7 @@ import { IInternalService } from 'app/entities/internal-service/internal-service
 import { IClient } from 'app/entities/client/client.model';
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { IDepartment } from 'app/entities/department/department.model';
+import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
 
 export interface IBusinessService {
   id: number;
@@ -15,6 +16,7 @@ export interface IBusinessService {
   serviceActivatingCost?: string | null;
   priceListOfService?: string | null;
   notes?: string | null;
+  status?: keyof typeof StatusOfServiceElement | null;
   internalServices?: Pick<IInternalService, 'id'>[] | null;
   client?: Pick<IClient, 'id'> | null;
   employee?: Pick<IEmployee, 'id'> | null;

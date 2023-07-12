@@ -76,6 +76,12 @@
         <dd>
           <span>{{ businessService.notes }}</span>
         </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.status">Status</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceElement.' + businessService.status }}">{{
+            businessService.status
+          }}</span>
+        </dd>
         <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.businessService.internalService">Internal Service</span></dt>
         <dd>
           <span *ngFor="let internalService of businessService.internalServices; let last = last">

@@ -29,9 +29,9 @@ import { SortService } from 'app/shared/sort/sort.service';
     FormatMediumDatePipe,
   ],
 })
-export class InternalServiceComponent {
+export class InternalServiceComponent implements OnInit {
   internalServices?: IInternalService[] | null;
-  //isLoading = false;
+  // isLoading = false;
 
   // predicate = 'id';
   // ascending = true;

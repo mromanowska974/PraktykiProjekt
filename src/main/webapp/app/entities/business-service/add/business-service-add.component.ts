@@ -18,16 +18,19 @@ import { IEmployee } from 'app/entities/employee/employee.model';
 import { EmployeeService } from 'app/entities/employee/service/employee.service';
 import { IDepartment } from 'app/entities/department/department.model';
 import { DepartmentService } from 'app/entities/department/service/department.service';
+import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
 
 @Component({
   standalone: true,
-  selector: 'jhi-business-service-update',
-  templateUrl: './business-service-update.component.html',
+  selector: 'jhi-business-service-add',
+  templateUrl: './business-service-add.component.html',
+  styleUrls: ['./business-service-add.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
-export class BusinessServiceUpdateComponent implements OnInit {
+export class BusinessServiceAddComponent implements OnInit {
   isSaving = false;
   businessService: IBusinessService | null = null;
+  statusOfServiceElementValues = Object.keys(StatusOfServiceElement);
 
   internalServicesSharedCollection: IInternalService[] = [];
   clientsSharedCollection: IClient[] = [];

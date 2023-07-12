@@ -153,6 +153,9 @@ public class BusinessServiceResource {
                 if (businessService.getNotes() != null) {
                     existingBusinessService.setNotes(businessService.getNotes());
                 }
+                if (businessService.getStatus() != null) {
+                    existingBusinessService.setStatus(businessService.getStatus());
+                }
 
                 return existingBusinessService;
             })

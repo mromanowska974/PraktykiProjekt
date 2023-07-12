@@ -25,7 +25,7 @@ export default class HomeComponent implements OnInit {
   constructor(private clientService: ClientService, private router: Router) {}
 
   ngOnInit(): void {
-    this.clientService.findAll().subscribe(clients => {
+    this.clientService.query().subscribe(clients => {
       this.clients = clients.body;
     });
   }
@@ -36,4 +36,8 @@ export default class HomeComponent implements OnInit {
   //   this.destroy$.next();
   //   this.destroy$.complete();
   // }
+
+  onAddNewBusinessService() {
+    this.router.navigate(['/new']);
+  }
 }

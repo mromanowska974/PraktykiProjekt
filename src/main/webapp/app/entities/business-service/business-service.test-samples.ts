@@ -1,28 +1,33 @@
+import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
+
 import { IBusinessService, NewBusinessService } from './business-service.model';
 
 export const sampleWithRequiredData: IBusinessService = {
-  id: 34589,
+  id: 16668,
 };
 
 export const sampleWithPartialData: IBusinessService = {
-  id: 66278,
-  exclusions: 'Witkowo Inna Security',
-  dutiesAndResponsibilities: 'Direct Shoes',
-  notes: 'żółty',
+  id: 3117,
+  functionalDescription: 'Inna Security opolskie',
+  exclusions: 'Bedfordshire bandwidth solid',
+  priceListOfService: 'over Borders generating',
+  notes: 'Diesel Gasoline południowy',
+  status: 'NON_ACTIVE',
 };
 
 export const sampleWithFullData: IBusinessService = {
-  id: 68467,
-  name: 'blanditiis',
-  symbol: 'whereas szary',
-  functionalDescription: 'południowy Accounts',
-  exclusions: 'Bicycle Tlen',
-  dutiesAndResponsibilities: 'grej',
-  personResponsibleForService: 'Coupe deposit',
-  hoursOfService: 'kobieta',
-  serviceActivatingCost: 'workforce',
-  priceListOfService: 'Kip framework Bangladesz',
-  notes: 'Keyboard',
+  id: 75913,
+  name: 'Bicycle Tlen',
+  symbol: 'grej',
+  functionalDescription: 'Coupe deposit',
+  exclusions: 'kobieta',
+  dutiesAndResponsibilities: 'workforce',
+  personResponsibleForService: 'Kip framework Bangladesz',
+  hoursOfService: 'Keyboard',
+  serviceActivatingCost: 'Electric',
+  priceListOfService: 'Practical circuit Direct',
+  notes: 'zielony Metal',
+  status: 'ACTIVE',
 };
 
 export const sampleWithNewData: NewBusinessService = {
