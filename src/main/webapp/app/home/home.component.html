@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row1">
     <p>Wybierz spółkę</p>
-    <select>
+    <select #selectedClient>
       <option>Wszystkie</option>
       <option *ngFor="let client of clients">{{ client.name }}</option>
     </select>
@@ -9,7 +9,7 @@
   <div>
     <div class="row2">
       <p>Lista kart Usług Biznesowych:</p>
-      <button (click)="onAddNewBusinessService()">Dodaj nową kartę</button>
+      <button (click)="onAddNewBusinessService(selectedClient.value)">Dodaj nową kartę</button>
     </div>
     <div>
       <jhi-business-service></jhi-business-service>

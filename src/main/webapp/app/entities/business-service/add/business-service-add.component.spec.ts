@@ -33,7 +33,7 @@ describe('BusinessService Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), BusinessServiceUpdateComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([]), BusinessServiceAddComponent],
       providers: [
         FormBuilder,
         {

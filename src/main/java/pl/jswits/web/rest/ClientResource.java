@@ -159,6 +159,13 @@ public class ClientResource {
         return ResponseUtil.wrapOrNotFound(client);
     }
 
+    @GetMapping("/clients/byName")
+    public ResponseEntity<Client> getClientByName(@RequestParam String clientName) {
+        log.debug("REST request to get Client : {}", clientName);
+        Optional<Client> client = clientRepository.findClientByName(clientName);
+        return ResponseUtil.wrapOrNotFound(client);
+    }
+
     /**
      * {@code DELETE  /clients/:id} : delete the "id" client.
      *

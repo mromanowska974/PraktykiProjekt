@@ -2,24 +2,28 @@
   <h2>Dodaj Kartę Usługi Biznesowej</h2>
   <div class="row1">
     <p>Symbol Usługi Biznesowej (UB)</p>
-    <input type="text" />
+    <input type="text" #symbol />
   </div>
   <div class="row1">
     <p>Nazwa usługi</p>
-    <input type="text" />
+    <input type="text" #name />
   </div>
   <div class="row1">
     <p class="p3">Właściciel usługi</p>
     <input type="text" class="input3" />
-    <button class="btn3">Wybierz z listy pracowników</button>
+    <button class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
   </div>
   <div class="row1">
     <p>Dział</p>
-    <select></select>
+    <select *ngIf="isDepartmentListLoaded" #department>
+      <option *ngFor="let department of departments">{{ department.name }}</option>
+    </select>
   </div>
   <div class="row1">
     <p>Klient</p>
-    <select></select>
+    <select *ngIf="isClientListLoaded" [(ngModel)]="clientName">
+      <option *ngFor="let client of clients">{{ client.name }}</option>
+    </select>
   </div>
   <div class="tablebox">
     <h5>Usługi Wewnętrzne (UW) pracujące na Usługę Biznesową (UB)</h5>

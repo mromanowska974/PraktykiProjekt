@@ -37,7 +37,9 @@ export default class HomeComponent implements OnInit {
   //   this.destroy$.complete();
   // }
 
-  onAddNewBusinessService() {
-    this.router.navigate(['/new']);
+  onAddNewBusinessService(client: String) {
+    this.router.navigate(['/new'], {
+      queryParams: { client: client },
+    });
   }
 }
