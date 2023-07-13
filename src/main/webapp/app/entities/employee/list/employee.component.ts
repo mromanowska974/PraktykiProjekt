@@ -17,6 +17,7 @@ import { SortService } from 'app/shared/sort/sort.service';
   standalone: true,
   selector: 'jhi-employee',
   templateUrl: './employee.component.html',
+  styleUrls: ['./employee.component.css'],
   imports: [
     RouterModule,
     FormsModule,
@@ -49,6 +50,14 @@ export class EmployeeComponent implements OnInit {
     this.employeeService.query().subscribe(employees => {
       this.employees = employees.body;
     });
+  }
+
+  onEmployeeClicked(employeeName?: string | null, employeeSurname?: string | null) {
+    this.employeeService.employeeSelected.emit({
+      name: employeeName,
+      surname: employeeSurname,
+    });
+    this.employeeService.isEmployeeSelected = true;
   }
 
   // delete(employee: IEmployee): void {

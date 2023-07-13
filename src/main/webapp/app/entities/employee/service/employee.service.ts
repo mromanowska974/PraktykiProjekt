@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { EventEmitter, Injectable } from '@angular/core';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
@@ -18,6 +18,7 @@ export class EmployeeService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
+  //API
   create(employee: NewEmployee): Observable<EntityResponseType> {
     return this.http.post<IEmployee>(this.resourceUrl, employee, { observe: 'response' });
   }
@@ -32,6 +33,13 @@ export class EmployeeService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IEmployee>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findByName(employeeName, employeeSurname): Observable<EntityResponseType> {
+    return this.http.get<IEmployee>(`${this.resourceUrl}/byName`, {
+      observe: 'response',
+      params: new HttpParams().append('employeeName', employeeName).append('employeeSurname', employeeSurname),
+    });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
@@ -70,4 +78,8 @@ export class EmployeeService {
     }
     return employeeCollection;
   }
+
+  //NON-API
+  isEmployeeSelected = false;
+  employeeSelected = new EventEmitter<{ name?: string | null; surname?: string | null }>();
 }

@@ -95,7 +95,8 @@ public class BusinessService implements Serializable {
         Set<InternalService> internalServices,
         Client client,
         Employee employee,
-        Department department
+        Department department,
+        StatusOfServiceElement status
     ) {
         this.name = name;
         this.symbol = symbol;
@@ -103,6 +104,7 @@ public class BusinessService implements Serializable {
         this.client = client;
         this.employee = employee;
         this.department = department;
+        this.status = status;
     }
 
     public BusinessService() {}

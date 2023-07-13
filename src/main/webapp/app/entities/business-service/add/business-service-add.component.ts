@@ -1,6 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, DoCheck } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { BusinessServiceFormService, BusinessServiceFormGroup } from './business-service-form.service';
-import { IBusinessService } from '../business-service.model';
+import { IBusinessService, NewBusinessService } from '../business-service.model';
 import { BusinessServiceService } from '../service/business-service.service';
 import { IInternalService } from 'app/entities/internal-service/internal-service.model';
 import { InternalServiceService } from 'app/entities/internal-service/service/internal-service.service';
@@ -29,27 +29,29 @@ import { EmployeeComponent } from 'app/entities/employee/list/employee.component
   styleUrls: ['./business-service-add.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule, MatDialogModule],
 })
-export class BusinessServiceAddComponent implements OnInit {
+export class BusinessServiceAddComponent implements OnInit, DoCheck {
   clients: IClient[] | null;
   departments: IDepartment[] | null;
-  client: IClient | null;
 
   isClientListLoaded = false;
   isDepartmentListLoaded = false;
 
+  isOwnerLoaded: boolean = false;
+  isDepartmentLoaded: boolean = false;
+  isClientLoaded: boolean = false;
+
   @ViewChild('symbol') symbol: ElementRef;
   @ViewChild('name') name: ElementRef;
+  ownerName: { name?: string | null; surname?: string | null };
   @ViewChild('department') departmentName: ElementRef;
   clientName: string;
-  // businessService: IBusinessService | null = null;
-  // statusOfServiceElementValues = Object.keys(StatusOfServiceElement);
+  internalServices: IInternalService[] | null = [];
 
-  // internalServicesSharedCollection: IInternalService[] = [];
-  // clientsSharedCollection: IClient[] = [];
-  // employeesSharedCollection: IEmployee[] = [];
-  // departmentsSharedCollection: IDepartment[] = [];
+  owner: IEmployee | null;
+  department: IDepartment | null;
+  client: IClient | null;
 
-  // editForm: BusinessServiceFormGroup = this.businessServiceFormService.createBusinessServiceFormGroup();
+  businessService: NewBusinessService = {} as NewBusinessService;
 
   constructor(
     protected businessServiceService: BusinessServiceService,
@@ -59,43 +61,45 @@ export class BusinessServiceAddComponent implements OnInit {
     protected employeeService: EmployeeService,
     protected departmentService: DepartmentService,
     protected activatedRoute: ActivatedRoute,
-    private dialogRef: MatDialog
+    private dialogRef: MatDialog,
+    private router: Router
   ) {}
 
-  // compareInternalService = (o1: IInternalService | null, o2: IInternalService | null): boolean =>
-  //   this.internalServiceService.compareInternalService(o1, o2);
-
-  // compareClient = (o1: IClient | null, o2: IClient | null): boolean => this.clientService.compareClient(o1, o2);
-
-  // compareEmployee = (o1: IEmployee | null, o2: IEmployee | null): boolean => this.employeeService.compareEmployee(o1, o2);
-
-  // compareDepartment = (o1: IDepartment | null, o2: IDepartment | null): boolean => this.departmentService.compareDepartment(o1, o2);
-
   ngOnInit(): void {
-    // this.activatedRoute.data.subscribe(({ businessService }) => {
-    //   this.businessService = businessService;
-    //   if (businessService) {
-    //     this.updateForm(businessService);
-    //   }
-
-    //   this.loadRelationshipsOptions();
-    // });
     this.clientName = this.activatedRoute.snapshot.queryParams['client'];
     this.getClients();
     this.getDepartments();
-    //this.getClientByName(this.clientName);
+  }
+
+  ngDoCheck(): void {
+    //getting selected owner's name and surname from EmployeeComponent
+    if (this.employeeService.isEmployeeSelected) {
+      this.employeeService.employeeSelected.subscribe(employee => {
+        this.ownerName = { name: employee.name, surname: employee.surname };
+        this.employeeService.isEmployeeSelected = false;
+      });
+    }
+
+    //saving new business service into db
+    if (this.isOwnerLoaded && this.isDepartmentLoaded && this.isClientLoaded) {
+      if (this.businessService != undefined) {
+        this.businessService.symbol = this.symbol.nativeElement.value;
+        this.businessService.name = this.name.nativeElement.value;
+        this.businessService.employee = this.owner;
+        this.businessService.department = this.department;
+        this.businessService.client = this.client;
+        this.businessService.internalServices = this.internalServices;
+        this.businessService.status = StatusOfServiceElement.ACTIVE;
+      }
+
+      console.log(this.businessService);
+
+      this.saveBusinessServiceToDb();
+    }
   }
 
   openEmployeesList() {
     this.dialogRef.open(EmployeeComponent);
-  }
-
-  getClientByName(clientName: string) {
-    this.clientService.findByName(clientName).subscribe(client => {
-      this.client = client.body;
-      //this.isClientLoaded = true;
-      //console.log(this.ngSelect+" lolo")
-    });
   }
 
   getClients() {
@@ -111,99 +115,41 @@ export class BusinessServiceAddComponent implements OnInit {
       this.isDepartmentListLoaded = true;
     });
   }
-  // previousState(): void {
-  //   window.history.back();
-  // }
 
-  // save(): void {
-  //   this.isSaving = true;
-  //   const businessService = this.businessServiceFormService.getBusinessService(this.editForm);
-  //   if (businessService.id !== null) {
-  //     this.subscribeToSaveResponse(this.businessServiceService.update(businessService));
-  //   } else {
-  //     this.subscribeToSaveResponse(this.businessServiceService.create(businessService));
-  //   }
-  // }
+  saveBusinessServiceToDb() {
+    //var NewBusinessService: NewBusinessService = this.businessService;
+    this.businessServiceService.create(this.businessService).subscribe(() => {
+      this.isOwnerLoaded = false;
+      this.isDepartmentLoaded = false;
+      this.isClientLoaded = false;
+      this.router.navigate(['/']);
+    });
+  }
 
-  // protected subscribeToSaveResponse(result: Observable<HttpResponse<IBusinessService>>): void {
-  //   result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-  //     next: () => this.onSaveSuccess(),
-  //     error: () => this.onSaveError(),
-  //   });
-  // }
+  onCancel() {
+    this.router.navigate(['/']);
+  }
 
-  // protected onSaveSuccess(): void {
-  //   this.previousState();
-  // }
+  onSave() {
+    //not save to db
+    this.router.navigate(['/']);
+  }
 
-  // protected onSaveError(): void {
-  //   // Api for inheritance.
-  // }
+  onSaveAndActivate() {
+    //save to db
+    this.employeeService.findByName(this.ownerName.name, this.ownerName.surname).subscribe(employee => {
+      this.owner = employee.body;
+      this.isOwnerLoaded = true;
+    });
 
-  // protected onSaveFinalize(): void {
-  //   this.isSaving = false;
-  // }
+    this.departmentService.findByName(this.departmentName.nativeElement.value).subscribe(department => {
+      this.department = department.body;
+      this.isDepartmentLoaded = true;
+    });
 
-  // protected updateForm(businessService: IBusinessService): void {
-  //   this.businessService = businessService;
-  //   this.businessServiceFormService.resetForm(this.editForm, businessService);
-
-  //   this.internalServicesSharedCollection = this.internalServiceService.addInternalServiceToCollectionIfMissing<IInternalService>(
-  //     this.internalServicesSharedCollection,
-  //     ...(businessService.internalServices ?? [])
-  //   );
-  //   this.clientsSharedCollection = this.clientService.addClientToCollectionIfMissing<IClient>(
-  //     this.clientsSharedCollection,
-  //     businessService.client
-  //   );
-  //   this.employeesSharedCollection = this.employeeService.addEmployeeToCollectionIfMissing<IEmployee>(
-  //     this.employeesSharedCollection,
-  //     businessService.employee
-  //   );
-  //   this.departmentsSharedCollection = this.departmentService.addDepartmentToCollectionIfMissing<IDepartment>(
-  //     this.departmentsSharedCollection,
-  //     businessService.department
-  //   );
-  // }
-
-  // protected loadRelationshipsOptions(): void {
-  //   this.internalServiceService
-  //     .query()
-  //     .pipe(map((res: HttpResponse<IInternalService[]>) => res.body ?? []))
-  //     .pipe(
-  //       map((internalServices: IInternalService[]) =>
-  //         this.internalServiceService.addInternalServiceToCollectionIfMissing<IInternalService>(
-  //           internalServices,
-  //           ...(this.businessService?.internalServices ?? [])
-  //         )
-  //       )
-  //     )
-  //     .subscribe((internalServices: IInternalService[]) => (this.internalServicesSharedCollection = internalServices));
-
-  //   this.clientService
-  //     .query()
-  //     .pipe(map((res: HttpResponse<IClient[]>) => res.body ?? []))
-  //     .pipe(map((clients: IClient[]) => this.clientService.addClientToCollectionIfMissing<IClient>(clients, this.businessService?.client)))
-  //     .subscribe((clients: IClient[]) => (this.clientsSharedCollection = clients));
-
-  //   this.employeeService
-  //     .query()
-  //     .pipe(map((res: HttpResponse<IEmployee[]>) => res.body ?? []))
-  //     .pipe(
-  //       map((employees: IEmployee[]) =>
-  //         this.employeeService.addEmployeeToCollectionIfMissing<IEmployee>(employees, this.businessService?.employee)
-  //       )
-  //     )
-  //     .subscribe((employees: IEmployee[]) => (this.employeesSharedCollection = employees));
-
-  //   this.departmentService
-  //     .query()
-  //     .pipe(map((res: HttpResponse<IDepartment[]>) => res.body ?? []))
-  //     .pipe(
-  //       map((departments: IDepartment[]) =>
-  //         this.departmentService.addDepartmentToCollectionIfMissing<IDepartment>(departments, this.businessService?.department)
-  //       )
-  //     )
-  //     .subscribe((departments: IDepartment[]) => (this.departmentsSharedCollection = departments));
-  // }
+    this.clientService.findByName(this.clientName).subscribe(client => {
+      this.client = client.body;
+      this.isClientLoaded = true;
+    });
+  }
 }

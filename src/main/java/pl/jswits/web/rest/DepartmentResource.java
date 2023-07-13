@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import pl.jswits.domain.Client;
 import pl.jswits.domain.Department;
 import pl.jswits.repository.DepartmentRepository;
 import pl.jswits.web.rest.errors.BadRequestAlertException;
@@ -158,6 +159,13 @@ public class DepartmentResource {
     public ResponseEntity<Department> getDepartment(@PathVariable Long id) {
         log.debug("REST request to get Department : {}", id);
         Optional<Department> department = departmentRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(department);
+    }
+
+    @GetMapping("/departments/byName")
+    public ResponseEntity<Department> getClientByName(@RequestParam String departmentName) {
+        log.debug("REST request to get Client : {}", departmentName);
+        Optional<Department> department = departmentRepository.findDepartmentByName(departmentName);
         return ResponseUtil.wrapOrNotFound(department);
     }
 

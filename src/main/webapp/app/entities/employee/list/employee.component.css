@@ -1,0 +1,21 @@
+.container {
+  padding: 0px;
+}
+
+h3 {
+  background-color: lightgrey;
+  padding-left: 5%;
+  height: 5vh;
+  margin-bottom: 0px;
+}
+
+p {
+  border: 1px solid rgb(234, 234, 234);
+  margin: 0px;
+  padding: 5px 0px;
+  padding-left: 5%;
+}
+
+p:hover {
+  background-color: rgb(234, 234, 234);
+}

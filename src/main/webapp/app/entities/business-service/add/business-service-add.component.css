@@ -82,3 +82,21 @@ table {
 .chckbx > input {
   width: 2%;
 }
+
+tr > td:last-child {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-between;
+}
+
+tr > td:last-child > button {
+  background-color: red;
+  font-weight: 900;
+  border: 1px solid darkred;
+  width: 4vh;
+  height: 4vh;
+  color: white;
+  font-size: 20px;
+  padding-bottom: 20px;
+  margin: 5px 5px;
+}

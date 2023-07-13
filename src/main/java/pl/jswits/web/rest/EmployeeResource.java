@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import pl.jswits.domain.Client;
 import pl.jswits.domain.Employee;
 import pl.jswits.repository.EmployeeRepository;
 import pl.jswits.web.rest.errors.BadRequestAlertException;
@@ -161,6 +162,13 @@ public class EmployeeResource {
     public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
         log.debug("REST request to get Employee : {}", id);
         Optional<Employee> employee = employeeRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(employee);
+    }
+
+    @GetMapping("/employees/byName")
+    public ResponseEntity<Employee> getClientByName(@RequestParam String employeeName, @RequestParam String employeeSurname) {
+        log.debug("REST request to get Client : {}", employeeName + ' ' + employeeSurname);
+        Optional<Employee> employee = employeeRepository.findEmployeeByNameAndSurname(employeeName, employeeSurname);
         return ResponseUtil.wrapOrNotFound(employee);
     }
 

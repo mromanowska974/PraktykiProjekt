@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import pl.jswits.domain.BusinessService;
 import pl.jswits.domain.InternalService;
 import pl.jswits.repository.InternalServiceRepository;
 import pl.jswits.web.rest.errors.BadRequestAlertException;
@@ -218,6 +219,11 @@ public class InternalServiceResource {
         log.debug("REST request to get InternalService : {}", id);
         Optional<InternalService> internalService = internalServiceRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(internalService);
+    }
+
+    @GetMapping("/internal-services/byBS")
+    public List<InternalService> getInternalServicesByBusinessService(@RequestBody BusinessService businessService) {
+        return internalServiceRepository.findInternalServicesByBusinessServices(businessService);
     }
 
     /**

@@ -1,6 +1,8 @@
-<div>
-  <p>Wybierz pracownika z listy:</p>
+<div class="container">
+  <h3>Wybierz pracownika z listy:</h3>
   <div>
-    <p *ngFor="let employee of employees">{{ employee.name }} {{ employee.surname }}</p>
+    <p *ngFor="let employee of employees" (click)="onEmployeeClicked(employee.name, employee.surname)">
+      {{ employee.name }} {{ employee.surname }}
+    </p>
   </div>
 </div>

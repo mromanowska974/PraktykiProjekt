@@ -12,8 +12,8 @@
     <p class="item3">{{ businessService.employee }}</p>
     <p class="item4">Aktywna</p>
     <p class="item5">
-      <button>E</button>
-      <button>ZS</button>
+      <button (click)="onEditPageLoad(businessService.id)">E</button>
+      <button (click)="onStatusChange(businessService)">ZS</button>
     </p>
   </div>
 </div>

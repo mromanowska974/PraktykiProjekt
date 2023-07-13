@@ -12,6 +12,7 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, BusinessServiceService } from '../service/business-service.service';
 import { BusinessServiceDeleteDialogComponent } from '../delete/business-service-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
+import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
 
 @Component({
   standalone: true,
@@ -31,10 +32,6 @@ import { SortService } from 'app/shared/sort/sort.service';
 })
 export class BusinessServiceComponent implements OnInit {
   businessServices?: IBusinessService[] | null;
-  //isLoading = false;
-
-  // predicate = 'id';
-  // ascending = true;
 
   constructor(
     protected businessServiceService: BusinessServiceService,
@@ -44,94 +41,24 @@ export class BusinessServiceComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  //trackId = (_index: number, item: IBusinessService): number => this.businessServiceService.getBusinessServiceIdentifier(item);
-
   ngOnInit(): void {
     this.businessServiceService.query().subscribe(businessServices => {
       this.businessServices = businessServices.body;
     });
   }
 
-  // delete(businessService: IBusinessService): void {
-  //   const modalRef = this.modalService.open(BusinessServiceDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-  //   modalRef.componentInstance.businessService = businessService;
-  //   // unsubscribe not needed because closed completes on modal close
-  //   modalRef.closed
-  //     .pipe(
-  //       filter(reason => reason === ITEM_DELETED_EVENT),
-  //       switchMap(() => this.loadFromBackendWithRouteInformations())
-  //     )
-  //     .subscribe({
-  //       next: (res: EntityArrayResponseType) => {
-  //         this.onResponseSuccess(res);
-  //       },
-  //     });
-  // }
+  onStatusChange(businessService: IBusinessService) {
+    console.log('lolo');
+    if (businessService.status === StatusOfServiceElement.ACTIVE) {
+      businessService.status = StatusOfServiceElement.NOT_ACTIVE;
+    }
 
-  // load(): void {
-  //   this.loadFromBackendWithRouteInformations().subscribe({
-  //     next: (res: EntityArrayResponseType) => {
-  //       this.onResponseSuccess(res);
-  //     },
-  //   });
-  // }
+    if (businessService.status === StatusOfServiceElement.NOT_ACTIVE) {
+      businessService.status = StatusOfServiceElement.ACTIVE;
+    }
+  }
 
-  // navigateToWithComponentValues(): void {
-  //   this.handleNavigation(this.predicate, this.ascending);
-  // }
-
-  // protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
-  //   return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
-  //     tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-  //     switchMap(() => this.queryBackend(this.predicate, this.ascending))
-  //   );
-  // }
-
-  // protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
-  //   const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
-  //   this.predicate = sort[0];
-  //   this.ascending = sort[1] === ASC;
-  // }
-
-  // protected onResponseSuccess(response: EntityArrayResponseType): void {
-  //   const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-  //   this.businessServices = this.refineData(dataFromBody);
-  // }
-
-  // protected refineData(data: IBusinessService[]): IBusinessService[] {
-  //   return data.sort(this.sortService.startSort(this.predicate, this.ascending ? 1 : -1));
-  // }
-
-  // protected fillComponentAttributesFromResponseBody(data: IBusinessService[] | null): IBusinessService[] {
-  //   return data ?? [];
-  // }
-
-  // protected queryBackend(predicate?: string, ascending?: boolean): Observable<EntityArrayResponseType> {
-  //   this.isLoading = true;
-  //   const queryObject: any = {
-  //     eagerload: true,
-  //     sort: this.getSortQueryParam(predicate, ascending),
-  //   };
-  //   return this.businessServiceService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
-  // }
-
-  // protected handleNavigation(predicate?: string, ascending?: boolean): void {
-  //   const queryParamsObj = {
-  //     sort: this.getSortQueryParam(predicate, ascending),
-  //   };
-
-  //   this.router.navigate(['./'], {
-  //     relativeTo: this.activatedRoute,
-  //     queryParams: queryParamsObj,
-  //   });
-  // }
-
-  // protected getSortQueryParam(predicate = this.predicate, ascending = this.ascending): string[] {
-  //   const ascendingQueryParam = ascending ? ASC : DESC;
-  //   if (predicate === '') {
-  //     return [];
-  //   } else {
-  //     return [predicate + ',' + ascendingQueryParam];
-  //   }
-  // }
+  onEditPageLoad(id: number) {
+    this.router.navigate(['/edit', id]);
+  }
 }

@@ -11,6 +11,7 @@ import LoginComponent from './login/login.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { BusinessServiceAddComponent } from './entities/business-service/add/business-service-add.component';
+import { BusinessServiceEditComponent } from './entities/business-service/edit/business-service-edit.component';
 
 @NgModule({
   imports: [
@@ -50,6 +51,10 @@ import { BusinessServiceAddComponent } from './entities/business-service/add/bus
         {
           path: 'new',
           component: BusinessServiceAddComponent,
+        },
+        {
+          path: 'edit/:id',
+          component: BusinessServiceEditComponent,
         },
         ...errorRoute,
       ],

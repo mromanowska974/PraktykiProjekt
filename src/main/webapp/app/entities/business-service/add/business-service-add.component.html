@@ -10,7 +10,7 @@
   </div>
   <div class="row1">
     <p class="p3">Właściciel usługi</p>
-    <input type="text" class="input3" />
+    <input type="text" class="input3" [(ngModel)]="ownerName" />
     <button class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
   </div>
   <div class="row1">
@@ -46,8 +46,8 @@
     <label for="chckbx"> Wyślij powiadomienie do właściciela usługi biznesowej w momencie aktywacji usługi </label>
   </div>
   <div class="btns">
-    <button>Anuluj</button>
-    <button>Zapisz robocze</button>
-    <button>Zapisz i aktywuj</button>
+    <button (click)="onCancel()">Anuluj</button>
+    <button (click)="onSave()">Zapisz robocze</button>
+    <button (click)="onSaveAndActivate()">Zapisz i aktywuj</button>
   </div>
 </div>
