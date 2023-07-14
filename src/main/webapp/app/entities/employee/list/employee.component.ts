@@ -52,11 +52,8 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  onEmployeeClicked(employeeName?: string | null, employeeSurname?: string | null) {
-    this.employeeService.employeeSelected.emit({
-      name: employeeName,
-      surname: employeeSurname,
-    });
+  onEmployeeClicked(employee?: IEmployee) {
+    this.employeeService.employeeSelected.emit(employee);
     this.employeeService.isEmployeeSelected = true;
   }
 

@@ -15,14 +15,18 @@
   </div>
   <div class="row1">
     <p>Dział</p>
-    <select *ngIf="isDepartmentListLoaded" #department>
-      <option *ngFor="let department of departments">{{ department.name }}</option>
+    <select [(ngModel)]="department" (change)="getDepartment(department)">
+      <option [ngValue]="department" *ngFor="let department of departments">
+        {{ department.name }}
+      </option>
     </select>
   </div>
   <div class="row1">
     <p>Klient</p>
-    <select *ngIf="isClientListLoaded" [(ngModel)]="clientName">
-      <option *ngFor="let client of clients">{{ client.name }}</option>
+    <select [(ngModel)]="client" (change)="getClient(client)">
+      <option [ngValue]="client" *ngFor="let client of clients">
+        {{ client.name }}
+      </option>
     </select>
   </div>
   <div class="tablebox">

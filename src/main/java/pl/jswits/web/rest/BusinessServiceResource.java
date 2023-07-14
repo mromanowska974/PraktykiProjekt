@@ -2,6 +2,7 @@ package pl.jswits.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -174,13 +175,15 @@ public class BusinessServiceResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of businessServices in body.
      */
     @GetMapping("/business-services")
-    public List<BusinessService> getAllBusinessServices(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public List<BusinessService> getAllBusinessServices(@RequestParam(required = false, defaultValue = "true") boolean eagerload) {
         log.debug("REST request to get all BusinessServices");
+        List<BusinessService> businessService = new ArrayList<>();
         if (eagerload) {
-            return businessServiceRepository.findAllWithEagerRelationships();
+            businessService = businessServiceRepository.findAllWithEagerRelationships();
         } else {
-            return businessServiceRepository.findAll();
+            businessService = businessServiceRepository.findAll();
         }
+        return businessService;
     }
 
     /**

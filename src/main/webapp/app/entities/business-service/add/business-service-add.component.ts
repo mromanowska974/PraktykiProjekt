@@ -43,11 +43,11 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   @ViewChild('symbol') symbol: ElementRef;
   @ViewChild('name') name: ElementRef;
   ownerName: string;
-  @ViewChild('department') departmentName: ElementRef;
+  ownerId: number;
+  // @ViewChild('department') departmentName: ElementRef;
   clientName: string;
   internalServices: IInternalService[] | null = [];
 
-  owner: IEmployee | null;
   department: IDepartment | null;
   client: IClient | null;
 
@@ -72,29 +72,12 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    //getting selected owner's name and surname from EmployeeComponent
     if (this.employeeService.isEmployeeSelected) {
       this.employeeService.employeeSelected.subscribe(employee => {
+        this.businessService.employee = employee;
         this.ownerName = employee.name + ' ' + employee.surname;
         this.employeeService.isEmployeeSelected = false;
       });
-    }
-
-    //saving new business service into db
-    if (this.isOwnerLoaded && this.isDepartmentLoaded && this.isClientLoaded) {
-      if (this.businessService != undefined) {
-        this.businessService.symbol = this.symbol.nativeElement.value;
-        this.businessService.name = this.name.nativeElement.value;
-        this.businessService.employee = this.owner;
-        this.businessService.department = this.department;
-        this.businessService.client = this.client;
-        this.businessService.internalServices = this.internalServices;
-        this.businessService.status = StatusOfServiceElement.ACTIVE;
-      }
-
-      console.log(this.businessService);
-
-      this.saveBusinessServiceToDb();
     }
   }
 
@@ -112,18 +95,17 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   getDepartments() {
     this.departmentService.query().subscribe(departments => {
       this.departments = departments.body;
-      this.isDepartmentListLoaded = true;
     });
   }
 
-  saveBusinessServiceToDb() {
-    //var NewBusinessService: NewBusinessService = this.businessService;
-    this.businessServiceService.create(this.businessService).subscribe(() => {
-      this.isOwnerLoaded = false;
-      this.isDepartmentLoaded = false;
-      this.isClientLoaded = false;
-      this.router.navigate(['/']);
-    });
+  getClient(obj: IClient | null) {
+    this.businessService.client = obj;
+    console.log(obj);
+  }
+
+  getDepartment(obj: IDepartment | null) {
+    this.businessService.department = obj;
+    console.log(obj);
   }
 
   onCancel() {
@@ -137,21 +119,16 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
 
   onSaveAndActivate() {
     //save to db
-    var splittedOwnerName = this.ownerName.split(' ');
+    if (this.businessService != undefined) {
+      this.businessService.symbol = this.symbol.nativeElement.value;
+      this.businessService.name = this.name.nativeElement.value;
+      this.businessService.internalServices = this.internalServices;
+      this.businessService.status = StatusOfServiceElement.ACTIVE;
+    }
+    console.log(this.businessService);
 
-    this.employeeService.findByName(splittedOwnerName[0], splittedOwnerName[1]).subscribe(employee => {
-      this.owner = employee.body;
-      this.isOwnerLoaded = true;
-    });
-
-    this.departmentService.findByName(this.departmentName.nativeElement.value).subscribe(department => {
-      this.department = department.body;
-      this.isDepartmentLoaded = true;
-    });
-
-    this.clientService.findByName(this.clientName).subscribe(client => {
-      this.client = client.body;
-      this.isClientLoaded = true;
+    this.businessServiceService.create(this.businessService).subscribe(() => {
+      this.router.navigate(['/']);
     });
   }
 }

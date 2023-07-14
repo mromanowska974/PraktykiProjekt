@@ -81,5 +81,5 @@ export class EmployeeService {
 
   //NON-API
   isEmployeeSelected = false;
-  employeeSelected = new EventEmitter<{ name?: string | null; surname?: string | null }>();
+  employeeSelected = new EventEmitter<IEmployee>();
 }

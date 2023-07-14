@@ -77,15 +77,15 @@ public class BusinessService implements Serializable {
     )
     private Set<InternalService> internalServices = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "businessServices" }, allowSetters = true)
     private Client client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "businessServices", "internalServices" }, allowSetters = true)
     private Employee employee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "businessServices" }, allowSetters = true)
     private Department department;
 

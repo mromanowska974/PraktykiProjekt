@@ -19,8 +19,8 @@ export interface IBusinessService {
   status?: keyof typeof StatusOfServiceElement | null;
   internalServices?: Pick<IInternalService, 'id'>[] | null;
   client?: Pick<IClient, 'id'> | null;
-  employee?: Pick<IEmployee, 'id'> | null;
-  department?: Pick<IDepartment, 'id'> | null;
+  employee?: Pick<IEmployee, 'id' | 'name'> | null;
+  department?: Pick<IDepartment, 'id' | 'name'> | null;
 }
 
 export type NewBusinessService = Omit<IBusinessService, 'id'> & { id: null };
