@@ -42,7 +42,7 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
 
   @ViewChild('symbol') symbol: ElementRef;
   @ViewChild('name') name: ElementRef;
-  ownerName: { name?: string | null; surname?: string | null };
+  ownerName: string;
   @ViewChild('department') departmentName: ElementRef;
   clientName: string;
   internalServices: IInternalService[] | null = [];
@@ -75,7 +75,7 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     //getting selected owner's name and surname from EmployeeComponent
     if (this.employeeService.isEmployeeSelected) {
       this.employeeService.employeeSelected.subscribe(employee => {
-        this.ownerName = { name: employee.name, surname: employee.surname };
+        this.ownerName = employee.name + ' ' + employee.surname;
         this.employeeService.isEmployeeSelected = false;
       });
     }
@@ -137,7 +137,9 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
 
   onSaveAndActivate() {
     //save to db
-    this.employeeService.findByName(this.ownerName.name, this.ownerName.surname).subscribe(employee => {
+    var splittedOwnerName = this.ownerName.split(' ');
+
+    this.employeeService.findByName(splittedOwnerName[0], splittedOwnerName[1]).subscribe(employee => {
       this.owner = employee.body;
       this.isOwnerLoaded = true;
     });

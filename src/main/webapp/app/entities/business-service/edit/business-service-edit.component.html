@@ -23,16 +23,168 @@
       <p>Stanisław Pączkowski</p>
     </div>
   </div>
-  <div>
-    <a>A. Informacje podstawowe</a>
-    <a>B. Parametry uzgodnione w ramach umowy</a>
-    <a>C. Rozliczenie kosztów usługi</a>
-    <a>kontrolling</a>
+  <div class="sections">
+    <a (click)="onSelectSection('A')" [ngClass]="{ 'selected-section': sectionSelected === 'A' }">A. Informacje podstawowe</a>
+    <a (click)="onSelectSection('B')" [ngClass]="{ 'selected-section': sectionSelected === 'B' }">B. Parametry uzgodnione w ramach umowy</a>
+    <a (click)="onSelectSection('C')" [ngClass]="{ 'selected-section': sectionSelected === 'C' }">C. Rozliczenie kosztów usługi</a>
+    <a (click)="onSelectSection('D')" [ngClass]="{ 'selected-section': sectionSelected === 'D' }">kontrolling</a>
   </div>
-  <div>tu będzie sie zmieniac</div>
-  <div>
+  <div [ngSwitch]="sectionSelected">
+    <div *ngSwitchCase="'A'" class="section-a">
+      <div class="row2">
+        <p>Opis funkcjonalny</p>
+        <textarea></textarea>
+      </div>
+      <div class="row2">
+        <p>Wykluczenia</p>
+        <textarea></textarea>
+      </div>
+      <div class="row2">
+        <p>Obowiązki i odpowiedzialności stron</p>
+        <textarea></textarea>
+      </div>
+    </div>
+    <div *ngSwitchCase="'B'" class="section-b">
+      <div class="row2">
+        <p>Osoba odpowiedzialna za usługę po stronie Zamawiającego</p>
+        <textarea></textarea>
+      </div>
+      <div class="row2">
+        <p>Godziny gwarantowanego świadczenia usługi</p>
+        <textarea></textarea>
+      </div>
+      <div>
+        <p>Parametry jakościowe usługi</p>
+        <table>
+          <tr>
+            <th width="40%">Nazwa parametru</th>
+            <th width="40%">Wartość docelowa</th>
+            <th width="20%">Akcje</th>
+          </tr>
+          <tr>
+            <td width="40%">Rodzaj nadzienia</td>
+            <td width="40%">Czekoladowe</td>
+            <td width="20%">
+              <button>P</button>
+              <button>E</button>
+              <button>U</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <p>Parametry pojemnościowe usługi</p>
+        <table>
+          <tr>
+            <th width="40%">Nazwa parametru</th>
+            <th width="40%">Wartość docelowa</th>
+            <th width="20%">Akcje</th>
+          </tr>
+          <tr>
+            <td width="40%">Czas pieczenia</td>
+            <td width="40%">1h</td>
+            <td width="20%">
+              <button>P</button>
+              <button>E</button>
+              <button>U</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div *ngSwitchCase="'C'" class="section-c">
+      <div class="row2">
+        <p>Koszty uruchomienia usługi</p>
+        <textarea></textarea>
+      </div>
+      <div class="row2">
+        <p>Cennik usługi</p>
+        <textarea></textarea>
+      </div>
+      <div class="table-box">
+        <div class="row3">
+          <p>Wartość miesięcznej opłaty za usługę</p>
+          <button>Dodaj składową usługi</button>
+        </div>
+        <table>
+          <tr>
+            <th width="3%">Lp.</th>
+            <th width="7%">Kwota zł netto/m-c</th>
+            <th width="15%">Opis usługi</th>
+            <th width="15%">Nr wyceny</th>
+            <th width="9%">Typ opłaty</th>
+            <th width="9%">Data rozpoczęcia świadczenia usługi</th>
+            <th width="8%">Okres świadczenia usługi (miesiące)</th>
+            <th width="9%">Typ okresu swiadczenia usługi</th>
+            <th width="9%">Data zakończenia świadczenia usługi</th>
+            <th width="8%">Status</th>
+            <th width="8%">Akcje</th>
+          </tr>
+          <tr>
+            <td width="3%">1</td>
+            <td width="7%">123,45</td>
+            <td width="15%">Czekoladowe</td>
+            <td width="15%">Czekoladowe</td>
+            <td width="9%">Czekoladowe</td>
+            <td width="9%">Czekoladowe</td>
+            <td width="8%">Czekoladowe</td>
+            <td width="9%">Czekoladowe</td>
+            <td width="9%">Czekoladowe</td>
+            <td width="8%">Wyłączona</td>
+            <td width="8%">
+              <button>E</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="table-box">
+        <div class="row3">
+          <p>Wartość miesięcznej opłaty za usługę</p>
+          <button>Dodaj składową usługi</button>
+        </div>
+        <table>
+          <tr>
+            <th width="3%">Lp.</th>
+            <th width="7%">Kwota zł netto</th>
+            <th width="15%">Opis usługi</th>
+            <th width="15%">Nr wyceny</th>
+            <th width="9%">Typ opłaty</th>
+            <th width="9%">Data rozpoczęcia świadczenia usługi</th>
+            <th width="8%">Okres świadczenia usługi (miesiące)</th>
+            <th width="9%">Typ okresu swiadczenia usługi</th>
+            <th width="9%">Data zakończenia świadczenia usługi</th>
+            <th width="8%">Status</th>
+            <th width="8%">Akcje</th>
+          </tr>
+          <tr>
+            <td width="3%">1</td>
+            <td width="7%">123,45</td>
+            <td width="15%">Czekoladowe</td>
+            <td width="15%">Czekoladowe</td>
+            <td width="9%">Czekoladowe</td>
+            <td width="9%">Czekoladowe</td>
+            <td width="8%">Czekoladowe</td>
+            <td width="9%">Czekoladowe</td>
+            <td width="9%">Czekoladowe</td>
+            <td width="8%">Wyłączona</td>
+            <td width="8%">
+              <button>E</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="row2">
+        <p>Uwagi</p>
+        <textarea></textarea>
+      </div>
+    </div>
+    <div *ngSwitchCase="'D'">D</div>
+  </div>
+  <div class="all-btns">
     <button>Utwórz dokument karty (plik .docx)</button>
-    <button>Ok</button>
-    <button>Anuluj</button>
+    <div class="ok-and-cancel-btns">
+      <button>Ok</button>
+      <button (click)="onCancel()">Anuluj</button>
+    </div>
   </div>
 </div>

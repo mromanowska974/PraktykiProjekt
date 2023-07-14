@@ -5,8 +5,72 @@
 
 .data-box {
   display: flex;
+  justify-content: space-between;
 }
 
 .row1 {
   display: flex;
+}
+
+.row1 > p:last-child {
+  font-weight: 600;
+  margin-left: 15px;
+}
+
+.sections {
+  display: flex;
+}
+
+.sections > a {
+  background-color: lightgray;
+  border: 1px solid black;
+  text-align: center;
+  width: 25%;
+  color: black;
+  text-decoration: none;
+}
+
+.selected-section {
+  background: gray !important;
+  color: white !important;
+}
+
+.all-btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.section-a,
+.section-b,
+.section-c {
+  margin: 15px 0px;
+}
+
+.row2 > textarea {
+  width: 100%;
+}
+
+table {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+}
+
+tr {
+  display: flex;
+  border: 1px solid black;
+}
+
+.table-box > table > tr {
+  text-align: center !important;
+}
+
+table > tr:first-child {
+  background-color: lightgray;
+}
+
+.row3 {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0px;
 }
