@@ -21,6 +21,7 @@ import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-serv
   standalone: true,
   selector: 'jhi-service-element-update',
   templateUrl: './service-element-update.component.html',
+  styleUrls: ['./service-element-update.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ServiceElementUpdateComponent implements OnInit {

@@ -37,4 +37,8 @@ export class BusinessServiceEditComponent implements OnInit {
   onCancel() {
     this.router.navigate(['/']);
   }
+
+  onAddServiceElement() {
+    this.router.navigate(['/service-element', 'new']);
+  }
 }
