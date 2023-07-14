@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="isDataLoaded && businessService">
   <div class="row1">
     <p>Klient:</p>
     <p>Jan Kowalski</p>
@@ -6,11 +6,11 @@
   <div class="data-box">
     <div class="row1">
       <p>Symbol usługi:</p>
-      <p>JK123</p>
+      <p>{{ businessService.symbol }}</p>
     </div>
     <div class="row1">
       <p>Nazwa usługi:</p>
-      <p>Pieczenie pączków</p>
+      <p>{{ businessService.name }}</p>
     </div>
   </div>
   <div class="data-box">
@@ -33,25 +33,35 @@
     <div *ngSwitchCase="'A'" class="section-a">
       <div class="row2">
         <p>Opis funkcjonalny</p>
-        <textarea></textarea>
+        <textarea name="functionalDescription">
+          {{ businessService.functionalDescription }}
+        </textarea>
       </div>
       <div class="row2">
         <p>Wykluczenia</p>
-        <textarea></textarea>
+        <textarea name="exclusions">
+          {{ businessService.exclusions }}
+        </textarea>
       </div>
       <div class="row2">
         <p>Obowiązki i odpowiedzialności stron</p>
-        <textarea></textarea>
+        <textarea name="dutiesAndResponsibilities">
+          {{ businessService.dutiesAndResponsibilities }}
+        </textarea>
       </div>
     </div>
     <div *ngSwitchCase="'B'" class="section-b">
       <div class="row2">
         <p>Osoba odpowiedzialna za usługę po stronie Zamawiającego</p>
-        <textarea></textarea>
+        <textarea name="personResponsibleForService">
+          {{ businessService.personResponsibleForService }}
+        </textarea>
       </div>
       <div class="row2">
         <p>Godziny gwarantowanego świadczenia usługi</p>
-        <textarea></textarea>
+        <textarea name="hoursOfService">
+          {{ businessService.hoursOfService }}
+        </textarea>
       </div>
       <div>
         <p>Parametry jakościowe usługi</p>
@@ -95,11 +105,15 @@
     <div *ngSwitchCase="'C'" class="section-c">
       <div class="row2">
         <p>Koszty uruchomienia usługi</p>
-        <textarea></textarea>
+        <textarea name="serviceActivatingCost">
+          {{ businessService.serviceActivatingCost }}
+        </textarea>
       </div>
       <div class="row2">
         <p>Cennik usługi</p>
-        <textarea></textarea>
+        <textarea name="priceListOfService">
+          {{ businessService.priceListOfService }}
+        </textarea>
       </div>
       <div class="table-box">
         <div class="row3">
@@ -175,7 +189,9 @@
       </div>
       <div class="row2">
         <p>Uwagi</p>
-        <textarea></textarea>
+        <textarea name="notes">
+          {{ businessService.notes }}
+        </textarea>
       </div>
     </div>
     <div *ngSwitchCase="'D'">D</div>
