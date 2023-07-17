@@ -20,8 +20,9 @@ import { ClientService } from 'app/entities/client/service/client.service';
 })
 export default class HomeComponent implements OnInit {
   clients: IClient[] | null;
-  //account: Account | null = null;
-  // private readonly destroy$ = new Subject<void>();
+  selectedClient: IClient;
+  isDefaultValueSelected: boolean = false;
+
   constructor(private clientService: ClientService, private router: Router) {}
 
   ngOnInit(): void {
@@ -29,17 +30,19 @@ export default class HomeComponent implements OnInit {
       this.clients = clients.body;
     });
   }
-  // login(): void {
-  //   this.router.navigate(['/login']);
-  // }
-  // ngOnDestroy(): void {
-  //   this.destroy$.next();
-  //   this.destroy$.complete();
-  // }
 
-  onAddNewBusinessService(client: String) {
+  onAddNewBusinessService(client: IClient) {
     this.router.navigate(['/new'], {
-      queryParams: { client: client },
+      queryParams: { client: client.name },
     });
+  }
+
+  onClientSelected(client: IClient) {
+    this.isDefaultValueSelected = false;
+    this.selectedClient = client;
+  }
+
+  onSelectedDefaultValue() {
+    this.isDefaultValueSelected = true;
   }
 }

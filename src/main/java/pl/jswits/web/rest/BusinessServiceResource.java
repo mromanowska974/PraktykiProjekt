@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.jswits.domain.BusinessService;
+import pl.jswits.domain.Client;
 import pl.jswits.repository.BusinessServiceRepository;
 import pl.jswits.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
@@ -197,6 +198,14 @@ public class BusinessServiceResource {
         log.debug("REST request to get BusinessService : {}", id);
         Optional<BusinessService> businessService = businessServiceRepository.findOneWithEagerRelationships(id);
         return ResponseUtil.wrapOrNotFound(businessService);
+    }
+
+    @GetMapping("/business-services/by-client")
+    public List<BusinessService> getBusinessServicesByClient(@RequestParam Long clientId) {
+        log.debug("REST request to get BusinessServices by Client");
+        List<BusinessService> businessService = new ArrayList<>();
+        businessService = businessServiceRepository.findBusinessServicesByClient_Id(clientId);
+        return businessService;
     }
 
     /**

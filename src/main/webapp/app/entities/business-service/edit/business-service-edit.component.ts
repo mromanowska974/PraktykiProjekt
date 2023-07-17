@@ -48,22 +48,6 @@ export class BusinessServiceEditComponent implements OnInit {
   }
 
   onEditBusinessService() {
-    console.log('przed zmianą: ');
-    console.log(this.businessService);
-
-    if (this.businessService != undefined) {
-      //this.businessService.functionalDescription = this.functionalDescription;
-      // this.businessService.exclusions = this.exclusions;
-      // this.businessService.dutiesAndResponsibilities = this.dutiesAndResponsibilities;
-      // this.businessService.personResponsibleForService = this.personResponsibleForService;
-      // this.businessService.hoursOfService = this.hoursOfService;
-      // this.businessService.serviceActivatingCost = this.serviceActivatingCost;
-      // this.businessService.priceListOfService = this.priceListOfService;
-      // this.businessService.notes = this.notes;
-    }
-
-    console.log('po zmianie: ');
-    console.log(this.businessService);
     this.businessServiceService.update(this.businessService!).subscribe();
     this.router.navigate(['/']);
   }

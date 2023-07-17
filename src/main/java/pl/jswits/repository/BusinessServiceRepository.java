@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pl.jswits.domain.BusinessService;
+import pl.jswits.domain.Client;
 
 /**
  * Spring Data JPA repository for the BusinessService entity.
@@ -28,4 +29,6 @@ public interface BusinessServiceRepository extends BusinessServiceRepositoryWith
     default Page<BusinessService> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    List<BusinessService> findBusinessServicesByClient_Id(Long id);
 }

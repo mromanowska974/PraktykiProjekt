@@ -43,6 +43,13 @@ export class BusinessServiceService {
     return this.http.get<IBusinessService[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  findByClient(clientId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IBusinessService[]>(`${this.resourceUrl}/by-client`, {
+      params: new HttpParams().append('clientId', clientId),
+      observe: 'response',
+    });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

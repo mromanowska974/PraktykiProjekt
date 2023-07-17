@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +13,7 @@ import { EntityArrayResponseType, BusinessServiceService } from '../service/busi
 import { BusinessServiceDeleteDialogComponent } from '../delete/business-service-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
 import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
+import { IClient } from 'app/entities/client/client.model';
 
 @Component({
   standalone: true,
@@ -30,8 +31,10 @@ import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-serv
     FormatMediumDatePipe,
   ],
 })
-export class BusinessServiceComponent implements OnInit {
+export class BusinessServiceComponent implements OnInit, OnChanges {
   businessServices?: IBusinessService[] | null;
+  @Input() client: IClient | null;
+  @Input() isDefaultValueSelected: boolean;
 
   constructor(
     protected businessServiceService: BusinessServiceService,
@@ -40,6 +43,24 @@ export class BusinessServiceComponent implements OnInit {
     protected sortService: SortService,
     protected modalService: NgbModal
   ) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['client']) {
+      var currentClient = changes['client'].currentValue;
+
+      this.businessServiceService.findByClient(currentClient.id).subscribe(businessServices => {
+        this.businessServices = businessServices.body;
+        console.log(this.businessServices);
+      });
+    }
+
+    if (changes['isDefaultValueSelected'].currentValue) {
+      console.log('Czy to tu wgl wchodzi???');
+      this.businessServiceService.query().subscribe(businessServices => {
+        this.businessServices = businessServices.body;
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.businessServiceService.query().subscribe(businessServices => {
