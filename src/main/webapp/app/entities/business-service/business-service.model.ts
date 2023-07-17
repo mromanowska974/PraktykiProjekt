@@ -18,8 +18,8 @@ export interface IBusinessService {
   notes?: string | null;
   status?: keyof typeof StatusOfServiceElement | null;
   internalServices?: Pick<IInternalService, 'id'>[] | null;
-  client?: Pick<IClient, 'id'> | null;
-  employee?: Pick<IEmployee, 'id' | 'name'> | null;
+  client?: Pick<IClient, 'id' | 'name'> | null;
+  employee?: Pick<IEmployee, 'id' | 'name' | 'surname'> | null;
   department?: Pick<IDepartment, 'id' | 'name'> | null;
 }
 

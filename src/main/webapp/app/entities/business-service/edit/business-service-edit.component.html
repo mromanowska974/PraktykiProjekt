@@ -1,7 +1,7 @@
 <div class="container" *ngIf="isDataLoaded && businessService">
   <div class="row1">
     <p>Klient:</p>
-    <p>Jan Kowalski</p>
+    <p *ngIf="businessService.client">{{ businessService.client.name }}</p>
   </div>
   <div class="data-box">
     <div class="row1">
@@ -16,11 +16,11 @@
   <div class="data-box">
     <div class="row1">
       <p>Dział:</p>
-      <p>Piekarnia ABC Spółka ZOO SA</p>
+      <p *ngIf="businessService.department">{{ businessService.department.name }}</p>
     </div>
     <div class="row1">
       <p>Właściciel:</p>
-      <p>Stanisław Pączkowski</p>
+      <p *ngIf="businessService.employee">{{ businessService.employee.name }} {{ businessService.employee.surname }}</p>
     </div>
   </div>
   <div class="sections">
@@ -33,35 +33,25 @@
     <div *ngSwitchCase="'A'" class="section-a">
       <div class="row2">
         <p>Opis funkcjonalny</p>
-        <textarea name="functionalDescription">
-          {{ businessService.functionalDescription }}
-        </textarea>
+        <textarea name="functionalDescription" [(ngModel)]="businessService.functionalDescription"> </textarea>
       </div>
       <div class="row2">
         <p>Wykluczenia</p>
-        <textarea name="exclusions">
-          {{ businessService.exclusions }}
-        </textarea>
+        <textarea name="exclusions" [(ngModel)]="businessService.exclusions"> </textarea>
       </div>
       <div class="row2">
         <p>Obowiązki i odpowiedzialności stron</p>
-        <textarea name="dutiesAndResponsibilities">
-          {{ businessService.dutiesAndResponsibilities }}
-        </textarea>
+        <textarea name="dutiesAndResponsibilities" [(ngModel)]="businessService.dutiesAndResponsibilities"> </textarea>
       </div>
     </div>
     <div *ngSwitchCase="'B'" class="section-b">
       <div class="row2">
         <p>Osoba odpowiedzialna za usługę po stronie Zamawiającego</p>
-        <textarea name="personResponsibleForService">
-          {{ businessService.personResponsibleForService }}
-        </textarea>
+        <textarea name="personResponsibleForService" [(ngModel)]="businessService.personResponsibleForService"> </textarea>
       </div>
       <div class="row2">
         <p>Godziny gwarantowanego świadczenia usługi</p>
-        <textarea name="hoursOfService">
-          {{ businessService.hoursOfService }}
-        </textarea>
+        <textarea name="hoursOfService" [(ngModel)]="businessService.hoursOfService"> </textarea>
       </div>
       <div>
         <p>Parametry jakościowe usługi</p>
@@ -105,15 +95,11 @@
     <div *ngSwitchCase="'C'" class="section-c">
       <div class="row2">
         <p>Koszty uruchomienia usługi</p>
-        <textarea name="serviceActivatingCost">
-          {{ businessService.serviceActivatingCost }}
-        </textarea>
+        <textarea name="serviceActivatingCost" [(ngModel)]="businessService.serviceActivatingCost"> </textarea>
       </div>
       <div class="row2">
         <p>Cennik usługi</p>
-        <textarea name="priceListOfService">
-          {{ businessService.priceListOfService }}
-        </textarea>
+        <textarea name="priceListOfService" [(ngModel)]="businessService.priceListOfService"> </textarea>
       </div>
       <div class="table-box">
         <div class="row3">
@@ -189,9 +175,7 @@
       </div>
       <div class="row2">
         <p>Uwagi</p>
-        <textarea name="notes">
-          {{ businessService.notes }}
-        </textarea>
+        <textarea name="notes" [(ngModel)]="businessService.notes"> </textarea>
       </div>
     </div>
     <div *ngSwitchCase="'D'">D</div>
@@ -199,7 +183,7 @@
   <div class="all-btns">
     <button>Utwórz dokument karty (plik .docx)</button>
     <div class="ok-and-cancel-btns">
-      <button>Ok</button>
+      <button (click)="onEditBusinessService()">Ok</button>
       <button (click)="onCancel()">Anuluj</button>
     </div>
   </div>

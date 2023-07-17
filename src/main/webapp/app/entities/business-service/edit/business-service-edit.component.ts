@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IBusinessService } from '../business-service.model';
 import { BusinessServiceService } from '../service/business-service.service';
@@ -14,6 +14,15 @@ export class BusinessServiceEditComponent implements OnInit {
   businessServiceId: number;
   businessService: IBusinessService | null;
   isDataLoaded: boolean = false;
+
+  functionalDescription: string;
+  exclusions: string;
+  dutiesAndResponsibilities: string;
+  personResponsibleForService: string;
+  hoursOfService: string;
+  serviceActivatingCost: string;
+  priceListOfService: string;
+  notes: string;
 
   constructor(private router: Router, private route: ActivatedRoute, private businessServiceService: BusinessServiceService) {}
 
@@ -35,6 +44,27 @@ export class BusinessServiceEditComponent implements OnInit {
   }
 
   onCancel() {
+    this.router.navigate(['/']);
+  }
+
+  onEditBusinessService() {
+    console.log('przed zmianą: ');
+    console.log(this.businessService);
+
+    if (this.businessService != undefined) {
+      //this.businessService.functionalDescription = this.functionalDescription;
+      // this.businessService.exclusions = this.exclusions;
+      // this.businessService.dutiesAndResponsibilities = this.dutiesAndResponsibilities;
+      // this.businessService.personResponsibleForService = this.personResponsibleForService;
+      // this.businessService.hoursOfService = this.hoursOfService;
+      // this.businessService.serviceActivatingCost = this.serviceActivatingCost;
+      // this.businessService.priceListOfService = this.priceListOfService;
+      // this.businessService.notes = this.notes;
+    }
+
+    console.log('po zmianie: ');
+    console.log(this.businessService);
+    this.businessServiceService.update(this.businessService!).subscribe();
     this.router.navigate(['/']);
   }
 

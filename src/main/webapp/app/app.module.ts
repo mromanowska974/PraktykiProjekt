@@ -21,6 +21,7 @@ import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
 import { BusinessServiceEditComponent } from './entities/business-service/edit/business-service-edit.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { BusinessServiceEditComponent } from './entities/business-service/edit/b
     HttpClientModule,
     MainModule,
     TranslationModule,
+    FormsModule,
   ],
   providers: [
     Title,

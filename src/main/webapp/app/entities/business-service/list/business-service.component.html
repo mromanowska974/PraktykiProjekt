@@ -9,9 +9,8 @@
   <div *ngFor="let businessService of businessServices; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
     <p class="item1">{{ businessService.symbol }}</p>
     <p class="item2">{{ businessService.name }}</p>
-    <p class="item3">{{ businessService.employee?.name }}</p>
-    <p class="item3">{{ businessService.department?.name }}</p>
-    <p class="item4">Aktywna</p>
+    <p class="item3">{{ businessService.employee?.name + ' ' + businessService.employee?.surname }}</p>
+    <p class="item4">{{ businessService.status }}</p>
     <p class="item5">
       <button (click)="onEditPageLoad(businessService.id)">E</button>
       <button (click)="onStatusChange(businessService)">ZS</button>
