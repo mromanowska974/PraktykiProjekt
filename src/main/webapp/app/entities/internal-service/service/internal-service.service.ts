@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -18,6 +18,7 @@ export class InternalServiceService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
+  //API
   create(internalService: NewInternalService): Observable<EntityResponseType> {
     return this.http.post<IInternalService>(this.resourceUrl, internalService, { observe: 'response' });
   }
@@ -76,4 +77,8 @@ export class InternalServiceService {
     }
     return internalServiceCollection;
   }
+
+  //NON-API
+  isInternalServiceSelected = false;
+  internalServiceSelected = new EventEmitter<IInternalService>();
 }

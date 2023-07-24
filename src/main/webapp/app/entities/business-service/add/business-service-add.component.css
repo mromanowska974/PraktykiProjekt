@@ -11,7 +11,6 @@ h2 {
 
 .row1 {
   display: flex;
-  /* border: 1px solid red; */
   flex-direction: row;
   height: 10vh;
   justify-content: space-between;
@@ -46,6 +45,7 @@ p {
 
 .btns > button {
   margin-left: 10px;
+  margin-top: 10px;
 }
 
 .tablebox {
@@ -69,7 +69,6 @@ table {
 }
 
 .chckbx {
-  /* border: 1px solid red; */
   display: flex;
   justify-content: space-between;
 }
@@ -84,7 +83,6 @@ table {
 }
 
 tr > td:last-child {
-  /* border: 1px solid red; */
   display: flex;
   justify-content: space-between;
 }
@@ -99,4 +97,9 @@ tr > td:last-child > button {
   font-size: 20px;
   padding-bottom: 20px;
   margin: 5px 5px;
+}
+
+.no-list {
+  border: 1px solid black;
+  text-align: center;
 }

@@ -32,8 +32,11 @@ export default class HomeComponent implements OnInit {
   }
 
   onAddNewBusinessService(client: IClient) {
+    var queryString = Object.keys(client)
+      .map(key => key + '=' + client[key])
+      .join('&');
     this.router.navigate(['/new'], {
-      queryParams: { client: client.name },
+      queryParams: { client: queryString },
     });
   }
 

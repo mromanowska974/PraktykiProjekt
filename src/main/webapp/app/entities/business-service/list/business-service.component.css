@@ -48,3 +48,8 @@
 .item5 {
   grid-column: 5;
 }
+
+.no-list {
+  text-align: center;
+  padding: 20px;
+}

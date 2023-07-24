@@ -1,0 +1,8 @@
+<div class="container">
+  <h3>Wybierz UW z listy:</h3>
+  <div>
+    <p *ngFor="let internalService of internalServices" (click)="onInternalServiceClicked(internalService)">
+      {{ internalService.symbol }} {{ internalService.name }}
+    </p>
+  </div>
+</div>

@@ -22,6 +22,8 @@ import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
 import { BusinessServiceEditComponent } from './entities/business-service/edit/business-service-edit.component';
 import { FormsModule } from '@angular/forms';
+import { InternalServiceAddNewComponent } from './entities/internal-service/add-new/internal-service-add-new.component';
+import { InternalServiceAddExistingComponent } from './entities/internal-service/add-existing/internal-service-add-existing.component';
 
 @NgModule({
   imports: [
@@ -43,7 +45,7 @@ import { FormsModule } from '@angular/forms';
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
   ],
   bootstrap: [MainComponent],
-  declarations: [BusinessServiceEditComponent],
+  declarations: [BusinessServiceEditComponent, InternalServiceAddNewComponent, InternalServiceAddExistingComponent],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

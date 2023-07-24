@@ -23,8 +23,8 @@
   </div>
   <div class="row1">
     <p>Klient</p>
-    <select [(ngModel)]="client" (change)="getClient(client)">
-      <option [ngValue]="client" *ngFor="let client of clients">
+    <select [(ngModel)]="client!.name" (change)="getClient(client)">
+      <option [ngValue]="client!.name" *ngFor="let client of clients">
         {{ client.name }}
       </option>
     </select>
@@ -37,13 +37,19 @@
         <th width="40%">Nazwa</th>
         <th>Właściciel</th>
       </tr>
-      <tr>
-        <td>coś</td>
-        <td>coś</td>
-        <td>coś <button>-</button></td>
+      <tr *ngFor="let internalService of internalServices">
+        <td>{{ internalService.symbol }}</td>
+        <td>{{ internalService.name }}</td>
+        <td>Jan Kowalski <button>-</button></td>
       </tr>
     </table>
-    <button>Dodaj UW</button>
+    <div *ngIf="internalServices?.length === 0" class="no-list">
+      <p>Brak usług wewnętrznych.</p>
+    </div>
+    <div class="btns">
+      <button>Dodaj nowe UW</button>
+      <button (click)="openInternalServicesList()">Dodaj istniejące UW</button>
+    </div>
   </div>
   <div class="chckbx">
     <input type="checkbox" id="chckbx" />

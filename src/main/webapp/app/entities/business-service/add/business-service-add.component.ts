@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, DoCheck } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, DoCheck, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -21,6 +21,7 @@ import { IDepartment } from 'app/entities/department/department.model';
 import { DepartmentService } from 'app/entities/department/service/department.service';
 import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
 import { EmployeeComponent } from 'app/entities/employee/list/employee.component';
+import { InternalServiceAddExistingComponent } from 'app/entities/internal-service/add-existing/internal-service-add-existing.component';
 
 @Component({
   standalone: true,
@@ -44,14 +45,15 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   @ViewChild('name') name: ElementRef;
   ownerName: string;
   ownerId: number;
-  // @ViewChild('department') departmentName: ElementRef;
-  clientName: string;
+  clientQuery: string;
   internalServices: IInternalService[] | null = [];
 
   department: IDepartment | null;
   client: IClient | null;
 
   businessService: NewBusinessService = {} as NewBusinessService;
+
+  //@Input() isInternalServiceSelected: boolean = this.internalServiceService.isInternalServiceSelected;
 
   constructor(
     protected businessServiceService: BusinessServiceService,
@@ -66,7 +68,20 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit(): void {
-    this.clientName = this.activatedRoute.snapshot.queryParams['client'];
+    this.clientQuery = this.activatedRoute.snapshot.queryParams['client'];
+    var clientQuerySplit = this.clientQuery.split('&');
+    var clientQueryValues: string[][] = [];
+
+    for (let i = 0; i < clientQuerySplit.length; i++) {
+      var value = clientQuerySplit[i].split('=');
+      clientQueryValues.push(value);
+    }
+
+    this.client = {
+      id: +clientQueryValues[0][1],
+      name: clientQueryValues[1][1],
+    };
+    console.log(this.client);
     this.getClients();
     this.getDepartments();
   }
@@ -79,10 +94,38 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
         this.employeeService.isEmployeeSelected = false;
       });
     }
+
+    if (this.internalServiceService.isInternalServiceSelected) {
+      var internalServiceSelected: IInternalService;
+      this.internalServiceService.internalServiceSelected.subscribe(internalService => {
+        internalServiceSelected = internalService;
+
+        const found = this.internalServices!.find(obj => {
+          return obj.id === internalServiceSelected.id;
+        });
+
+        if (!found) {
+          this.addInternalService(internalServiceSelected);
+        }
+      });
+    }
+  }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //     console.log(changes['isInternalServiceSelected'])
+  // }
+
+  addInternalService(internalService: IInternalService) {
+    this.internalServices?.push(internalService);
+    this.internalServiceService.isInternalServiceSelected = false;
   }
 
   openEmployeesList() {
     this.dialogRef.open(EmployeeComponent);
+  }
+
+  openInternalServicesList() {
+    this.dialogRef.open(InternalServiceAddExistingComponent);
   }
 
   getClients() {
@@ -114,7 +157,7 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
 
   onSave() {
     //not save to db
-    this.router.navigate(['/']);
+    //this.router.navigate(['/']);
   }
 
   onSaveAndActivate() {
@@ -127,8 +170,8 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     }
     console.log(this.businessService);
 
-    this.businessServiceService.create(this.businessService).subscribe(() => {
-      this.router.navigate(['/']);
-    });
+    // this.businessServiceService.create(this.businessService).subscribe(() => {
+    //   this.router.navigate(['/']);
+    // });
   }
 }
