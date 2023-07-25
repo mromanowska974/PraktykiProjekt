@@ -21,9 +21,10 @@ import { BusinessService } from 'app/entities/business-service/business-service.
 })
 export default class HomeComponent implements OnInit {
   clients: IClient[] | null;
-  selectedClient: IClient;
-  isDefaultValueSelected: boolean = false;
-  selectedBusinessService: BusinessService;
+  selectedClient: IClient | null;
+  isDefaultValueSelected: boolean = true;
+  isAddingButtonClicked: boolean = false;
+  selectedBusinessService?: BusinessService | null;
 
   constructor(private clientService: ClientService, private router: Router) {}
 
@@ -33,13 +34,18 @@ export default class HomeComponent implements OnInit {
     });
   }
 
-  onAddNewBusinessService(client: IClient) {
-    var queryString = Object.keys(client)
-      .map(key => key + '=' + client[key])
-      .join('&');
-    this.router.navigate(['/new'], {
-      queryParams: { client: queryString },
-    });
+  onAddNewBusinessService(client?: IClient) {
+    if (client) {
+      var queryString = Object.keys(client)
+        .map(key => key + '=' + client[key])
+        .join('&');
+      this.router.navigate(['/new'], {
+        queryParams: { client: queryString },
+      });
+    } else {
+      this.isAddingButtonClicked = true;
+      console.log('domyslna wartosc');
+    }
   }
 
   onLoadAddNewInternalService() {
@@ -48,11 +54,14 @@ export default class HomeComponent implements OnInit {
 
   onClientSelected(client: IClient) {
     this.isDefaultValueSelected = false;
+    this.isAddingButtonClicked = false;
     this.selectedClient = client;
   }
 
   onSelectedDefaultValue() {
     this.isDefaultValueSelected = true;
+    this.isAddingButtonClicked = false;
+    this.selectedClient = null;
   }
 
   onBusinessServiceSelected(event: BusinessService) {

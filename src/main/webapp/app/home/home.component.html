@@ -5,11 +5,12 @@
       <option (click)="onSelectedDefaultValue()">Wszystkie</option>
       <option *ngFor="let client of clients" (click)="onClientSelected(client)">{{ client.name }}</option>
     </select>
+    <p class="error-text" *ngIf="isDefaultValueSelected && isAddingButtonClicked">Najpierw wybierz spółkę</p>
   </div>
   <div>
     <div class="row2">
       <p>Lista kart Usług Biznesowych:</p>
-      <button (click)="onAddNewBusinessService(selectedClient)">Dodaj nową kartę</button>
+      <button (click)="onAddNewBusinessService(selectedClient ? selectedClient : undefined)">Dodaj nową kartę</button>
     </div>
     <div>
       <jhi-business-service
