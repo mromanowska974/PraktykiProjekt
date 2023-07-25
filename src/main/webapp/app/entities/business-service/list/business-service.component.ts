@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, switchMap, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,7 +7,7 @@ import SharedModule from 'app/shared/shared.module';
 import { SortDirective, SortByDirective } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { FormsModule } from '@angular/forms';
-import { IBusinessService } from '../business-service.model';
+import { BusinessService, IBusinessService } from '../business-service.model';
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, BusinessServiceService } from '../service/business-service.service';
 import { BusinessServiceDeleteDialogComponent } from '../delete/business-service-delete-dialog.component';
@@ -35,6 +35,7 @@ export class BusinessServiceComponent implements OnInit, OnChanges {
   businessServices?: IBusinessService[] | null;
   @Input() client: IClient | null;
   @Input() isDefaultValueSelected: boolean;
+  @Output() selectedBusinessService = new EventEmitter<BusinessService>();
 
   constructor(
     protected businessServiceService: BusinessServiceService,
@@ -81,5 +82,9 @@ export class BusinessServiceComponent implements OnInit, OnChanges {
 
   onEditPageLoad(id: number) {
     this.router.navigate(['/edit', id]);
+  }
+
+  onBusinessServiceSelected(businessService: BusinessService) {
+    this.selectedBusinessService.emit(businessService);
   }
 }

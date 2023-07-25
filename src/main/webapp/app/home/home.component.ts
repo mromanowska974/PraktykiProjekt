@@ -10,6 +10,7 @@ import { BusinessServiceComponent } from 'app/entities/business-service/list/bus
 import { InternalServiceComponent } from 'app/entities/internal-service/list/internal-service.component';
 import { IClient, NewClient } from 'app/entities/client/client.model';
 import { ClientService } from 'app/entities/client/service/client.service';
+import { BusinessService } from 'app/entities/business-service/business-service.model';
 
 @Component({
   standalone: true,
@@ -22,6 +23,7 @@ export default class HomeComponent implements OnInit {
   clients: IClient[] | null;
   selectedClient: IClient;
   isDefaultValueSelected: boolean = false;
+  selectedBusinessService: BusinessService;
 
   constructor(private clientService: ClientService, private router: Router) {}
 
@@ -51,5 +53,9 @@ export default class HomeComponent implements OnInit {
 
   onSelectedDefaultValue() {
     this.isDefaultValueSelected = true;
+  }
+
+  onBusinessServiceSelected(event: BusinessService) {
+    this.selectedBusinessService = event;
   }
 }

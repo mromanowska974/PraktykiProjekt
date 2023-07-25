@@ -12,7 +12,12 @@
       <button (click)="onAddNewBusinessService(selectedClient)">Dodaj nową kartę</button>
     </div>
     <div>
-      <jhi-business-service [client]="selectedClient" [isDefaultValueSelected]="isDefaultValueSelected"></jhi-business-service>
+      <jhi-business-service
+        [client]="selectedClient"
+        [isDefaultValueSelected]="isDefaultValueSelected"
+        (selectedBusinessService)="onBusinessServiceSelected($event)"
+      >
+      </jhi-business-service>
     </div>
   </div>
   <div>
@@ -20,7 +25,13 @@
       <p>Powiązane usługi wewnętrzne:</p>
     </div>
     <div class="row3">
-      <jhi-internal-service></jhi-internal-service>
+      <p *ngIf="!selectedBusinessService || isDefaultValueSelected || selectedBusinessService.internalServices?.length === 0">
+        Brak powiązanych usług wewnętrznych
+      </p>
+      <jhi-internal-service
+        *ngIf="selectedBusinessService && !isDefaultValueSelected && selectedBusinessService.internalServices?.length !== 0"
+        [internalServices]="selectedBusinessService.internalServices"
+      ></jhi-internal-service>
       <button class="add" (click)="onLoadAddNewInternalService()">Dodaj usługę wewnętrzną</button>
     </div>
   </div>

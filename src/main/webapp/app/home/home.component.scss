@@ -26,6 +26,12 @@ Main page styles
   justify-content: space-between;
 }
 
+.row3 > p {
+  border: 1px solid black;
+  width: 50vw;
+  text-align: center;
+}
+
 button {
   margin-bottom: 10px;
   width: 17vw;

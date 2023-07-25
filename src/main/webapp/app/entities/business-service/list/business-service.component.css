@@ -53,3 +53,10 @@
   text-align: center;
   padding: 20px;
 }
+
+.list-row:hover {
+  background-color: rgb(173, 173, 173);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}

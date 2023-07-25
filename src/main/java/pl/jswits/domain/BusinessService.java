@@ -57,15 +57,15 @@ public class BusinessService implements Serializable {
     @Column(name = "status")
     private StatusOfServiceElement status;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "businessService")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "businessService")
     @JsonIgnoreProperties(value = { "businessService", "internalService" }, allowSetters = true)
     private Set<Parameter> parameters = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "businessService")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "businessService")
     @JsonIgnoreProperties(value = { "businessService", "internalService" }, allowSetters = true)
     private Set<ServiceElement> serviceElements = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_business_service__internal_service",
         joinColumns = @JoinColumn(name = "business_service_id"),
