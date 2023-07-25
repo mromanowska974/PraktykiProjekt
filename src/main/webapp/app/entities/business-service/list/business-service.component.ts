@@ -45,17 +45,17 @@ export class BusinessServiceComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
+    //filtering business services by client
     if (changes['client']) {
       var currentClient = changes['client'].currentValue;
 
       this.businessServiceService.findByClient(currentClient.id).subscribe(businessServices => {
         this.businessServices = businessServices.body;
-        console.log(this.businessServices);
       });
     }
 
+    //showing all business services if default value ''Wszystkie'' is selected
     if (changes['isDefaultValueSelected'].currentValue) {
-      console.log('Czy to tu wgl wchodzi???');
       this.businessServiceService.query().subscribe(businessServices => {
         this.businessServices = businessServices.body;
       });

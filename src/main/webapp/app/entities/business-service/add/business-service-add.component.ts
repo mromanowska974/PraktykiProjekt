@@ -64,6 +64,7 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit(): void {
+    //decoding clientQuery into Client
     this.clientQuery = this.activatedRoute.snapshot.queryParams['client'];
     var clientQuerySplit = this.clientQuery.split('&');
     var clientQueryValues: string[][] = [];
@@ -77,6 +78,8 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
       id: +clientQueryValues[0][1],
       name: clientQueryValues[1][1],
     };
+
+    this.businessService.client = this.client;
     this.getClients();
     this.getDepartments();
 
@@ -96,7 +99,6 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
       this.internalServices = this.businessService.internalServices!;
       this.department = this.businessService.department!;
       this.ownerName = this.businessService.employee!.name + ' ' + this.businessService.employee!.surname;
-      //console.log(this.internalServices)
     }
   }
 
