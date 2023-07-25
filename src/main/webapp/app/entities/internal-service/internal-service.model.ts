@@ -24,7 +24,7 @@ export interface IInternalService {
   planDisasterRecovery?: string | null;
   rPO?: string | null;
   rTO?: string | null;
-  employee?: Pick<IEmployee, 'id' | 'name'> | null;
+  employee?: Pick<IEmployee, 'id' | 'name' | 'surname'> | null;
   businessServices?: Pick<IBusinessService, 'id'>[] | null;
 }
 

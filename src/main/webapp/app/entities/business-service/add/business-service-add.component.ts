@@ -84,12 +84,12 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     this.getDepartments();
 
     //new internal service is added
-    if (this.internalServiceService.isNewInternalServiceCreated) {
-      this.internalServiceService.internalServiceCreated.subscribe(internalService => {
-        this.addInternalService(internalService);
-        console.log(this.internalServices);
-      });
-    }
+    // if (this.internalServiceService.isNewInternalServiceCreated) {
+    //   this.internalServiceService.internalServiceCreated.subscribe(internalService => {
+    //     this.addInternalService(internalService);
+    //     console.log(this.internalServices);
+    //   });
+    // }
 
     //loading saved business service
     if (this.businessServiceService.isBusinessServiceSaved) {

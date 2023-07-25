@@ -40,7 +40,7 @@
       <tr *ngFor="let internalService of internalServices">
         <td>{{ internalService.symbol }}</td>
         <td>{{ internalService.name }}</td>
-        <td>Jan Kowalski <button>-</button></td>
+        <td>{{ internalService.employee?.name + ' ' + internalService.employee?.surname }}<button>-</button></td>
       </tr>
     </table>
     <div *ngIf="internalServices?.length === 0" class="no-list">

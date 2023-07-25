@@ -58,8 +58,8 @@ export class InternalServiceAddNewComponent implements DoCheck {
     this.internalService.symbol = this.symbol.nativeElement.value;
     this.internalService.name = this.name.nativeElement.value;
 
-    this.internalServiceService.isNewInternalServiceCreated = true;
-    this.internalServiceService.internalServiceCreated.emit(this.internalService);
+    // this.internalServiceService.isNewInternalServiceCreated = true;
+    // this.internalServiceService.internalServiceCreated.emit(this.internalService);
 
     this.internalServiceService.create(this.internalService).subscribe(() => {
       this.location.back();
