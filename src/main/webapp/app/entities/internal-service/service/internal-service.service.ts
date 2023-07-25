@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IInternalService, NewInternalService } from '../internal-service.model';
+import { IInternalService, InternalService, NewInternalService } from '../internal-service.model';
 
 export type PartialUpdateInternalService = Partial<IInternalService> & Pick<IInternalService, 'id'>;
 
@@ -19,7 +19,7 @@ export class InternalServiceService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   //API
-  create(internalService: NewInternalService): Observable<EntityResponseType> {
+  create(internalService: InternalService): Observable<EntityResponseType> {
     return this.http.post<IInternalService>(this.resourceUrl, internalService, { observe: 'response' });
   }
 
@@ -81,4 +81,7 @@ export class InternalServiceService {
   //NON-API
   isInternalServiceSelected = false;
   internalServiceSelected = new EventEmitter<IInternalService>();
+
+  isNewInternalServiceCreated = false;
+  internalServiceCreated = new EventEmitter<IInternalService>();
 }

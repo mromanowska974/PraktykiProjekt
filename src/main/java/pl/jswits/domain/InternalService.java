@@ -84,23 +84,23 @@ public class InternalService implements Serializable {
     @Column(name = "r_to")
     private String rTO;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "internalService")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "internalService")
     @JsonIgnoreProperties(value = { "businessService", "internalService" }, allowSetters = true)
     private Set<Parameter> parameters = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "internalService")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "internalService")
     @JsonIgnoreProperties(value = { "businessService", "internalService" }, allowSetters = true)
     private Set<ServiceElement> serviceElements = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "internalService")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "internalService")
     @JsonIgnoreProperties(value = { "internalService" }, allowSetters = true)
     private Set<ExternalCompany> externalCompanies = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "businessServices", "internalServices" }, allowSetters = true)
     private Employee employee;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "internalServices")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "internalServices")
     @JsonIgnoreProperties(
         value = { "parameters", "serviceElements", "internalServices", "client", "employee", "department" },
         allowSetters = true

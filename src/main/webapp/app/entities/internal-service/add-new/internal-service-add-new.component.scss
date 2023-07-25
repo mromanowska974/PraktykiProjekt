@@ -1,0 +1,105 @@
+h2 {
+  border: 1px solid black;
+  background-color: lightgray;
+  padding: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.row1 {
+  display: flex;
+  flex-direction: row;
+  height: 10vh;
+  justify-content: space-between;
+  padding: 0px 10px;
+}
+
+input,
+select {
+  width: 70%;
+  margin: 20px 0px;
+}
+
+.input3,
+.btn3 {
+  width: 33%;
+}
+
+.btn3 {
+  margin: 20px 0px;
+  margin-left: 4%;
+}
+
+p {
+  width: 30%;
+  margin: 15px 0px;
+}
+
+.btns {
+  display: flex;
+  justify-content: right;
+}
+
+.btns > button {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.tablebox {
+  display: flex;
+  flex-direction: column;
+}
+
+table {
+  border: 1px solid black;
+}
+
+.tableheader {
+  background-color: gray;
+  color: white;
+}
+
+.tablebox > button {
+  align-self: flex-end;
+  margin: 15px 0px;
+  width: 15vw;
+}
+
+.chckbx {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chckbx > label {
+  margin: 10px;
+  width: 100%;
+}
+
+.chckbx > input {
+  width: 2%;
+}
+
+tr > td:last-child {
+  display: flex;
+  justify-content: space-between;
+}
+
+tr > td:last-child > button {
+  background-color: red;
+  font-weight: 900;
+  border: 1px solid darkred;
+  width: 4vh;
+  height: 4vh;
+  color: white;
+  font-size: 20px;
+  padding-bottom: 20px;
+  margin: 5px 5px;
+}
+
+.no-list {
+  border: 1px solid black;
+  text-align: center;
+}

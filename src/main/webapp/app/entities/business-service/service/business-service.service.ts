@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IBusinessService, NewBusinessService } from '../business-service.model';
+import { BusinessService, IBusinessService, NewBusinessService } from '../business-service.model';
+import { InternalService } from 'app/entities/internal-service/internal-service.model';
 
 export type PartialUpdateBusinessService = Partial<IBusinessService> & Pick<IBusinessService, 'id'>;
 
@@ -18,7 +19,8 @@ export class BusinessServiceService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(businessService: NewBusinessService): Observable<EntityResponseType> {
+  //API
+  create(businessService: BusinessService): Observable<EntityResponseType> {
     return this.http.post<IBusinessService>(this.resourceUrl, businessService, { observe: 'response' });
   }
 
@@ -83,4 +85,8 @@ export class BusinessServiceService {
     }
     return businessServiceCollection;
   }
+
+  //NON-API
+  isBusinessServiceSaved: boolean = false;
+  businessService: BusinessService = new BusinessService();
 }

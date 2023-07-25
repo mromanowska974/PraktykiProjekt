@@ -2,11 +2,11 @@
   <h2>Dodaj Kartę Usługi Biznesowej</h2>
   <div class="row1">
     <p>Symbol Usługi Biznesowej (UB)</p>
-    <input type="text" #symbol />
+    <input type="text" [(ngModel)]="businessService.symbol" />
   </div>
   <div class="row1">
     <p>Nazwa usługi</p>
-    <input type="text" #name />
+    <input type="text" [(ngModel)]="businessService.name" />
   </div>
   <div class="row1">
     <p class="p3">Właściciel usługi</p>
@@ -47,7 +47,7 @@
       <p>Brak usług wewnętrznych.</p>
     </div>
     <div class="btns">
-      <button>Dodaj nowe UW</button>
+      <button (click)="onLoadAddNewInternalService()">Dodaj nowe UW</button>
       <button (click)="openInternalServicesList()">Dodaj istniejące UW</button>
     </div>
   </div>

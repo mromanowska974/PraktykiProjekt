@@ -6,6 +6,7 @@ import { InternalServiceDetailComponent } from './detail/internal-service-detail
 import { InternalServiceUpdateComponent } from './update/internal-service-update.component';
 import InternalServiceResolve from './route/internal-service-routing-resolve.service';
 import { ASC } from 'app/config/navigation.constants';
+import { InternalServiceAddNewComponent } from './add-new/internal-service-add-new.component';
 
 const internalServiceRoute: Routes = [
   {
@@ -35,6 +36,14 @@ const internalServiceRoute: Routes = [
   {
     path: ':id/edit',
     component: InternalServiceUpdateComponent,
+    resolve: {
+      internalService: InternalServiceResolve,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'add',
+    component: InternalServiceAddNewComponent,
     resolve: {
       internalService: InternalServiceResolve,
     },

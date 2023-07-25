@@ -53,15 +53,15 @@ export class InternalServiceUpdateComponent implements OnInit {
     window.history.back();
   }
 
-  save(): void {
-    this.isSaving = true;
-    const internalService = this.internalServiceFormService.getInternalService(this.editForm);
-    if (internalService.id !== null) {
-      this.subscribeToSaveResponse(this.internalServiceService.update(internalService));
-    } else {
-      this.subscribeToSaveResponse(this.internalServiceService.create(internalService));
-    }
-  }
+  // save(): void {
+  //   this.isSaving = true;
+  //   const internalService = this.internalServiceFormService.getInternalService(this.editForm);
+  //   if (internalService.id !== null) {
+  //     this.subscribeToSaveResponse(this.internalServiceService.update(internalService));
+  //   } else {
+  //     this.subscribeToSaveResponse(this.internalServiceService.create(internalService));
+  //   }
+  // }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IInternalService>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({

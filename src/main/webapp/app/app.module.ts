@@ -24,6 +24,7 @@ import { BusinessServiceEditComponent } from './entities/business-service/edit/b
 import { FormsModule } from '@angular/forms';
 import { InternalServiceAddNewComponent } from './entities/internal-service/add-new/internal-service-add-new.component';
 import { InternalServiceAddExistingComponent } from './entities/internal-service/add-existing/internal-service-add-existing.component';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { InternalServiceAddExistingComponent } from './entities/internal-service
     MainModule,
     TranslationModule,
     FormsModule,
+    MatDialogModule,
   ],
   providers: [
     Title,
@@ -43,9 +45,10 @@ import { InternalServiceAddExistingComponent } from './entities/internal-service
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
+    { provide: MatDialogRef, useValue: {} },
   ],
   bootstrap: [MainComponent],
-  declarations: [BusinessServiceEditComponent, InternalServiceAddNewComponent, InternalServiceAddExistingComponent],
+  declarations: [BusinessServiceEditComponent, InternalServiceAddExistingComponent],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

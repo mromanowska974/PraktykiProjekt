@@ -1,1 +1,20 @@
-<p>internal-service-add-new works!</p>
+<div class="container">
+  <h2>Dodaj Usługę Wewnętrzną</h2>
+  <div class="row1">
+    <p>Symbol Usługi Wewnętrznej (UW)</p>
+    <input type="text" #symbol />
+  </div>
+  <div class="row1">
+    <p>Nazwa usługi</p>
+    <input type="text" #name />
+  </div>
+  <div class="row1">
+    <p class="p3">Właściciel usługi</p>
+    <input type="text" class="input3" [(ngModel)]="ownerName" />
+    <button class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
+  </div>
+  <div class="btns">
+    <button (click)="onCancel()">Anuluj</button>
+    <button (click)="onSave()">Zapisz</button>
+  </div>
+</div>

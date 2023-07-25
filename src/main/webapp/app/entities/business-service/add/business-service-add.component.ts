@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { BusinessServiceFormService, BusinessServiceFormGroup } from './business-service-form.service';
-import { IBusinessService, NewBusinessService } from '../business-service.model';
+import { BusinessService, IBusinessService, NewBusinessService } from '../business-service.model';
 import { BusinessServiceService } from '../service/business-service.service';
 import { IInternalService } from 'app/entities/internal-service/internal-service.model';
 import { InternalServiceService } from 'app/entities/internal-service/service/internal-service.service';
@@ -41,8 +41,6 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   isDepartmentLoaded: boolean = false;
   isClientLoaded: boolean = false;
 
-  @ViewChild('symbol') symbol: ElementRef;
-  @ViewChild('name') name: ElementRef;
   ownerName: string;
   ownerId: number;
   clientQuery: string;
@@ -51,9 +49,7 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   department: IDepartment | null;
   client: IClient | null;
 
-  businessService: NewBusinessService = {} as NewBusinessService;
-
-  //@Input() isInternalServiceSelected: boolean = this.internalServiceService.isInternalServiceSelected;
+  businessService: BusinessService = new BusinessService();
 
   constructor(
     protected businessServiceService: BusinessServiceService,
@@ -81,12 +77,31 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
       id: +clientQueryValues[0][1],
       name: clientQueryValues[1][1],
     };
-    console.log(this.client);
     this.getClients();
     this.getDepartments();
+
+    //new internal service is added
+    if (this.internalServiceService.isNewInternalServiceCreated) {
+      this.internalServiceService.internalServiceCreated.subscribe(internalService => {
+        this.addInternalService(internalService);
+        console.log(this.internalServices);
+      });
+    }
+
+    //loading saved business service
+    if (this.businessServiceService.isBusinessServiceSaved) {
+      this.businessService = this.businessServiceService.businessService;
+      this.businessServiceService.isBusinessServiceSaved = false;
+
+      this.internalServices = this.businessService.internalServices!;
+      this.department = this.businessService.department!;
+      this.ownerName = this.businessService.employee!.name + ' ' + this.businessService.employee!.surname;
+      //console.log(this.internalServices)
+    }
   }
 
   ngDoCheck(): void {
+    //employee selected from the list
     if (this.employeeService.isEmployeeSelected) {
       this.employeeService.employeeSelected.subscribe(employee => {
         this.businessService.employee = employee;
@@ -95,6 +110,7 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
       });
     }
 
+    //internal service selected from the list
     if (this.internalServiceService.isInternalServiceSelected) {
       var internalServiceSelected: IInternalService;
       this.internalServiceService.internalServiceSelected.subscribe(internalService => {
@@ -111,13 +127,10 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     }
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //     console.log(changes['isInternalServiceSelected'])
-  // }
-
   addInternalService(internalService: IInternalService) {
-    this.internalServices?.push(internalService);
+    this.internalServices!.push(internalService);
     this.internalServiceService.isInternalServiceSelected = false;
+    this.internalServiceService.isNewInternalServiceCreated = false;
   }
 
   openEmployeesList() {
@@ -151,6 +164,13 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     console.log(obj);
   }
 
+  createBusinessService(status: StatusOfServiceElement) {
+    if (this.businessService != undefined) {
+      this.businessService.internalServices = this.internalServices;
+      this.businessService.status = status;
+    }
+  }
+
   onCancel() {
     this.router.navigate(['/']);
   }
@@ -158,20 +178,23 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   onSave() {
     //not save to db
     //this.router.navigate(['/']);
+    this.createBusinessService(StatusOfServiceElement.NOT_ACTIVE);
+    this.businessServiceService.businessService = this.businessService;
+    this.businessServiceService.isBusinessServiceSaved = true;
   }
 
   onSaveAndActivate() {
     //save to db
-    if (this.businessService != undefined) {
-      this.businessService.symbol = this.symbol.nativeElement.value;
-      this.businessService.name = this.name.nativeElement.value;
-      this.businessService.internalServices = this.internalServices;
-      this.businessService.status = StatusOfServiceElement.ACTIVE;
-    }
+    this.createBusinessService(StatusOfServiceElement.ACTIVE);
     console.log(this.businessService);
 
-    // this.businessServiceService.create(this.businessService).subscribe(() => {
-    //   this.router.navigate(['/']);
-    // });
+    this.businessServiceService.create(this.businessService).subscribe(() => {
+      this.router.navigate(['/']);
+    });
+  }
+
+  onLoadAddNewInternalService() {
+    this.onSave();
+    this.router.navigate(['/internal-service', 'add']);
   }
 }

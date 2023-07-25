@@ -40,6 +40,10 @@ export default class HomeComponent implements OnInit {
     });
   }
 
+  onLoadAddNewInternalService() {
+    this.router.navigate(['/internal-service', 'add']);
+  }
+
   onClientSelected(client: IClient) {
     this.isDefaultValueSelected = false;
     this.selectedClient = client;
