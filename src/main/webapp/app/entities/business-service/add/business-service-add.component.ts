@@ -211,6 +211,11 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     }
   }
 
+  onDeleteListItem(index: number) {
+    console.log(index);
+    this.internalServices?.splice(index, 1);
+  }
+
   onLoadAddNewInternalService() {
     this.onSave();
     this.router.navigate(['/internal-service', 'add']);

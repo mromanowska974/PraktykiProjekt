@@ -61,10 +61,13 @@
         <th width="40%">Nazwa</th>
         <th>Właściciel</th>
       </tr>
-      <tr *ngFor="let internalService of internalServices">
+      <tr *ngFor="let internalService of internalServices; let i = index">
         <td>{{ internalService.symbol }}</td>
         <td>{{ internalService.name }}</td>
-        <td>{{ internalService.employee?.name + ' ' + internalService.employee?.surname }}<button>-</button></td>
+        <td>
+          {{ internalService.employee?.name + ' ' + internalService.employee?.surname }}
+          <button (click)="onDeleteListItem(i)">-</button>
+        </td>
       </tr>
     </table>
     <div *ngIf="internalServices?.length === 0" class="no-list">
