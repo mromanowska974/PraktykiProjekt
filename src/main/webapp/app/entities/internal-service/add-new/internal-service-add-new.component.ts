@@ -75,18 +75,11 @@ export class InternalServiceAddNewComponent implements DoCheck {
     // this.internalServiceService.internalServiceCreated.emit(this.internalService);
 
     if (this.isDataValidated) {
-      console.log(this.internalService);
-
-      // this.internalServiceService.create(this.internalService).subscribe(() => {
-      //   this.location.back();
-      // });
+      this.internalServiceService.create(this.internalService).subscribe(() => {
+        this.location.back();
+      });
     } else {
       this.isSaveButtonClicked = true;
-      console.log(this.isSymbolEntered);
-      console.log(this.isNameEntered);
-      console.log(this.isOwnerLoaded);
-      console.log(this.internalService.symbol?.length);
-      console.log(this.internalService.name?.length);
     }
   }
 }

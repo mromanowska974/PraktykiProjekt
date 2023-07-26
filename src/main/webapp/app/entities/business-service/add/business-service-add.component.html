@@ -29,12 +29,15 @@
   <div class="row1">
     <p>Dział</p>
     <select
-      [(ngModel)]="department"
-      (change)="getDepartment(department)"
+      [(ngModel)]="selectedDepartment!.name"
       [ngClass]="{ 'empty-input': isDepartmentLoaded === false && isSaveButtonClicked === true }"
     >
-      <option [ngValue]="department.name" *ngFor="let department of departments">
-        {{ department.name }}
+      <option
+        *ngFor="let selectedDepartment of departments"
+        [ngValue]="selectedDepartment!.name"
+        (click)="getDepartment(selectedDepartment)"
+      >
+        {{ selectedDepartment!.name }}
       </option>
     </select>
   </div>

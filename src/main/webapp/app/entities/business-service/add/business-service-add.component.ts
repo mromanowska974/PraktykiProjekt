@@ -51,7 +51,7 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   clientQuery: string;
   internalServices: IInternalService[] | null = [];
 
-  department: IDepartment | null;
+  selectedDepartment: IDepartment | null = {} as IDepartment;
   client: IClient | null;
 
   businessService: BusinessService = new BusinessService();
@@ -89,22 +89,17 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     this.getClients();
     this.getDepartments();
 
-    //new internal service is added
-    // if (this.internalServiceService.isNewInternalServiceCreated) {
-    //   this.internalServiceService.internalServiceCreated.subscribe(internalService => {
-    //     this.addInternalService(internalService);
-    //     console.log(this.internalServices);
-    //   });
-    // }
-
     //loading saved business service
     if (this.businessServiceService.isBusinessServiceSaved) {
       this.businessService = this.businessServiceService.businessService;
       this.businessServiceService.isBusinessServiceSaved = false;
 
+      console.log(this.businessService);
+
       this.internalServices = this.businessService.internalServices!;
-      this.department = this.businessService.department!;
-      this.isDepartmentLoaded = this.department !== undefined ? true : false;
+      this.selectedDepartment = this.businessService.department!;
+      console.log(this.selectedDepartment);
+      this.isDepartmentLoaded = this.selectedDepartment !== undefined ? true : false;
       this.ownerName = this.businessService.employee!.name + ' ' + this.businessService.employee!.surname;
       this.isOwnerLoaded = this.ownerName !== undefined ? true : false;
     }
@@ -171,10 +166,10 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     console.log(obj);
   }
 
-  getDepartment(obj: IDepartment | null) {
-    this.businessService.department = obj;
+  getDepartment(selDep: IDepartment) {
+    this.businessService.department = selDep;
     this.isDepartmentLoaded = true;
-    console.log(obj);
+    console.log(this.businessService.department);
   }
 
   createBusinessService(status: StatusOfServiceElement) {
@@ -208,18 +203,11 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
       this.createBusinessService(StatusOfServiceElement.ACTIVE);
       console.log(this.businessService);
 
-      // this.businessServiceService.create(this.businessService).subscribe(() => {
-      //   this.router.navigate(['/']);
-      // });
+      this.businessServiceService.create(this.businessService).subscribe(() => {
+        this.router.navigate(['/']);
+      });
     } else {
       this.isSaveButtonClicked = true;
-      console.log(this.isSymbolEntered);
-      console.log(this.isNameEntered);
-      console.log(this.isOwnerLoaded);
-      console.log(this.isDepartmentLoaded);
-      console.log(this.isClientLoaded);
-      console.log(this.businessService.symbol?.length);
-      console.log(this.businessService.name?.length);
     }
   }
 
