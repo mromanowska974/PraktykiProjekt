@@ -2,28 +2,49 @@
   <h2>Dodaj Kartę Usługi Biznesowej</h2>
   <div class="row1">
     <p>Symbol Usługi Biznesowej (UB)</p>
-    <input type="text" [(ngModel)]="businessService.symbol" />
+    <input
+      type="text"
+      [(ngModel)]="businessService.symbol"
+      [ngClass]="{ 'empty-input': isSymbolEntered === false && isSaveButtonClicked === true }"
+    />
   </div>
   <div class="row1">
     <p>Nazwa usługi</p>
-    <input type="text" [(ngModel)]="businessService.name" />
+    <input
+      type="text"
+      [(ngModel)]="businessService.name"
+      [ngClass]="{ 'empty-input': isNameEntered === false && isSaveButtonClicked === true }"
+    />
   </div>
   <div class="row1">
     <p class="p3">Właściciel usługi</p>
-    <input type="text" class="input3" [(ngModel)]="ownerName" />
+    <input
+      type="text"
+      class="input3"
+      [(ngModel)]="ownerName"
+      [ngClass]="{ 'empty-input': isOwnerLoaded === false && isSaveButtonClicked === true }"
+    />
     <button class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
   </div>
   <div class="row1">
     <p>Dział</p>
-    <select [(ngModel)]="department" (change)="getDepartment(department)">
-      <option [ngValue]="department" *ngFor="let department of departments">
+    <select
+      [(ngModel)]="department"
+      (change)="getDepartment(department)"
+      [ngClass]="{ 'empty-input': isDepartmentLoaded === false && isSaveButtonClicked === true }"
+    >
+      <option [ngValue]="department.name" *ngFor="let department of departments">
         {{ department.name }}
       </option>
     </select>
   </div>
   <div class="row1">
     <p>Klient</p>
-    <select [(ngModel)]="client!.name" (change)="getClient(client)">
+    <select
+      [(ngModel)]="client!.name"
+      (change)="getClient(client)"
+      [ngClass]="{ 'empty-input': isClientLoaded === false && isSaveButtonClicked === true }"
+    >
       <option [ngValue]="client!.name" *ngFor="let client of clients">
         {{ client.name }}
       </option>

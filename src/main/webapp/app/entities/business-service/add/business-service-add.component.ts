@@ -37,9 +37,14 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   isClientListLoaded = false;
   isDepartmentListLoaded = false;
 
+  isSymbolEntered: boolean = false;
+  isNameEntered: boolean = false;
   isOwnerLoaded: boolean = false;
   isDepartmentLoaded: boolean = false;
   isClientLoaded: boolean = false;
+  isDataValidated: boolean = false;
+
+  isSaveButtonClicked: boolean = false;
 
   ownerName: string;
   ownerId: number;
@@ -80,6 +85,7 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     };
 
     this.businessService.client = this.client;
+    this.isClientLoaded = true;
     this.getClients();
     this.getDepartments();
 
@@ -98,7 +104,9 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
 
       this.internalServices = this.businessService.internalServices!;
       this.department = this.businessService.department!;
+      this.isDepartmentLoaded = true;
       this.ownerName = this.businessService.employee!.name + ' ' + this.businessService.employee!.surname;
+      this.isOwnerLoaded = true;
     }
   }
 
@@ -106,6 +114,7 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
     //employee selected from the list
     if (this.employeeService.isEmployeeSelected) {
       this.employeeService.employeeSelected.subscribe(employee => {
+        this.isOwnerLoaded = true;
         this.businessService.employee = employee;
         this.ownerName = employee.name + ' ' + employee.surname;
         this.employeeService.isEmployeeSelected = false;
@@ -158,11 +167,13 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
 
   getClient(obj: IClient | null) {
     this.businessService.client = obj;
+    this.isClientLoaded = true;
     console.log(obj);
   }
 
   getDepartment(obj: IDepartment | null) {
     this.businessService.department = obj;
+    this.isDepartmentLoaded = true;
     console.log(obj);
   }
 
@@ -187,12 +198,29 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
 
   onSaveAndActivate() {
     //save to db
-    this.createBusinessService(StatusOfServiceElement.ACTIVE);
-    console.log(this.businessService);
+    this.isSymbolEntered = this.businessService.symbol?.length !== 0 && this.businessService.symbol !== undefined ? true : false;
+    this.isNameEntered = this.businessService.name?.length !== 0 && this.businessService.name !== undefined ? true : false;
 
-    this.businessServiceService.create(this.businessService).subscribe(() => {
-      this.router.navigate(['/']);
-    });
+    this.isDataValidated =
+      this.isSymbolEntered && this.isNameEntered && this.isOwnerLoaded && this.isDepartmentLoaded && this.isClientLoaded;
+
+    if (this.isDataValidated) {
+      this.createBusinessService(StatusOfServiceElement.ACTIVE);
+      console.log(this.businessService);
+
+      // this.businessServiceService.create(this.businessService).subscribe(() => {
+      //   this.router.navigate(['/']);
+      // });
+    } else {
+      this.isSaveButtonClicked = true;
+      console.log(this.isSymbolEntered);
+      console.log(this.isNameEntered);
+      console.log(this.isOwnerLoaded);
+      console.log(this.isDepartmentLoaded);
+      console.log(this.isClientLoaded);
+      console.log(this.businessService.symbol?.length);
+      console.log(this.businessService.name?.length);
+    }
   }
 
   onLoadAddNewInternalService() {

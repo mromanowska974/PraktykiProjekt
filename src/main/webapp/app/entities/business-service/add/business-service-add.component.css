@@ -103,3 +103,7 @@ tr > td:last-child > button {
   border: 1px solid black;
   text-align: center;
 }
+
+.empty-input {
+  border: 2px solid red;
+}
