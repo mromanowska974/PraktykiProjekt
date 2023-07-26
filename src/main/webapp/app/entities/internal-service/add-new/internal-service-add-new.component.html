@@ -2,15 +2,20 @@
   <h2>Dodaj Usługę Wewnętrzną</h2>
   <div class="row1">
     <p>Symbol Usługi Wewnętrznej (UW)</p>
-    <input type="text" #symbol />
+    <input type="text" [ngClass]="{ 'empty-input': isSymbolEntered === false && isSaveButtonClicked === true }" #symbol />
   </div>
   <div class="row1">
     <p>Nazwa usługi</p>
-    <input type="text" #name />
+    <input type="text" [ngClass]="{ 'empty-input': isNameEntered === false && isSaveButtonClicked === true }" #name />
   </div>
   <div class="row1">
     <p class="p3">Właściciel usługi</p>
-    <input type="text" class="input3" [(ngModel)]="ownerName" />
+    <input
+      type="text"
+      class="input3"
+      [ngClass]="{ 'empty-input': isOwnerLoaded === false && isSaveButtonClicked === true }"
+      [(ngModel)]="ownerName"
+    />
     <button class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
   </div>
   <div class="btns">

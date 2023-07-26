@@ -104,9 +104,9 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
 
       this.internalServices = this.businessService.internalServices!;
       this.department = this.businessService.department!;
-      this.isDepartmentLoaded = true;
+      this.isDepartmentLoaded = this.department !== undefined ? true : false;
       this.ownerName = this.businessService.employee!.name + ' ' + this.businessService.employee!.surname;
-      this.isOwnerLoaded = true;
+      this.isOwnerLoaded = this.ownerName !== undefined ? true : false;
     }
   }
 
