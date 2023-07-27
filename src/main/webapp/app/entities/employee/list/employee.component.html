@@ -1,6 +1,6 @@
 <div class="container">
   <h3>Wybierz pracownika z listy:</h3>
-  <div>
+  <div class="scrollbar">
     <p *ngFor="let employee of employees" (click)="onEmployeeClicked(employee)">{{ employee.name }} {{ employee.surname }}</p>
   </div>
 </div>

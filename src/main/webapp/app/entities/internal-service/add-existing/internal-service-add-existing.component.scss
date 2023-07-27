@@ -20,3 +20,8 @@ p {
 p:hover {
   background-color: rgb(234, 234, 234);
 }
+
+.scrollbar {
+  max-height: 300px;
+  overflow-y: scroll;
+}
