@@ -218,6 +218,6 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
 
   onLoadAddNewInternalService() {
     this.onSave();
-    this.router.navigate(['/internal-service', 'add']);
+    this.router.navigate(['/internal-service', 'add', -1]);
   }
 }

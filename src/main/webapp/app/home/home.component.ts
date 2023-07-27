@@ -49,7 +49,7 @@ export default class HomeComponent implements OnInit {
   }
 
   onLoadAddNewInternalService() {
-    this.router.navigate(['/internal-service', 'add']);
+    this.router.navigate(['/internal-service', 'add', this.selectedBusinessService!.id]);
   }
 
   onClientSelected(client: IClient) {

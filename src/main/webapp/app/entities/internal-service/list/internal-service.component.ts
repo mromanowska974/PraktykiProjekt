@@ -30,7 +30,6 @@ import { SortService } from 'app/shared/sort/sort.service';
   ],
 })
 export class InternalServiceComponent implements OnInit {
-  //internalServices?: IInternalService[] | null;
   @Input() internalServices?: InternalService[] | null;
 
   constructor(

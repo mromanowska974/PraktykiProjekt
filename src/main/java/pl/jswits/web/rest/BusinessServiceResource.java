@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.jswits.domain.BusinessService;
 import pl.jswits.domain.Client;
+import pl.jswits.domain.InternalService;
 import pl.jswits.repository.BusinessServiceRepository;
+import pl.jswits.repository.InternalServiceRepository;
 import pl.jswits.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -35,9 +37,14 @@ public class BusinessServiceResource {
     private String applicationName;
 
     private final BusinessServiceRepository businessServiceRepository;
+    private final InternalServiceRepository internalServiceRepository;
 
-    public BusinessServiceResource(BusinessServiceRepository businessServiceRepository) {
+    public BusinessServiceResource(
+        BusinessServiceRepository businessServiceRepository,
+        InternalServiceRepository internalServiceRepository
+    ) {
         this.businessServiceRepository = businessServiceRepository;
+        this.internalServiceRepository = internalServiceRepository;
     }
 
     /**
@@ -85,6 +92,12 @@ public class BusinessServiceResource {
 
         if (!businessServiceRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        for (InternalService internalService : businessService.getInternalServices()) {
+            if (internalService.getId() == null) {
+                internalServiceRepository.save(internalService);
+            }
         }
 
         BusinessService result = businessServiceRepository.save(businessService);
