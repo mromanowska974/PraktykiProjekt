@@ -54,9 +54,11 @@
   padding: 20px;
 }
 
-.list-row:hover {
+.list-row:hover,
+.clicked {
   background-color: rgb(173, 173, 173);
   color: white;
   font-weight: 500;
   cursor: pointer;
+  border: 1px solid black;
 }

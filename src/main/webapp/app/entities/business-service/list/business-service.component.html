@@ -12,8 +12,8 @@
   <div
     class="list-row"
     *ngFor="let businessService of businessServices; let i = index"
-    [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }"
-    (click)="onBusinessServiceSelected(businessService)"
+    [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1, clicked: i === clickedElementIndex }"
+    (click)="onBusinessServiceSelected(businessService, i)"
   >
     <p class="item1">{{ businessService.symbol }}</p>
     <p class="item2">{{ businessService.name }}</p>

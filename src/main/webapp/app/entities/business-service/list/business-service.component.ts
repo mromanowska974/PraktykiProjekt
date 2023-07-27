@@ -37,6 +37,8 @@ export class BusinessServiceComponent implements OnInit, OnChanges {
   @Input() isDefaultValueSelected: boolean;
   @Output() selectedBusinessService = new EventEmitter<BusinessService>();
 
+  clickedElementIndex: number;
+
   constructor(
     protected businessServiceService: BusinessServiceService,
     protected activatedRoute: ActivatedRoute,
@@ -50,6 +52,7 @@ export class BusinessServiceComponent implements OnInit, OnChanges {
     var currentClient = changes['client'].currentValue;
     if (currentClient != null) {
       console.log(currentClient);
+      this.clickedElementIndex = -1;
       this.businessServiceService.findByClient(currentClient.id).subscribe(businessServices => {
         this.businessServices = businessServices.body;
       });
@@ -84,7 +87,9 @@ export class BusinessServiceComponent implements OnInit, OnChanges {
     this.router.navigate(['/edit', id]);
   }
 
-  onBusinessServiceSelected(businessService: BusinessService) {
+  onBusinessServiceSelected(businessService: BusinessService, index: number) {
+    this.clickedElementIndex = index;
+    console.log(this.clickedElementIndex);
     this.selectedBusinessService.emit(businessService);
   }
 }

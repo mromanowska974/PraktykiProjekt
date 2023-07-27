@@ -11,6 +11,9 @@ import { InternalServiceComponent } from 'app/entities/internal-service/list/int
 import { IClient, NewClient } from 'app/entities/client/client.model';
 import { ClientService } from 'app/entities/client/service/client.service';
 import { BusinessService } from 'app/entities/business-service/business-service.model';
+import { MatDialog } from '@angular/material/dialog';
+import { InternalServiceAddExistingComponent } from 'app/entities/internal-service/add-existing/internal-service-add-existing.component';
+import { ClickedButtonFrom } from 'app/entities/enumerations/clicked-button-from.model';
 
 @Component({
   standalone: true,
@@ -23,10 +26,11 @@ export default class HomeComponent implements OnInit {
   clients: IClient[] | null;
   selectedClient: IClient | null;
   isDefaultValueSelected: boolean = true;
-  isAddingButtonClicked: boolean = false;
+  isAddingBSButtonClicked: boolean = false;
+  isAddingISButtonClicked: boolean = false;
   selectedBusinessService?: BusinessService | null;
 
-  constructor(private clientService: ClientService, private router: Router) {}
+  constructor(private clientService: ClientService, private router: Router, private dialogRef: MatDialog) {}
 
   ngOnInit(): void {
     this.clientService.query().subscribe(clients => {
@@ -43,24 +47,45 @@ export default class HomeComponent implements OnInit {
         queryParams: { client: queryString },
       });
     } else {
-      this.isAddingButtonClicked = true;
-      console.log('domyslna wartosc');
+      this.isAddingBSButtonClicked = true;
     }
   }
 
   onLoadAddNewInternalService() {
-    this.router.navigate(['/internal-service', 'add', this.selectedBusinessService!.id]);
+    if (this.selectedBusinessService) {
+      this.router.navigate(['/internal-service', 'add', this.selectedBusinessService!.id]);
+    } else {
+      console.log('nie ma ub');
+      this.isAddingISButtonClicked = true;
+    }
+  }
+
+  onAddExistingInternalService() {
+    if (this.selectedBusinessService) {
+      //this.router.navigate(['/internal-service', 'add', this.selectedBusinessService!.id]);
+      this.dialogRef.open(InternalServiceAddExistingComponent, {
+        data: {
+          clickedButtonFrom: ClickedButtonFrom.HOME_PAGE,
+          businessService: this.selectedBusinessService,
+        },
+      });
+    } else {
+      console.log('nie ma ub');
+      this.isAddingISButtonClicked = true;
+    }
   }
 
   onClientSelected(client: IClient) {
     this.isDefaultValueSelected = false;
-    this.isAddingButtonClicked = false;
+    this.isAddingBSButtonClicked = false;
+    this.isAddingISButtonClicked = false;
     this.selectedClient = client;
+    this.selectedBusinessService = undefined;
   }
 
   onSelectedDefaultValue() {
     this.isDefaultValueSelected = true;
-    this.isAddingButtonClicked = false;
+    this.isAddingBSButtonClicked = false;
     this.selectedClient = null;
   }
 

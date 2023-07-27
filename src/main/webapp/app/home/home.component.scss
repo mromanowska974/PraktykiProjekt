@@ -16,6 +16,11 @@ Main page styles
   padding-top: 10px;
 }
 
+.btn-box {
+  display: flex;
+  flex-direction: column;
+}
+
 .error-text {
   color: red;
   font-weight: 500;
@@ -32,7 +37,7 @@ Main page styles
   justify-content: space-between;
 }
 
-.row3 > p {
+.row3 > p:first-child {
   border: 1px solid black;
   width: 50vw;
   text-align: center;

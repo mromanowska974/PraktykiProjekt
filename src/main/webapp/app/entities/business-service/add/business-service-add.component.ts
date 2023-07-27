@@ -22,6 +22,7 @@ import { DepartmentService } from 'app/entities/department/service/department.se
 import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
 import { EmployeeComponent } from 'app/entities/employee/list/employee.component';
 import { InternalServiceAddExistingComponent } from 'app/entities/internal-service/add-existing/internal-service-add-existing.component';
+import { ClickedButtonFrom } from 'app/entities/enumerations/clicked-button-from.model';
 
 @Component({
   standalone: true,
@@ -97,11 +98,19 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
       console.log(this.businessService);
 
       this.internalServices = this.businessService.internalServices!;
-      this.selectedDepartment = this.businessService.department!;
-      console.log(this.selectedDepartment);
-      this.isDepartmentLoaded = this.selectedDepartment !== undefined ? true : false;
-      this.ownerName = this.businessService.employee!.name + ' ' + this.businessService.employee!.surname;
-      this.isOwnerLoaded = this.ownerName !== undefined ? true : false;
+
+      if (this.businessService.department) {
+        this.selectedDepartment = this.businessService.department!;
+        this.isDepartmentLoaded = this.selectedDepartment !== undefined ? true : false;
+      } else {
+        this.selectedDepartment = {} as IDepartment;
+        this.selectedDepartment.name = '';
+      }
+
+      if (this.businessService.employee) {
+        this.ownerName = this.businessService.employee!.name + ' ' + this.businessService.employee!.surname;
+        this.isOwnerLoaded = this.ownerName !== undefined ? true : false;
+      }
     }
   }
 
@@ -144,7 +153,11 @@ export class BusinessServiceAddComponent implements OnInit, DoCheck {
   }
 
   openInternalServicesList() {
-    this.dialogRef.open(InternalServiceAddExistingComponent);
+    this.dialogRef.open(InternalServiceAddExistingComponent, {
+      data: {
+        clickedButtonFrom: ClickedButtonFrom.HOME_PAGE,
+      },
+    });
   }
 
   getClients() {

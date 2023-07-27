@@ -5,7 +5,7 @@
       <option (click)="onSelectedDefaultValue()">Wszystkie</option>
       <option *ngFor="let client of clients" (click)="onClientSelected(client)">{{ client.name }}</option>
     </select>
-    <p class="error-text" *ngIf="isDefaultValueSelected && isAddingButtonClicked">Najpierw wybierz spółkę</p>
+    <p class="error-text" *ngIf="isDefaultValueSelected && isAddingBSButtonClicked">Najpierw wybierz spółkę</p>
   </div>
   <div>
     <div class="row2">
@@ -23,17 +23,21 @@
   </div>
   <div>
     <div>
-      <p>Powiązane usługi wewnętrzne:</p>
+      <p>Powiązane Usługi Wewnętrzne:</p>
     </div>
     <div class="row3">
       <p *ngIf="!selectedBusinessService || isDefaultValueSelected || selectedBusinessService.internalServices?.length === 0">
-        Brak powiązanych usług wewnętrznych
+        Brak powiązanych Usług Wewnętrznych
       </p>
       <jhi-internal-service
         *ngIf="selectedBusinessService && !isDefaultValueSelected && selectedBusinessService.internalServices?.length !== 0"
         [internalServices]="selectedBusinessService.internalServices"
       ></jhi-internal-service>
-      <button class="add" (click)="onLoadAddNewInternalService()">Dodaj usługę wewnętrzną</button>
+      <p class="error-text" *ngIf="selectedBusinessService === undefined && isAddingISButtonClicked">Najpierw wybierz Usługę Biznesową</p>
+      <div class="btn-box">
+        <button class="add" (click)="onLoadAddNewInternalService()">Dodaj nową Usługę Wewnętrzną</button>
+        <button (click)="onAddExistingInternalService()">Dodaj istniejące UW</button>
+      </div>
     </div>
   </div>
 </div>
