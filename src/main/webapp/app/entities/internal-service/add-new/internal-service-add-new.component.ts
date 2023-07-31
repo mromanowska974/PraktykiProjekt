@@ -1,4 +1,4 @@
-import { Component, DoCheck, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, DoCheck, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InternalServiceService } from '../service/internal-service.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { IInternalService, InternalService, NewInternalService } from '../intern
 import { CommonModule, Location } from '@angular/common';
 import { BusinessService } from 'app/entities/business-service/business-service.model';
 import { BusinessServiceService } from 'app/entities/business-service/service/business-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -19,7 +20,7 @@ import { BusinessServiceService } from 'app/entities/business-service/service/bu
   styleUrls: ['./internal-service-add-new.component.scss'],
   imports: [FormsModule, CommonModule],
 })
-export class InternalServiceAddNewComponent implements OnInit, DoCheck {
+export class InternalServiceAddNewComponent implements OnInit, OnDestroy {
   ownerName: string;
 
   @ViewChild('symbol') symbol: ElementRef;
@@ -37,6 +38,9 @@ export class InternalServiceAddNewComponent implements OnInit, DoCheck {
   businessService: BusinessService | null;
   businessServiceId: number;
 
+  businessServiceSub: Subscription;
+  employeeSub: Subscription;
+
   constructor(
     protected internalServiceService: InternalServiceService,
     protected clientService: ClientService,
@@ -51,23 +55,31 @@ export class InternalServiceAddNewComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     this.businessServiceId = +this.activatedRoute.snapshot.params['id'];
-    console.log(this.businessServiceId);
 
+    //if business service exists (In home page)
     if (this.businessServiceId !== -1) {
-      this.businessServiceService.find(this.businessServiceId).subscribe(businessService => {
+      this.businessServiceSub = this.businessServiceService.find(this.businessServiceId).subscribe(businessService => {
         this.businessService = businessService.body;
       });
     }
+
+    //employee selected from the list
+    this.employeeSub = this.employeeService.employeeSelected.subscribe(employee => {
+      this.internalService!.employee = employee;
+      this.ownerName = employee.name + ' ' + employee.surname;
+      this.isOwnerLoaded = true;
+      this.employeeService.isEmployeeSelected = false;
+      this.dialogRef.closeAll();
+    });
   }
 
-  ngDoCheck(): void {
-    if (this.employeeService.isEmployeeSelected) {
-      this.employeeService.employeeSelected.subscribe(employee => {
-        this.internalService!.employee = employee;
-        this.ownerName = employee.name + ' ' + employee.surname;
-        this.isOwnerLoaded = true;
-        this.employeeService.isEmployeeSelected = false;
-      });
+  ngOnDestroy(): void {
+    if (this.businessServiceSub) {
+      this.businessServiceSub.unsubscribe();
+    }
+
+    if (this.employeeSub) {
+      this.employeeSub.unsubscribe();
     }
   }
 
@@ -89,20 +101,20 @@ export class InternalServiceAddNewComponent implements OnInit, DoCheck {
     this.isDataValidated = this.isSymbolEntered && this.isNameEntered && this.isOwnerLoaded;
 
     if (this.isDataValidated) {
+      //if business service exists (In home page)
       if (this.businessServiceId !== -1) {
         this.businessService?.internalServices?.push(this.internalService);
-        this.businessServiceService.update(this.businessService!).subscribe(() => {
-          console.log('dodano uw do ub');
-          this.location.back();
-        });
-      } else {
-        console.log('nie ma ub');
-        this.internalServiceService.create(this.internalService).subscribe(() => {
+        this.businessServiceSub = this.businessServiceService.update(this.businessService!).subscribe(() => {
           this.location.back();
         });
       }
+      //if business service doesn't exist (In Add new BS page)
+      else {
+        this.internalServiceService.sendCreatedInternalService(this.internalService);
+        this.internalServiceService.isNewInternalServiceCreated = true;
+        this.location.back();
+      }
     } else {
-      console.log(this.businessService);
       this.isSaveButtonClicked = true;
     }
   }

@@ -14,16 +14,18 @@ import { BusinessService } from 'app/entities/business-service/business-service.
 import { MatDialog } from '@angular/material/dialog';
 import { InternalServiceAddExistingComponent } from 'app/entities/internal-service/add-existing/internal-service-add-existing.component';
 import { ClickedButtonFrom } from 'app/entities/enumerations/clicked-button-from.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'jhi-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [SharedModule, RouterModule, BusinessServiceComponent, InternalServiceComponent],
+  imports: [SharedModule, RouterModule, BusinessServiceComponent, InternalServiceComponent, FormsModule],
 })
 export default class HomeComponent implements OnInit {
   clients: IClient[] | null;
+  client: IClient | null;
   selectedClient: IClient | null;
   isDefaultValueSelected: boolean = true;
   isAddingBSButtonClicked: boolean = false;
@@ -33,6 +35,7 @@ export default class HomeComponent implements OnInit {
   constructor(private clientService: ClientService, private router: Router, private dialogRef: MatDialog) {}
 
   ngOnInit(): void {
+    console.log(this.isDefaultValueSelected);
     this.clientService.query().subscribe(clients => {
       this.clients = clients.body;
     });
@@ -75,8 +78,9 @@ export default class HomeComponent implements OnInit {
     }
   }
 
-  onClientSelected(client: IClient) {
+  onClientSelected(client: any) {
     this.isDefaultValueSelected = false;
+    console.log(this.isDefaultValueSelected);
     this.isAddingBSButtonClicked = false;
     this.isAddingISButtonClicked = false;
     this.selectedClient = client;

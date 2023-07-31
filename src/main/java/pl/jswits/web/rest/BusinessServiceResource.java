@@ -60,6 +60,13 @@ public class BusinessServiceResource {
         if (businessService.getId() != null) {
             throw new BadRequestAlertException("A new businessService cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        for (InternalService internalService : businessService.getInternalServices()) {
+            if (internalService.getId() == null) {
+                internalServiceRepository.save(internalService);
+            }
+        }
+
         BusinessService result = businessServiceRepository.save(businessService);
         return ResponseEntity
             .created(new URI("/api/business-services/" + result.getId()))

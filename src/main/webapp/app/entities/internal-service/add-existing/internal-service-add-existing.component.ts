@@ -32,7 +32,7 @@ export class InternalServiceAddExistingComponent implements OnInit {
   }
 
   onInternalServiceClicked(internalService: IInternalService) {
-    if (this.data === ClickedButtonFrom.ADD_NEW_BS_PAGE) {
+    if (this.data.clickedButtonFrom === ClickedButtonFrom.ADD_NEW_BS_PAGE) {
       this.internalServiceService.internalServiceSelected.emit(internalService);
       this.internalServiceService.isInternalServiceSelected = true;
       console.log('dodaje do nowego ub');

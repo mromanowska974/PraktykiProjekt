@@ -1,9 +1,9 @@
 <div class="container">
   <div class="row1">
     <p>Wybierz spółkę</p>
-    <select>
+    <select [(ngModel)]="client" (change)="onClientSelected(client)">
       <option (click)="onSelectedDefaultValue()">Wszystkie</option>
-      <option *ngFor="let client of clients" (click)="onClientSelected(client)">{{ client.name }}</option>
+      <option *ngFor="let client of clients" [ngValue]="client">{{ client.name }}</option>
     </select>
     <p class="error-text" *ngIf="isDefaultValueSelected && isAddingBSButtonClicked">Najpierw wybierz spółkę</p>
   </div>

@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -83,5 +83,10 @@ export class InternalServiceService {
   internalServiceSelected = new EventEmitter<IInternalService>();
 
   isNewInternalServiceCreated = false;
-  internalServiceCreated = new EventEmitter<IInternalService>();
+  private internalServiceCreated = new BehaviorSubject<any>('');
+  test = this.internalServiceCreated.asObservable();
+
+  sendCreatedInternalService(internalService: InternalService | undefined) {
+    this.internalServiceCreated.next(internalService);
+  }
 }
