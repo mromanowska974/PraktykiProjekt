@@ -35,7 +35,6 @@ export default class HomeComponent implements OnInit {
   constructor(private clientService: ClientService, private router: Router, private dialogRef: MatDialog) {}
 
   ngOnInit(): void {
-    console.log(this.isDefaultValueSelected);
     this.clientService.query().subscribe(clients => {
       this.clients = clients.body;
     });
@@ -73,14 +72,12 @@ export default class HomeComponent implements OnInit {
         },
       });
     } else {
-      console.log('nie ma ub');
       this.isAddingISButtonClicked = true;
     }
   }
 
   onClientSelected(client: any) {
     this.isDefaultValueSelected = false;
-    console.log(this.isDefaultValueSelected);
     this.isAddingBSButtonClicked = false;
     this.isAddingISButtonClicked = false;
     this.selectedClient = client;
