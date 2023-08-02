@@ -4,7 +4,7 @@
     <p>Symbol Usługi Biznesowej (UB)</p>
     <input
       type="text"
-      [(ngModel)]="businessService.symbol"
+      [(ngModel)]="businessService!.symbol"
       [ngClass]="{ 'empty-input': isSymbolEntered === false && isSaveButtonClicked === true }"
     />
   </div>
@@ -12,7 +12,7 @@
     <p>Nazwa usługi</p>
     <input
       type="text"
-      [(ngModel)]="businessService.name"
+      [(ngModel)]="businessService!.name"
       [ngClass]="{ 'empty-input': isNameEntered === false && isSaveButtonClicked === true }"
     />
   </div>

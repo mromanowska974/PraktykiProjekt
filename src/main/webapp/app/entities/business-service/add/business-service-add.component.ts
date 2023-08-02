@@ -55,7 +55,7 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
   selectedDepartment: IDepartment | null = {} as IDepartment;
   client: IClient | null;
 
-  businessService: BusinessService = new BusinessService();
+  businessService: BusinessService | null = new BusinessService();
 
   internalServiceSub: Subscription;
   employeeSub: Subscription;
@@ -88,7 +88,7 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
       name: clientQueryValues[1][1],
     };
 
-    this.businessService.client = this.client;
+    this.businessService!.client = this.client;
     this.isClientLoaded = true;
     this.getClients();
     this.getDepartments();
@@ -98,18 +98,18 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
       this.businessService = this.businessServiceService.businessService;
       this.businessServiceService.isBusinessServiceSaved = false;
 
-      this.internalServices = this.businessService.internalServices!;
+      this.internalServices = this.businessService!.internalServices!;
 
-      if (this.businessService.department) {
-        this.selectedDepartment = this.businessService.department!;
+      if (this.businessService!.department) {
+        this.selectedDepartment = this.businessService!.department!;
         this.isDepartmentLoaded = this.selectedDepartment !== undefined ? true : false;
       } else {
         this.selectedDepartment = {} as IDepartment;
         this.selectedDepartment.name = '';
       }
 
-      if (this.businessService.employee) {
-        this.ownerName = this.businessService.employee!.name + ' ' + this.businessService.employee!.surname;
+      if (this.businessService!.employee) {
+        this.ownerName = this.businessService!.employee!.name + ' ' + this.businessService!.employee!.surname;
         this.isOwnerLoaded = this.ownerName !== undefined ? true : false;
       }
     }
@@ -124,7 +124,7 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
     //employee selected from the list
     this.employeeSub = this.employeeService.employeeSelected.subscribe(employee => {
       this.isOwnerLoaded = true;
-      this.businessService.employee = employee;
+      this.businessService!.employee = employee;
       this.ownerName = employee.name + ' ' + employee.surname;
       this.employeeService.isEmployeeSelected = false;
       this.dialogRef.closeAll();
@@ -189,12 +189,12 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
   }
 
   getClient(obj: IClient | null) {
-    this.businessService.client = obj;
+    this.businessService!.client = obj;
     this.isClientLoaded = true;
   }
 
   getDepartment(selDep: IDepartment) {
-    this.businessService.department = selDep;
+    this.businessService!.department = selDep;
     this.isDepartmentLoaded = true;
   }
 
@@ -219,8 +219,8 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
 
   onSaveAndActivate() {
     //save to db
-    this.isSymbolEntered = this.businessService.symbol?.length !== 0 && this.businessService.symbol !== undefined ? true : false;
-    this.isNameEntered = this.businessService.name?.length !== 0 && this.businessService.name !== undefined ? true : false;
+    this.isSymbolEntered = this.businessService!.symbol?.length !== 0 && this.businessService!.symbol !== undefined ? true : false;
+    this.isNameEntered = this.businessService!.name?.length !== 0 && this.businessService!.name !== undefined ? true : false;
 
     this.isDataValidated =
       this.isSymbolEntered && this.isNameEntered && this.isOwnerLoaded && this.isDepartmentLoaded && this.isClientLoaded;
@@ -229,7 +229,7 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
       this.createBusinessService(StatusOfServiceElement.ACTIVE);
       console.log(this.businessService);
 
-      this.businessServiceService.create(this.businessService).subscribe(() => {
+      this.businessServiceService.create(this.businessService!).subscribe(() => {
         this.router.navigate(['/']);
       });
     } else {

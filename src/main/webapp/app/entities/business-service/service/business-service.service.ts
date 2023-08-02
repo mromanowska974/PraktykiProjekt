@@ -7,6 +7,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { BusinessService, IBusinessService, NewBusinessService } from '../business-service.model';
 import { InternalService } from 'app/entities/internal-service/internal-service.model';
+import { IServiceElement } from 'app/entities/service-element/service-element.model';
 
 export type PartialUpdateBusinessService = Partial<IBusinessService> & Pick<IBusinessService, 'id'>;
 
@@ -88,5 +89,8 @@ export class BusinessServiceService {
 
   //NON-API
   isBusinessServiceSaved: boolean = false;
-  businessService: BusinessService = new BusinessService();
+  businessService: BusinessService | null = new BusinessService();
+
+  serviceElementsOfMonthlyPaymentType: IServiceElement[] = [];
+  serviceElementsOfOneTimePaymentType: IServiceElement[] = [];
 }
