@@ -9,7 +9,7 @@ import dayjs from 'dayjs/esm';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IServiceElement, NewServiceElement } from '../service-element.model';
+import { IServiceElement, NewServiceElement, ServiceElement } from '../service-element.model';
 
 export type PartialUpdateServiceElement = Partial<IServiceElement> & Pick<IServiceElement, 'id'>;
 
@@ -35,7 +35,7 @@ export class ServiceElementService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   //API
-  create(serviceElement: NewServiceElement): Observable<EntityResponseType> {
+  create(serviceElement: ServiceElement): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(serviceElement);
     return this.http
       .post<RestServiceElement>(this.resourceUrl, copy, { observe: 'response' })

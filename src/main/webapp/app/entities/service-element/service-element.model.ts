@@ -22,4 +22,22 @@ export interface IServiceElement {
   internalService?: Pick<IInternalService, 'id'> | null;
 }
 
+export class ServiceElement implements IServiceElement {
+  id: number;
+  price?: number | null;
+  description?: string | null;
+  valuationNumber?: string | null;
+  paymentType?: keyof typeof PaymentType | null;
+  startDate?: dayjs.Dayjs | null;
+  periodOfProvisionOfServiceInMonths?: number | null;
+  typeOfPeriodOfProvisionOfService?: string | null;
+  endDate?: dayjs.Dayjs | null;
+  status?: keyof typeof StatusOfServiceElement | null;
+  bmcRegistration?: string | null;
+  priceFromCalculation?: number | null;
+  expirationDate?: dayjs.Dayjs | null;
+  businessService?: Pick<IBusinessService, 'id'> | null;
+  internalService?: Pick<IInternalService, 'id'> | null;
+}
+
 export type NewServiceElement = Omit<IServiceElement, 'id'> & { id: null };

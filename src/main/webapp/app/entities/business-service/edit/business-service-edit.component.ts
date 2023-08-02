@@ -43,6 +43,9 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.businessServiceId = +this.route.snapshot.params['id'];
+
+    // setting business service
     if (this.businessServiceService.isBusinessServiceSaved) {
       console.log(this.businessServiceService.businessService);
       this.businessService = this.businessServiceService.businessService;
@@ -53,12 +56,12 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       this.businessServiceService.isBusinessServiceSaved = false;
       this.isDataLoaded = true;
     } else {
-      this.businessServiceId = +this.route.snapshot.params['id'];
       this.getBusinessService();
     }
 
     //receiving new service element
     this.serviceElementSub = this.serviceElementService.toReceive.subscribe(resp => {
+      resp.businessService = this.businessService;
       console.log(resp);
       if (resp.paymentType === PaymentType.MONTHLY) {
         this.serviceElementsOfMonthlyPaymentType.push(resp);
@@ -90,12 +93,17 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   }
 
   onEditBusinessService() {
-    //this.businessServiceService.update(this.businessService!).subscribe(
-    //   () => {
-    //      this.router.navigate(['/']);
-    //   }
-    //);
+    this.serviceElementsOfMonthlyPaymentType.forEach(serviceElement => {
+      this.serviceElementService.create(serviceElement).subscribe(() => console.log(serviceElement));
+    });
+
+    this.serviceElementsOfOneTimePaymentType.forEach(serviceElement => {
+      this.serviceElementService.create(serviceElement).subscribe(() => console.log(serviceElement));
+    });
+
+    this.businessServiceService.update(this.businessService!).subscribe();
     console.log(this.businessService);
+    this.router.navigate(['/']);
   }
 
   onAddServiceElement(paymentType: PaymentType) {
