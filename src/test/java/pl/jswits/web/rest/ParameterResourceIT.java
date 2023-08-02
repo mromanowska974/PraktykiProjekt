@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import pl.jswits.IntegrationTest;
 import pl.jswits.domain.Parameter;
+import pl.jswits.domain.enumeration.ParameterType;
 import pl.jswits.repository.ParameterRepository;
 
 /**
@@ -34,6 +35,9 @@ class ParameterResourceIT {
 
     private static final String DEFAULT_VALUE = "AAAAAAAAAA";
     private static final String UPDATED_VALUE = "BBBBBBBBBB";
+
+    private static final ParameterType DEFAULT_TYPE = ParameterType.QUALITY;
+    private static final ParameterType UPDATED_TYPE = ParameterType.QUANTITY;
 
     private static final String ENTITY_API_URL = "/api/parameters";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -59,7 +63,7 @@ class ParameterResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Parameter createEntity(EntityManager em) {
-        Parameter parameter = new Parameter().name(DEFAULT_NAME).value(DEFAULT_VALUE);
+        Parameter parameter = new Parameter().name(DEFAULT_NAME).value(DEFAULT_VALUE).type(DEFAULT_TYPE);
         return parameter;
     }
 
@@ -70,7 +74,7 @@ class ParameterResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Parameter createUpdatedEntity(EntityManager em) {
-        Parameter parameter = new Parameter().name(UPDATED_NAME).value(UPDATED_VALUE);
+        Parameter parameter = new Parameter().name(UPDATED_NAME).value(UPDATED_VALUE).type(UPDATED_TYPE);
         return parameter;
     }
 
@@ -94,6 +98,7 @@ class ParameterResourceIT {
         Parameter testParameter = parameterList.get(parameterList.size() - 1);
         assertThat(testParameter.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testParameter.getValue()).isEqualTo(DEFAULT_VALUE);
+        assertThat(testParameter.getType()).isEqualTo(DEFAULT_TYPE);
     }
 
     @Test
@@ -127,7 +132,8 @@ class ParameterResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(parameter.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE)));
+            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
     @Test
@@ -143,7 +149,8 @@ class ParameterResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(parameter.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE));
+            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
     }
 
     @Test
@@ -165,7 +172,7 @@ class ParameterResourceIT {
         Parameter updatedParameter = parameterRepository.findById(parameter.getId()).get();
         // Disconnect from session so that the updates on updatedParameter are not directly saved in db
         em.detach(updatedParameter);
-        updatedParameter.name(UPDATED_NAME).value(UPDATED_VALUE);
+        updatedParameter.name(UPDATED_NAME).value(UPDATED_VALUE).type(UPDATED_TYPE);
 
         restParameterMockMvc
             .perform(
@@ -181,6 +188,7 @@ class ParameterResourceIT {
         Parameter testParameter = parameterList.get(parameterList.size() - 1);
         assertThat(testParameter.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testParameter.getValue()).isEqualTo(UPDATED_VALUE);
+        assertThat(testParameter.getType()).isEqualTo(UPDATED_TYPE);
     }
 
     @Test
@@ -251,6 +259,8 @@ class ParameterResourceIT {
         Parameter partialUpdatedParameter = new Parameter();
         partialUpdatedParameter.setId(parameter.getId());
 
+        partialUpdatedParameter.type(UPDATED_TYPE);
+
         restParameterMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedParameter.getId())
@@ -265,6 +275,7 @@ class ParameterResourceIT {
         Parameter testParameter = parameterList.get(parameterList.size() - 1);
         assertThat(testParameter.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testParameter.getValue()).isEqualTo(DEFAULT_VALUE);
+        assertThat(testParameter.getType()).isEqualTo(UPDATED_TYPE);
     }
 
     @Test
@@ -279,7 +290,7 @@ class ParameterResourceIT {
         Parameter partialUpdatedParameter = new Parameter();
         partialUpdatedParameter.setId(parameter.getId());
 
-        partialUpdatedParameter.name(UPDATED_NAME).value(UPDATED_VALUE);
+        partialUpdatedParameter.name(UPDATED_NAME).value(UPDATED_VALUE).type(UPDATED_TYPE);
 
         restParameterMockMvc
             .perform(
@@ -295,6 +306,7 @@ class ParameterResourceIT {
         Parameter testParameter = parameterList.get(parameterList.size() - 1);
         assertThat(testParameter.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testParameter.getValue()).isEqualTo(UPDATED_VALUE);
+        assertThat(testParameter.getType()).isEqualTo(UPDATED_TYPE);
     }
 
     @Test

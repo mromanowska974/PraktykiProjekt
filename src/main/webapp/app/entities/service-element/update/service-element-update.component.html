@@ -49,11 +49,11 @@
     <div class="row-1">
       <div class="row-1">
         <p>Data rozpoczęcia świadczenia usługi</p>
-        <input type="datetime-local" [(ngModel)]="serviceElement!.startDate" />
+        <input type="datetime-local" [(ngModel)]="serviceElement!.startDate" class="date-input" />
       </div>
       <div class="row-1">
         <p>Data zakończenia świadczenia usługi</p>
-        <input type="datetime-local" [(ngModel)]="serviceElement!.endDate" />
+        <input type="datetime-local" [(ngModel)]="serviceElement!.endDate" class="date-input" />
       </div>
     </div>
     <div class="row-1">
@@ -77,12 +77,12 @@
     </div>
     <div class="row-3">
       <p>Wyłącz z dniem</p>
-      <input type="datetime-local" [(ngModel)]="serviceElement!.expirationDate" />
+      <input type="datetime-local" [(ngModel)]="serviceElement!.expirationDate" class="date-input" />
     </div>
   </div>
   <div class="row-2">
     <input type="checkbox" /> Wyślij przypomnienie dotyczące konieczności przedłużenia usługi na kolejny okres w dniu
-    <input type="datetime-local" [(ngModel)]="serviceElement!.expirationDate" />
+    <input type="datetime-local" [(ngModel)]="serviceElement!.expirationDate" class="date-input" />
   </div>
   <div class="btn-box-2">
     <button (click)="onSaveServiceElement()">Zapisz</button>

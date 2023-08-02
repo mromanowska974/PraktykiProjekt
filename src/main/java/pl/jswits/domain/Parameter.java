@@ -3,6 +3,7 @@ package pl.jswits.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serializable;
+import pl.jswits.domain.enumeration.ParameterType;
 
 /**
  * A Parameter.
@@ -26,14 +27,18 @@ public class Parameter implements Serializable {
     @Column(name = "value")
     private String value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private ParameterType type;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
         value = { "parameters", "serviceElements", "internalServices", "client", "employee", "department" },
         allowSetters = true
     )
     private BusinessService businessService;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
         value = { "parameters", "serviceElements", "externalCompanies", "employee", "businessServices" },
         allowSetters = true
@@ -79,6 +84,19 @@ public class Parameter implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public ParameterType getType() {
+        return this.type;
+    }
+
+    public Parameter type(ParameterType type) {
+        this.setType(type);
+        return this;
+    }
+
+    public void setType(ParameterType type) {
+        this.type = type;
     }
 
     public BusinessService getBusinessService() {
@@ -133,6 +151,7 @@ public class Parameter implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", value='" + getValue() + "'" +
+            ", type='" + getType() + "'" +
             "}";
     }
 }

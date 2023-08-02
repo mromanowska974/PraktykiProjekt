@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.jswits.domain.Parameter;
+import pl.jswits.domain.enumeration.ParameterType;
 import pl.jswits.repository.ParameterRepository;
 import pl.jswits.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
@@ -129,6 +130,9 @@ public class ParameterResource {
                 if (parameter.getValue() != null) {
                     existingParameter.setValue(parameter.getValue());
                 }
+                if (parameter.getType() != null) {
+                    existingParameter.setType(parameter.getType());
+                }
 
                 return existingParameter;
             })
@@ -149,6 +153,15 @@ public class ParameterResource {
     public List<Parameter> getAllParameters() {
         log.debug("REST request to get all Parameters");
         return parameterRepository.findAll();
+    }
+
+    @GetMapping("/parameters/byBS/{id}")
+    public List<Parameter> getParametersByBusinessServiceIdAndParameterType(
+        @PathVariable Long id,
+        @RequestParam ParameterType parameterType
+    ) {
+        log.debug("REST request to get Parameters By Business Service Id And Parameter Type");
+        return parameterRepository.findParametersByBusinessServiceIdAndType(id, parameterType);
     }
 
     /**

@@ -54,39 +54,45 @@
         <textarea name="hoursOfService" [(ngModel)]="businessService.hoursOfService"> </textarea>
       </div>
       <div>
-        <p>Parametry jakościowe usługi</p>
+        <div class="row4">
+          <p>Parametry jakościowe usługi</p>
+          <button (click)="onAddParameter(parameterType.QUALITY)">Dodaj parametr</button>
+        </div>
         <table>
           <tr>
             <th width="40%">Nazwa parametru</th>
             <th width="40%">Wartość docelowa</th>
             <th width="20%">Akcje</th>
           </tr>
-          <tr>
-            <td width="40%">Rodzaj nadzienia</td>
-            <td width="40%">Czekoladowe</td>
+          <tr *ngFor="let parameter of parametersOfQualityType; let i = index">
+            <td width="40%">{{ parameter.name }}</td>
+            <td width="40%">{{ parameter.value }}</td>
             <td width="20%">
               <button>P</button>
               <button>E</button>
-              <button>U</button>
+              <button (click)="onDeleteParameter(parameter, i)">U</button>
             </td>
           </tr>
         </table>
       </div>
       <div>
-        <p>Parametry pojemnościowe usługi</p>
+        <div class="row4">
+          <p>Parametry pojemnościowe usługi</p>
+          <button (click)="onAddParameter(parameterType.QUANTITY)">Dodaj parametr</button>
+        </div>
         <table>
           <tr>
             <th width="40%">Nazwa parametru</th>
             <th width="40%">Wartość docelowa</th>
             <th width="20%">Akcje</th>
           </tr>
-          <tr>
-            <td width="40%">Czas pieczenia</td>
-            <td width="40%">1h</td>
+          <tr *ngFor="let parameter of parametersOfQuantityType; let i = index">
+            <td width="40%">{{ parameter.name }}</td>
+            <td width="40%">{{ parameter.value }}</td>
             <td width="20%">
               <button>P</button>
               <button>E</button>
-              <button>U</button>
+              <button (click)="onDeleteParameter(parameter, i)">U</button>
             </td>
           </tr>
         </table>

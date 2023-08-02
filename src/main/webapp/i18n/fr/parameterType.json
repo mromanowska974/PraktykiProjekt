@@ -1,0 +1,9 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "ParameterType": {
+      "null": "",
+      "QUALITY": "QUALITY",
+      "QUANTITY": "QUANTITY"
+    }
+  }
+}

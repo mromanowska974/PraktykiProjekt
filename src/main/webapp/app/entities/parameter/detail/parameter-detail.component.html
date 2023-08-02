@@ -24,6 +24,12 @@
         <dd>
           <span>{{ parameter.value }}</span>
         </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.parameter.type">Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.ParameterType.' + parameter.type }}">{{
+            parameter.type
+          }}</span>
+        </dd>
         <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.parameter.businessService">Business Service</span></dt>
         <dd>
           <div *ngIf="parameter.businessService">

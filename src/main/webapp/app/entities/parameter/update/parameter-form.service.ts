@@ -20,6 +20,7 @@ type ParameterFormGroupContent = {
   id: FormControl<IParameter['id'] | NewParameter['id']>;
   name: FormControl<IParameter['name']>;
   value: FormControl<IParameter['value']>;
+  type: FormControl<IParameter['type']>;
   businessService: FormControl<IParameter['businessService']>;
   internalService: FormControl<IParameter['internalService']>;
 };
@@ -43,6 +44,7 @@ export class ParameterFormService {
       ),
       name: new FormControl(parameterRawValue.name),
       value: new FormControl(parameterRawValue.value),
+      type: new FormControl(parameterRawValue.type),
       businessService: new FormControl(parameterRawValue.businessService),
       internalService: new FormControl(parameterRawValue.internalService),
     });

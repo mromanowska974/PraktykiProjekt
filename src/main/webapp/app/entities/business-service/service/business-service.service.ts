@@ -8,6 +8,7 @@ import { createRequestOption } from 'app/core/request/request-util';
 import { BusinessService, IBusinessService, NewBusinessService } from '../business-service.model';
 import { InternalService } from 'app/entities/internal-service/internal-service.model';
 import { IServiceElement } from 'app/entities/service-element/service-element.model';
+import { IParameter } from 'app/entities/parameter/parameter.model';
 
 export type PartialUpdateBusinessService = Partial<IBusinessService> & Pick<IBusinessService, 'id'>;
 
@@ -93,4 +94,7 @@ export class BusinessServiceService {
 
   serviceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
   serviceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
+
+  parametersOfQualityType: IParameter[] | null = [];
+  parametersOfQuantityType: IParameter[] | null = [];
 }

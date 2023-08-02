@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IParameter, NewParameter } from '../parameter.model';
+import { IParameter, NewParameter, Parameter } from '../parameter.model';
+import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
 
 export type PartialUpdateParameter = Partial<IParameter> & Pick<IParameter, 'id'>;
 
@@ -18,7 +19,8 @@ export class ParameterService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(parameter: NewParameter): Observable<EntityResponseType> {
+  //API
+  create(parameter: Parameter): Observable<EntityResponseType> {
     return this.http.post<IParameter>(this.resourceUrl, parameter, { observe: 'response' });
   }
 
@@ -32,6 +34,13 @@ export class ParameterService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IParameter>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findByBusinessServiceIdAndParameterType(id: number, parameterType: ParameterType): Observable<EntityArrayResponseType> {
+    return this.http.get<IParameter[]>(`${this.resourceUrl}/byBS/${id}`, {
+      params: new HttpParams().append('parameterType', parameterType),
+      observe: 'response',
+    });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
@@ -69,5 +78,13 @@ export class ParameterService {
       return [...parametersToAdd, ...parameterCollection];
     }
     return parameterCollection;
+  }
+
+  //NON-API
+  private parameter = new BehaviorSubject<IParameter>({} as IParameter);
+  toReceive = this.parameter.asObservable();
+
+  sendCreatedParameter(parameter: IParameter) {
+    this.parameter.next(parameter);
   }
 }

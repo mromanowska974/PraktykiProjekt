@@ -22,6 +22,7 @@ describe('Parameter Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             value: expect.any(Object),
+            type: expect.any(Object),
             businessService: expect.any(Object),
             internalService: expect.any(Object),
           })
@@ -36,6 +37,7 @@ describe('Parameter Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             value: expect.any(Object),
+            type: expect.any(Object),
             businessService: expect.any(Object),
             internalService: expect.any(Object),
           })

@@ -1,0 +1,13 @@
+.btn-box {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0px;
+}
+
+.btn-box > button {
+  margin-left: 15px;
+}
+
+input {
+  width: 100%;
+}

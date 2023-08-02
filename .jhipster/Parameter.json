@@ -10,6 +10,11 @@
     {
       "fieldName": "value",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "ParameterType",
+      "fieldValues": "QUALITY,QUANTITY"
     }
   ],
   "name": "Parameter",
