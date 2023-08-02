@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
@@ -36,13 +36,6 @@ export class DepartmentService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IDepartment>(`${this.resourceUrl}/${id}`, { observe: 'response' });
-  }
-
-  findByName(departmentName: string): Observable<EntityResponseType> {
-    return this.http.get<IDepartment>(`${this.resourceUrl}/byName`, {
-      observe: 'response',
-      params: new HttpParams().append('departmentName', departmentName),
-    });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

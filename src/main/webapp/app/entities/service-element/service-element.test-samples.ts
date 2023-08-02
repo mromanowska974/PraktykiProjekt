@@ -6,32 +6,33 @@ import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-serv
 import { IServiceElement, NewServiceElement } from './service-element.model';
 
 export const sampleWithRequiredData: IServiceElement = {
-  id: 40614,
+  id: 80703,
 };
 
 export const sampleWithPartialData: IServiceElement = {
-  id: 61997,
-  price: 65960,
-  description: 'obediently Quality kandela',
-  paymentType: 'MONTHLY',
-  startDate: dayjs('2023-07-09T18:21'),
-  periodOfProvisionOfServiceInMonths: 93925,
-  typeOfPeriodOfProvisionOfService: 'immaculate',
-  endDate: dayjs('2023-07-10T02:09'),
-  status: 'ACTIVE',
+  id: 5668,
+  description: 'wschód',
+  valuationNumber: 'microchip',
+  startDate: dayjs('2023-07-09T19:57'),
+  typeOfPeriodOfProvisionOfService: 'bluetooth biały',
+  bmcRegistration: 'worriedly',
+  priceFromCalculation: 24454,
 };
 
 export const sampleWithFullData: IServiceElement = {
-  id: 59108,
-  price: 40813,
-  description: 'back pomorskie Factors',
-  valuationNumber: 'Mercedes Account północ',
-  paymentType: 'DISPOSABLE',
-  startDate: dayjs('2023-07-10T00:26'),
-  periodOfProvisionOfServiceInMonths: 20896,
-  typeOfPeriodOfProvisionOfService: 'Architect',
-  endDate: dayjs('2023-07-09T11:27'),
+  id: 1967,
+  price: 52974,
+  description: 'whispered Concrete firmware',
+  valuationNumber: 'tempora',
+  paymentType: 'MONTHLY',
+  startDate: dayjs('2023-07-10T04:12'),
+  periodOfProvisionOfServiceInMonths: 92686,
+  typeOfPeriodOfProvisionOfService: 'matrix brązowy Plastic',
+  endDate: dayjs('2023-07-10T07:03'),
   status: 'ACTIVE',
+  bmcRegistration: 'customer index Wooden',
+  priceFromCalculation: 66106,
+  expirationDate: dayjs('2023-07-09T12:31'),
 };
 
 export const sampleWithNewData: NewServiceElement = {

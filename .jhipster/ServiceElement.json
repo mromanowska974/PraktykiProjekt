@@ -40,6 +40,18 @@
       "fieldName": "status",
       "fieldType": "StatusOfServiceElement",
       "fieldValues": "ACTIVE,NOT_ACTIVE"
+    },
+    {
+      "fieldName": "bmcRegistration",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "priceFromCalculation",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "expirationDate",
+      "fieldType": "Instant"
     }
   ],
   "name": "ServiceElement",

@@ -96,6 +96,26 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="bmcRegistration">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.bmcRegistration">Bmc Registration</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="priceFromCalculation">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.priceFromCalculation"
+                >Price From Calculation</span
+              >
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="expirationDate">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.expirationDate">Expiration Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="businessService.id">
             <div class="d-flex">
               <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.businessService">Business Service</span>
@@ -129,6 +149,9 @@
           <td jhiTranslate="{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceElement.' + serviceElement.status }}">
             {{ serviceElement.status }}
           </td>
+          <td>{{ serviceElement.bmcRegistration }}</td>
+          <td>{{ serviceElement.priceFromCalculation }}</td>
+          <td>{{ serviceElement.expirationDate | formatMediumDatetime }}</td>
           <td>
             <div *ngIf="serviceElement.businessService">
               <a [routerLink]="['/business-service', serviceElement.businessService.id, 'view']">{{ serviceElement.businessService.id }}</a>

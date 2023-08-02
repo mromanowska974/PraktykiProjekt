@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity BusinessService.
+    -->
+    <changeSet id="20230801095400-1" author="jhipster">
+        <addColumn tableName="service_element">
+            <column name="bmc_registration" type="varchar(255)"></column>
+        </addColumn>
+        <addColumn tableName="service_element">
+            <column name="price_from_calculation" type="${floatType}"></column>
+        </addColumn>
+        <addColumn tableName="service_element">
+            <column name="expiration_date" type="${datetimeType}"></column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

@@ -10,6 +10,7 @@ const requireRestSample: RestServiceElement = {
   ...sampleWithRequiredData,
   startDate: sampleWithRequiredData.startDate?.toJSON(),
   endDate: sampleWithRequiredData.endDate?.toJSON(),
+  expirationDate: sampleWithRequiredData.expirationDate?.toJSON(),
 };
 
 describe('ServiceElement Service', () => {

@@ -27,6 +27,9 @@
       "typeOfPeriodOfProvisionOfService": "Type Of Period Of Provision Of Service",
       "endDate": "End Date",
       "status": "Status",
+      "bmcRegistration": "Bmc Registration",
+      "priceFromCalculation": "Price From Calculation",
+      "expirationDate": "Expiration Date",
       "businessService": "Business Service",
       "internalService": "Internal Service"
     }

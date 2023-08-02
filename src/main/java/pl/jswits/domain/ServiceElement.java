@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import pl.jswits.domain.enumeration.PaymentType;
 import pl.jswits.domain.enumeration.StatusOfServiceElement;
 
@@ -37,7 +39,7 @@ public class ServiceElement implements Serializable {
     private PaymentType paymentType;
 
     @Column(name = "start_date")
-    private Instant startDate;
+    private ZonedDateTime startDate;
 
     @Column(name = "period_of_provision_of_service_in_months")
     private Integer periodOfProvisionOfServiceInMonths;
@@ -46,20 +48,29 @@ public class ServiceElement implements Serializable {
     private String typeOfPeriodOfProvisionOfService;
 
     @Column(name = "end_date")
-    private Instant endDate;
+    private ZonedDateTime endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusOfServiceElement status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "bmc_registration")
+    private String bmcRegistration;
+
+    @Column(name = "price_from_calculation")
+    private Float priceFromCalculation;
+
+    @Column(name = "expiration_date")
+    private ZonedDateTime expirationDate;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
         value = { "parameters", "serviceElements", "internalServices", "client", "employee", "department" },
         allowSetters = true
     )
     private BusinessService businessService;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
         value = { "parameters", "serviceElements", "externalCompanies", "employee", "businessServices" },
         allowSetters = true
@@ -133,16 +144,16 @@ public class ServiceElement implements Serializable {
         this.paymentType = paymentType;
     }
 
-    public Instant getStartDate() {
+    public ZonedDateTime getStartDate() {
         return this.startDate;
     }
 
-    public ServiceElement startDate(Instant startDate) {
+    public ServiceElement startDate(ZonedDateTime startDate) {
         this.setStartDate(startDate);
         return this;
     }
 
-    public void setStartDate(Instant startDate) {
+    public void setStartDate(ZonedDateTime startDate) {
         this.startDate = startDate;
     }
 
@@ -172,16 +183,16 @@ public class ServiceElement implements Serializable {
         this.typeOfPeriodOfProvisionOfService = typeOfPeriodOfProvisionOfService;
     }
 
-    public Instant getEndDate() {
+    public ZonedDateTime getEndDate() {
         return this.endDate;
     }
 
-    public ServiceElement endDate(Instant endDate) {
+    public ServiceElement endDate(ZonedDateTime endDate) {
         this.setEndDate(endDate);
         return this;
     }
 
-    public void setEndDate(Instant endDate) {
+    public void setEndDate(ZonedDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -196,6 +207,45 @@ public class ServiceElement implements Serializable {
 
     public void setStatus(StatusOfServiceElement status) {
         this.status = status;
+    }
+
+    public String getBmcRegistration() {
+        return this.bmcRegistration;
+    }
+
+    public ServiceElement bmcRegistration(String bmcRegistration) {
+        this.setBmcRegistration(bmcRegistration);
+        return this;
+    }
+
+    public void setBmcRegistration(String bmcRegistration) {
+        this.bmcRegistration = bmcRegistration;
+    }
+
+    public Float getPriceFromCalculation() {
+        return this.priceFromCalculation;
+    }
+
+    public ServiceElement priceFromCalculation(Float priceFromCalculation) {
+        this.setPriceFromCalculation(priceFromCalculation);
+        return this;
+    }
+
+    public void setPriceFromCalculation(Float priceFromCalculation) {
+        this.priceFromCalculation = priceFromCalculation;
+    }
+
+    public ZonedDateTime getExpirationDate() {
+        return this.expirationDate;
+    }
+
+    public ServiceElement expirationDate(ZonedDateTime expirationDate) {
+        this.setExpirationDate(expirationDate);
+        return this;
+    }
+
+    public void setExpirationDate(ZonedDateTime expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public BusinessService getBusinessService() {
@@ -257,6 +307,9 @@ public class ServiceElement implements Serializable {
             ", typeOfPeriodOfProvisionOfService='" + getTypeOfPeriodOfProvisionOfService() + "'" +
             ", endDate='" + getEndDate() + "'" +
             ", status='" + getStatus() + "'" +
+            ", bmcRegistration='" + getBmcRegistration() + "'" +
+            ", priceFromCalculation=" + getPriceFromCalculation() +
+            ", expirationDate='" + getExpirationDate() + "'" +
             "}";
     }
 }

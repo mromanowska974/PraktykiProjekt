@@ -60,6 +60,15 @@ class ServiceElementResourceIT {
     private static final StatusOfServiceElement DEFAULT_STATUS = StatusOfServiceElement.ACTIVE;
     private static final StatusOfServiceElement UPDATED_STATUS = StatusOfServiceElement.NOT_ACTIVE;
 
+    private static final String DEFAULT_BMC_REGISTRATION = "AAAAAAAAAA";
+    private static final String UPDATED_BMC_REGISTRATION = "BBBBBBBBBB";
+
+    private static final Float DEFAULT_PRICE_FROM_CALCULATION = 1F;
+    private static final Float UPDATED_PRICE_FROM_CALCULATION = 2F;
+
+    private static final Instant DEFAULT_EXPIRATION_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_EXPIRATION_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
     private static final String ENTITY_API_URL = "/api/service-elements";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -93,7 +102,10 @@ class ServiceElementResourceIT {
             .periodOfProvisionOfServiceInMonths(DEFAULT_PERIOD_OF_PROVISION_OF_SERVICE_IN_MONTHS)
             .typeOfPeriodOfProvisionOfService(DEFAULT_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE)
             .endDate(DEFAULT_END_DATE)
-            .status(DEFAULT_STATUS);
+            .status(DEFAULT_STATUS)
+            .bmcRegistration(DEFAULT_BMC_REGISTRATION)
+            .priceFromCalculation(DEFAULT_PRICE_FROM_CALCULATION)
+            .expirationDate(DEFAULT_EXPIRATION_DATE);
         return serviceElement;
     }
 
@@ -113,7 +125,10 @@ class ServiceElementResourceIT {
             .periodOfProvisionOfServiceInMonths(UPDATED_PERIOD_OF_PROVISION_OF_SERVICE_IN_MONTHS)
             .typeOfPeriodOfProvisionOfService(UPDATED_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE)
             .endDate(UPDATED_END_DATE)
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .bmcRegistration(UPDATED_BMC_REGISTRATION)
+            .priceFromCalculation(UPDATED_PRICE_FROM_CALCULATION)
+            .expirationDate(UPDATED_EXPIRATION_DATE);
         return serviceElement;
     }
 
@@ -146,6 +161,9 @@ class ServiceElementResourceIT {
         assertThat(testServiceElement.getTypeOfPeriodOfProvisionOfService()).isEqualTo(DEFAULT_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE);
         assertThat(testServiceElement.getEndDate()).isEqualTo(DEFAULT_END_DATE);
         assertThat(testServiceElement.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testServiceElement.getBmcRegistration()).isEqualTo(DEFAULT_BMC_REGISTRATION);
+        assertThat(testServiceElement.getPriceFromCalculation()).isEqualTo(DEFAULT_PRICE_FROM_CALCULATION);
+        assertThat(testServiceElement.getExpirationDate()).isEqualTo(DEFAULT_EXPIRATION_DATE);
     }
 
     @Test
@@ -190,7 +208,10 @@ class ServiceElementResourceIT {
             )
             .andExpect(jsonPath("$.[*].typeOfPeriodOfProvisionOfService").value(hasItem(DEFAULT_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE)))
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].bmcRegistration").value(hasItem(DEFAULT_BMC_REGISTRATION)))
+            .andExpect(jsonPath("$.[*].priceFromCalculation").value(hasItem(DEFAULT_PRICE_FROM_CALCULATION.doubleValue())))
+            .andExpect(jsonPath("$.[*].expirationDate").value(hasItem(DEFAULT_EXPIRATION_DATE.toString())));
     }
 
     @Test
@@ -213,7 +234,10 @@ class ServiceElementResourceIT {
             .andExpect(jsonPath("$.periodOfProvisionOfServiceInMonths").value(DEFAULT_PERIOD_OF_PROVISION_OF_SERVICE_IN_MONTHS))
             .andExpect(jsonPath("$.typeOfPeriodOfProvisionOfService").value(DEFAULT_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE))
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
+            .andExpect(jsonPath("$.bmcRegistration").value(DEFAULT_BMC_REGISTRATION))
+            .andExpect(jsonPath("$.priceFromCalculation").value(DEFAULT_PRICE_FROM_CALCULATION.doubleValue()))
+            .andExpect(jsonPath("$.expirationDate").value(DEFAULT_EXPIRATION_DATE.toString()));
     }
 
     @Test
@@ -244,7 +268,10 @@ class ServiceElementResourceIT {
             .periodOfProvisionOfServiceInMonths(UPDATED_PERIOD_OF_PROVISION_OF_SERVICE_IN_MONTHS)
             .typeOfPeriodOfProvisionOfService(UPDATED_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE)
             .endDate(UPDATED_END_DATE)
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .bmcRegistration(UPDATED_BMC_REGISTRATION)
+            .priceFromCalculation(UPDATED_PRICE_FROM_CALCULATION)
+            .expirationDate(UPDATED_EXPIRATION_DATE);
 
         restServiceElementMockMvc
             .perform(
@@ -267,6 +294,9 @@ class ServiceElementResourceIT {
         assertThat(testServiceElement.getTypeOfPeriodOfProvisionOfService()).isEqualTo(UPDATED_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE);
         assertThat(testServiceElement.getEndDate()).isEqualTo(UPDATED_END_DATE);
         assertThat(testServiceElement.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testServiceElement.getBmcRegistration()).isEqualTo(UPDATED_BMC_REGISTRATION);
+        assertThat(testServiceElement.getPriceFromCalculation()).isEqualTo(UPDATED_PRICE_FROM_CALCULATION);
+        assertThat(testServiceElement.getExpirationDate()).isEqualTo(UPDATED_EXPIRATION_DATE);
     }
 
     @Test
@@ -339,8 +369,11 @@ class ServiceElementResourceIT {
 
         partialUpdatedServiceElement
             .description(UPDATED_DESCRIPTION)
+            .valuationNumber(UPDATED_VALUATION_NUMBER)
             .periodOfProvisionOfServiceInMonths(UPDATED_PERIOD_OF_PROVISION_OF_SERVICE_IN_MONTHS)
-            .typeOfPeriodOfProvisionOfService(UPDATED_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE);
+            .endDate(UPDATED_END_DATE)
+            .priceFromCalculation(UPDATED_PRICE_FROM_CALCULATION)
+            .expirationDate(UPDATED_EXPIRATION_DATE);
 
         restServiceElementMockMvc
             .perform(
@@ -356,13 +389,16 @@ class ServiceElementResourceIT {
         ServiceElement testServiceElement = serviceElementList.get(serviceElementList.size() - 1);
         assertThat(testServiceElement.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testServiceElement.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testServiceElement.getValuationNumber()).isEqualTo(DEFAULT_VALUATION_NUMBER);
+        assertThat(testServiceElement.getValuationNumber()).isEqualTo(UPDATED_VALUATION_NUMBER);
         assertThat(testServiceElement.getPaymentType()).isEqualTo(DEFAULT_PAYMENT_TYPE);
         assertThat(testServiceElement.getStartDate()).isEqualTo(DEFAULT_START_DATE);
         assertThat(testServiceElement.getPeriodOfProvisionOfServiceInMonths()).isEqualTo(UPDATED_PERIOD_OF_PROVISION_OF_SERVICE_IN_MONTHS);
-        assertThat(testServiceElement.getTypeOfPeriodOfProvisionOfService()).isEqualTo(UPDATED_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE);
-        assertThat(testServiceElement.getEndDate()).isEqualTo(DEFAULT_END_DATE);
+        assertThat(testServiceElement.getTypeOfPeriodOfProvisionOfService()).isEqualTo(DEFAULT_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE);
+        assertThat(testServiceElement.getEndDate()).isEqualTo(UPDATED_END_DATE);
         assertThat(testServiceElement.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testServiceElement.getBmcRegistration()).isEqualTo(DEFAULT_BMC_REGISTRATION);
+        assertThat(testServiceElement.getPriceFromCalculation()).isEqualTo(UPDATED_PRICE_FROM_CALCULATION);
+        assertThat(testServiceElement.getExpirationDate()).isEqualTo(UPDATED_EXPIRATION_DATE);
     }
 
     @Test
@@ -386,7 +422,10 @@ class ServiceElementResourceIT {
             .periodOfProvisionOfServiceInMonths(UPDATED_PERIOD_OF_PROVISION_OF_SERVICE_IN_MONTHS)
             .typeOfPeriodOfProvisionOfService(UPDATED_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE)
             .endDate(UPDATED_END_DATE)
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .bmcRegistration(UPDATED_BMC_REGISTRATION)
+            .priceFromCalculation(UPDATED_PRICE_FROM_CALCULATION)
+            .expirationDate(UPDATED_EXPIRATION_DATE);
 
         restServiceElementMockMvc
             .perform(
@@ -409,6 +448,9 @@ class ServiceElementResourceIT {
         assertThat(testServiceElement.getTypeOfPeriodOfProvisionOfService()).isEqualTo(UPDATED_TYPE_OF_PERIOD_OF_PROVISION_OF_SERVICE);
         assertThat(testServiceElement.getEndDate()).isEqualTo(UPDATED_END_DATE);
         assertThat(testServiceElement.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testServiceElement.getBmcRegistration()).isEqualTo(UPDATED_BMC_REGISTRATION);
+        assertThat(testServiceElement.getPriceFromCalculation()).isEqualTo(UPDATED_PRICE_FROM_CALCULATION);
+        assertThat(testServiceElement.getExpirationDate()).isEqualTo(UPDATED_EXPIRATION_DATE);
     }
 
     @Test

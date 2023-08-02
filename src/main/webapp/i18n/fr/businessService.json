@@ -28,6 +28,7 @@
       "serviceActivatingCost": "Service Activating Cost",
       "priceListOfService": "Price List Of Service",
       "notes": "Notes",
+      "status": "Status",
       "parameter": "Parameter",
       "serviceElement": "Service Element",
       "internalService": "Internal Service",

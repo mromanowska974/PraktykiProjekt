@@ -19,16 +19,17 @@ type ServiceElementFormGroupInput = IServiceElement | PartialWithRequiredKeyOf<N
 /**
  * Type that converts some properties for forms.
  */
-type FormValueOf<T extends IServiceElement | NewServiceElement> = Omit<T, 'startDate' | 'endDate'> & {
+type FormValueOf<T extends IServiceElement | NewServiceElement> = Omit<T, 'startDate' | 'endDate' | 'expirationDate'> & {
   startDate?: string | null;
   endDate?: string | null;
+  expirationDate?: string | null;
 };
 
 type ServiceElementFormRawValue = FormValueOf<IServiceElement>;
 
 type NewServiceElementFormRawValue = FormValueOf<NewServiceElement>;
 
-type ServiceElementFormDefaults = Pick<NewServiceElement, 'id' | 'startDate' | 'endDate'>;
+type ServiceElementFormDefaults = Pick<NewServiceElement, 'id' | 'startDate' | 'endDate' | 'expirationDate'>;
 
 type ServiceElementFormGroupContent = {
   id: FormControl<ServiceElementFormRawValue['id'] | NewServiceElement['id']>;
@@ -41,6 +42,9 @@ type ServiceElementFormGroupContent = {
   typeOfPeriodOfProvisionOfService: FormControl<ServiceElementFormRawValue['typeOfPeriodOfProvisionOfService']>;
   endDate: FormControl<ServiceElementFormRawValue['endDate']>;
   status: FormControl<ServiceElementFormRawValue['status']>;
+  bmcRegistration: FormControl<ServiceElementFormRawValue['bmcRegistration']>;
+  priceFromCalculation: FormControl<ServiceElementFormRawValue['priceFromCalculation']>;
+  expirationDate: FormControl<ServiceElementFormRawValue['expirationDate']>;
   businessService: FormControl<ServiceElementFormRawValue['businessService']>;
   internalService: FormControl<ServiceElementFormRawValue['internalService']>;
 };
@@ -71,6 +75,9 @@ export class ServiceElementFormService {
       typeOfPeriodOfProvisionOfService: new FormControl(serviceElementRawValue.typeOfPeriodOfProvisionOfService),
       endDate: new FormControl(serviceElementRawValue.endDate),
       status: new FormControl(serviceElementRawValue.status),
+      bmcRegistration: new FormControl(serviceElementRawValue.bmcRegistration),
+      priceFromCalculation: new FormControl(serviceElementRawValue.priceFromCalculation),
+      expirationDate: new FormControl(serviceElementRawValue.expirationDate),
       businessService: new FormControl(serviceElementRawValue.businessService),
       internalService: new FormControl(serviceElementRawValue.internalService),
     });
@@ -99,6 +106,7 @@ export class ServiceElementFormService {
       id: null,
       startDate: currentTime,
       endDate: currentTime,
+      expirationDate: currentTime,
     };
   }
 
@@ -109,6 +117,7 @@ export class ServiceElementFormService {
       ...rawServiceElement,
       startDate: dayjs(rawServiceElement.startDate, DATE_TIME_FORMAT),
       endDate: dayjs(rawServiceElement.endDate, DATE_TIME_FORMAT),
+      expirationDate: dayjs(rawServiceElement.expirationDate, DATE_TIME_FORMAT),
     };
   }
 
@@ -119,6 +128,7 @@ export class ServiceElementFormService {
       ...serviceElement,
       startDate: serviceElement.startDate ? serviceElement.startDate.format(DATE_TIME_FORMAT) : undefined,
       endDate: serviceElement.endDate ? serviceElement.endDate.format(DATE_TIME_FORMAT) : undefined,
+      expirationDate: serviceElement.expirationDate ? serviceElement.expirationDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

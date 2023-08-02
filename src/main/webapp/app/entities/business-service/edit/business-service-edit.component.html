@@ -104,7 +104,7 @@
       <div class="table-box">
         <div class="row3">
           <p>Wartość miesięcznej opłaty za usługę</p>
-          <button (click)="onAddServiceElement()">Dodaj składową usługi</button>
+          <button (click)="onAddServiceElement(paymentType.MONTHLY)">Dodaj składową usługi</button>
         </div>
         <table>
           <tr>
@@ -120,17 +120,17 @@
             <th width="8%">Status</th>
             <th width="8%">Akcje</th>
           </tr>
-          <tr>
-            <td width="3%">1</td>
-            <td width="7%">123,45</td>
-            <td width="15%">Czekoladowe</td>
-            <td width="15%">Czekoladowe</td>
-            <td width="9%">Czekoladowe</td>
-            <td width="9%">Czekoladowe</td>
-            <td width="8%">Czekoladowe</td>
-            <td width="9%">Czekoladowe</td>
-            <td width="9%">Czekoladowe</td>
-            <td width="8%">Wyłączona</td>
+          <tr *ngFor="let serviceElement of serviceElementsOfMonthlyPaymentType; let i = index">
+            <td width="3%">{{ i + 1 }}</td>
+            <td width="7%">{{ serviceElement.price }}</td>
+            <td width="15%">{{ serviceElement.description }}</td>
+            <td width="15%">{{ serviceElement.valuationNumber }}</td>
+            <td width="9%">{{ serviceElement.paymentType }}</td>
+            <td width="9%">{{ serviceElement.startDate }}</td>
+            <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
+            <td width="9%">{{ serviceElement.typeOfPeriodOfProvisionOfService }}</td>
+            <td width="9%">{{ serviceElement.endDate }}</td>
+            <td width="8%">{{ serviceElement.status }}</td>
             <td width="8%">
               <button>E</button>
             </td>
@@ -139,8 +139,8 @@
       </div>
       <div class="table-box">
         <div class="row3">
-          <p>Wartość miesięcznej opłaty za usługę</p>
-          <button (click)="onAddServiceElement()">Dodaj składową usługi</button>
+          <p>Inne płatności:</p>
+          <button (click)="onAddServiceElement(paymentType.DISPOSABLE)">Dodaj składową usługi</button>
         </div>
         <table>
           <tr>
@@ -156,17 +156,17 @@
             <th width="8%">Status</th>
             <th width="8%">Akcje</th>
           </tr>
-          <tr>
-            <td width="3%">1</td>
-            <td width="7%">123,45</td>
-            <td width="15%">Czekoladowe</td>
-            <td width="15%">Czekoladowe</td>
-            <td width="9%">Czekoladowe</td>
-            <td width="9%">Czekoladowe</td>
-            <td width="8%">Czekoladowe</td>
-            <td width="9%">Czekoladowe</td>
-            <td width="9%">Czekoladowe</td>
-            <td width="8%">Wyłączona</td>
+          <tr *ngFor="let serviceElement of serviceElementsOfOneTimePaymentType; let i = index">
+            <td width="3%">{{ i + 1 }}</td>
+            <td width="7%">{{ serviceElement.price }}</td>
+            <td width="15%">{{ serviceElement.description }}</td>
+            <td width="15%">{{ serviceElement.valuationNumber }}</td>
+            <td width="9%">{{ serviceElement.paymentType }}</td>
+            <td width="9%">{{ serviceElement.startDate }}</td>
+            <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
+            <td width="9%">{{ serviceElement.typeOfPeriodOfProvisionOfService }}</td>
+            <td width="9%">{{ serviceElement.endDate }}</td>
+            <td width="8%">{{ serviceElement.status }}</td>
             <td width="8%">
               <button>E</button>
             </td>

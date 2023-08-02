@@ -2,6 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IBusinessService } from '../business-service.model';
 import { BusinessServiceService } from '../service/business-service.service';
+import { IServiceElement } from 'app/entities/service-element/service-element.model';
+import { PaymentType } from 'app/entities/enumerations/payment-type.model';
+import { ServiceElementService } from 'app/entities/service-element/service/service-element.service';
 
 @Component({
   selector: 'jhi-business-service-edit',
@@ -9,7 +12,7 @@ import { BusinessServiceService } from '../service/business-service.service';
   styleUrls: ['./business-service-edit.component.scss'],
 })
 export class BusinessServiceEditComponent implements OnInit {
-  sectionSelected: string = 'A';
+  sectionSelected: string = 'C';
 
   businessServiceId: number;
   businessService: IBusinessService | null;
@@ -24,17 +27,35 @@ export class BusinessServiceEditComponent implements OnInit {
   priceListOfService: string;
   notes: string;
 
-  constructor(private router: Router, private route: ActivatedRoute, private businessServiceService: BusinessServiceService) {}
+  serviceElementsOfMonthlyPaymentType: IServiceElement[] = [];
+  serviceElementsOfOneTimePaymentType: IServiceElement[] = [];
+
+  paymentType: typeof PaymentType = PaymentType;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private businessServiceService: BusinessServiceService,
+    private serviceElementService: ServiceElementService
+  ) {}
 
   ngOnInit(): void {
     this.businessServiceId = +this.route.snapshot.params['id'];
     this.getBusinessService();
+
+    this.serviceElementService.toReceive.subscribe(resp => {
+      console.log(resp);
+      if (resp.paymentType === PaymentType.MONTHLY) {
+        this.serviceElementsOfMonthlyPaymentType.push(resp);
+      } else {
+        this.serviceElementsOfOneTimePaymentType.push(resp);
+      }
+    });
   }
 
   getBusinessService() {
     this.businessServiceService.find(this.businessServiceId).subscribe(businessService => {
       this.businessService = businessService.body;
-      console.log(this.businessService);
       this.isDataLoaded = true;
     });
   }
@@ -52,7 +73,9 @@ export class BusinessServiceEditComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  onAddServiceElement() {
-    this.router.navigate(['/service-element', 'new']);
+  onAddServiceElement(paymentType: PaymentType) {
+    this.router.navigate(['/service-element', 'new'], {
+      queryParams: { paymentType: paymentType },
+    });
   }
 }

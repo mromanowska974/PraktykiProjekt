@@ -15,6 +15,9 @@ export interface IServiceElement {
   typeOfPeriodOfProvisionOfService?: string | null;
   endDate?: dayjs.Dayjs | null;
   status?: keyof typeof StatusOfServiceElement | null;
+  bmcRegistration?: string | null;
+  priceFromCalculation?: number | null;
+  expirationDate?: dayjs.Dayjs | null;
   businessService?: Pick<IBusinessService, 'id'> | null;
   internalService?: Pick<IInternalService, 'id'> | null;
 }

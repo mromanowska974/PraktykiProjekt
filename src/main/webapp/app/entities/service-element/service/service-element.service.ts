@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 
@@ -13,9 +13,10 @@ import { IServiceElement, NewServiceElement } from '../service-element.model';
 
 export type PartialUpdateServiceElement = Partial<IServiceElement> & Pick<IServiceElement, 'id'>;
 
-type RestOf<T extends IServiceElement | NewServiceElement> = Omit<T, 'startDate' | 'endDate'> & {
+type RestOf<T extends IServiceElement | NewServiceElement> = Omit<T, 'startDate' | 'endDate' | 'expirationDate'> & {
   startDate?: string | null;
   endDate?: string | null;
+  expirationDate?: string | null;
 };
 
 export type RestServiceElement = RestOf<IServiceElement>;
@@ -33,6 +34,7 @@ export class ServiceElementService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
+  //API
   create(serviceElement: NewServiceElement): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(serviceElement);
     return this.http
@@ -106,8 +108,9 @@ export class ServiceElementService {
   ): RestOf<T> {
     return {
       ...serviceElement,
-      startDate: serviceElement.startDate?.toJSON() ?? null,
-      endDate: serviceElement.endDate?.toJSON() ?? null,
+      startDate: dayjs(serviceElement.startDate)?.toJSON() ?? null,
+      endDate: dayjs(serviceElement.endDate)?.toJSON() ?? null,
+      expirationDate: dayjs(serviceElement.expirationDate)?.toJSON() ?? null,
     };
   }
 
@@ -116,6 +119,7 @@ export class ServiceElementService {
       ...restServiceElement,
       startDate: restServiceElement.startDate ? dayjs(restServiceElement.startDate) : undefined,
       endDate: restServiceElement.endDate ? dayjs(restServiceElement.endDate) : undefined,
+      expirationDate: restServiceElement.expirationDate ? dayjs(restServiceElement.expirationDate) : undefined,
     };
   }
 
@@ -129,5 +133,13 @@ export class ServiceElementService {
     return res.clone({
       body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
     });
+  }
+
+  //NON-API
+  private serviceElement = new BehaviorSubject<IServiceElement>({} as IServiceElement);
+  toReceive = this.serviceElement.asObservable();
+
+  sendCreatedServiceElement(serviceElement: IServiceElement) {
+    this.serviceElement.next(serviceElement);
   }
 }

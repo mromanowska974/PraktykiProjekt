@@ -64,6 +64,22 @@
             serviceElement.status
           }}</span>
         </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.bmcRegistration">Bmc Registration</span></dt>
+        <dd>
+          <span>{{ serviceElement.bmcRegistration }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.priceFromCalculation"
+            >Price From Calculation</span
+          >
+        </dt>
+        <dd>
+          <span>{{ serviceElement.priceFromCalculation }}</span>
+        </dd>
+        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.expirationDate">Expiration Date</span></dt>
+        <dd>
+          <span>{{ serviceElement.expirationDate | formatMediumDatetime }}</span>
+        </dd>
         <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.businessService">Business Service</span></dt>
         <dd>
           <div *ngIf="serviceElement.businessService">

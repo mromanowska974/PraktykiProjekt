@@ -150,6 +150,15 @@ public class ServiceElementResource {
                 if (serviceElement.getStatus() != null) {
                     existingServiceElement.setStatus(serviceElement.getStatus());
                 }
+                if (serviceElement.getBmcRegistration() != null) {
+                    existingServiceElement.setBmcRegistration(serviceElement.getBmcRegistration());
+                }
+                if (serviceElement.getPriceFromCalculation() != null) {
+                    existingServiceElement.setPriceFromCalculation(serviceElement.getPriceFromCalculation());
+                }
+                if (serviceElement.getExpirationDate() != null) {
+                    existingServiceElement.setExpirationDate(serviceElement.getExpirationDate());
+                }
 
                 return existingServiceElement;
             })

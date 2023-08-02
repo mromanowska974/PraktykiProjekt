@@ -29,6 +29,9 @@ describe('ServiceElement Form Service', () => {
             typeOfPeriodOfProvisionOfService: expect.any(Object),
             endDate: expect.any(Object),
             status: expect.any(Object),
+            bmcRegistration: expect.any(Object),
+            priceFromCalculation: expect.any(Object),
+            expirationDate: expect.any(Object),
             businessService: expect.any(Object),
             internalService: expect.any(Object),
           })
@@ -50,6 +53,9 @@ describe('ServiceElement Form Service', () => {
             typeOfPeriodOfProvisionOfService: expect.any(Object),
             endDate: expect.any(Object),
             status: expect.any(Object),
+            bmcRegistration: expect.any(Object),
+            priceFromCalculation: expect.any(Object),
+            expirationDate: expect.any(Object),
             businessService: expect.any(Object),
             internalService: expect.any(Object),
           })
