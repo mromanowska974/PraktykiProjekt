@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.jswits.domain.ServiceElement;
+import pl.jswits.domain.enumeration.PaymentType;
 import pl.jswits.repository.ServiceElementRepository;
 import pl.jswits.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
@@ -179,6 +180,12 @@ public class ServiceElementResource {
     public List<ServiceElement> getAllServiceElements() {
         log.debug("REST request to get all ServiceElements");
         return serviceElementRepository.findAll();
+    }
+
+    @GetMapping("/service-elements/byBS/{id}")
+    public List<ServiceElement> getServiceElementsByBusinessServiceId(@PathVariable Long id, @RequestParam PaymentType paymentType) {
+        log.debug("REST request to get ServiceElements By Business Service Id");
+        return serviceElementRepository.findServiceElementsByBusinessServiceIdAndPaymentType(id, paymentType);
     }
 
     /**

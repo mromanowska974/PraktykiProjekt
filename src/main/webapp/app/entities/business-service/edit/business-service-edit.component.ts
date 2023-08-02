@@ -28,8 +28,8 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   priceListOfService: string;
   notes: string;
 
-  serviceElementsOfMonthlyPaymentType: IServiceElement[] = [];
-  serviceElementsOfOneTimePaymentType: IServiceElement[] = [];
+  serviceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
+  serviceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
 
   paymentType: typeof PaymentType = PaymentType;
 
@@ -57,16 +57,25 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       this.isDataLoaded = true;
     } else {
       this.getBusinessService();
+      this.serviceElementService.findByBusinessServiceAndPaymentType(this.businessServiceId, PaymentType.MONTHLY).subscribe(resp => {
+        this.serviceElementsOfMonthlyPaymentType = resp.body;
+        console.log(this.serviceElementsOfMonthlyPaymentType);
+      });
+
+      this.serviceElementService.findByBusinessServiceAndPaymentType(this.businessServiceId, PaymentType.DISPOSABLE).subscribe(resp => {
+        this.serviceElementsOfOneTimePaymentType = resp.body;
+        console.log(this.serviceElementsOfOneTimePaymentType);
+      });
     }
 
     //receiving new service element
     this.serviceElementSub = this.serviceElementService.toReceive.subscribe(resp => {
       resp.businessService = this.businessService;
-      console.log(resp);
+      //console.log(resp);
       if (resp.paymentType === PaymentType.MONTHLY) {
-        this.serviceElementsOfMonthlyPaymentType.push(resp);
+        this.serviceElementsOfMonthlyPaymentType!.push(resp);
       } else if (resp.paymentType === PaymentType.DISPOSABLE) {
-        this.serviceElementsOfOneTimePaymentType.push(resp);
+        this.serviceElementsOfOneTimePaymentType!.push(resp);
       }
     });
   }
@@ -93,11 +102,11 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   }
 
   onEditBusinessService() {
-    this.serviceElementsOfMonthlyPaymentType.forEach(serviceElement => {
+    this.serviceElementsOfMonthlyPaymentType!.forEach(serviceElement => {
       this.serviceElementService.create(serviceElement).subscribe(() => console.log(serviceElement));
     });
 
-    this.serviceElementsOfOneTimePaymentType.forEach(serviceElement => {
+    this.serviceElementsOfOneTimePaymentType!.forEach(serviceElement => {
       this.serviceElementService.create(serviceElement).subscribe(() => console.log(serviceElement));
     });
 

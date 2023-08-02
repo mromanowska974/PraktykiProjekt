@@ -91,6 +91,6 @@ export class BusinessServiceService {
   isBusinessServiceSaved: boolean = false;
   businessService: BusinessService | null = new BusinessService();
 
-  serviceElementsOfMonthlyPaymentType: IServiceElement[] = [];
-  serviceElementsOfOneTimePaymentType: IServiceElement[] = [];
+  serviceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
+  serviceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
 }
