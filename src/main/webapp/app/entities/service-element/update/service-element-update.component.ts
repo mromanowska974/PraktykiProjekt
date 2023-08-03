@@ -18,6 +18,7 @@ import { InternalServiceService } from 'app/entities/internal-service/service/in
 import { PaymentType } from 'app/entities/enumerations/payment-type.model';
 import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
 import { prototype } from 'events';
+import dayjs from 'dayjs/esm';
 
 @Component({
   standalone: true,
@@ -28,6 +29,19 @@ import { prototype } from 'events';
 })
 export class ServiceElementUpdateComponent implements OnInit {
   serviceElement: IServiceElement | null = {} as IServiceElement;
+
+  isDescriptionEntered: boolean = false;
+  isBMCRegistrationEntered: boolean = false;
+  isValuationNumberEntered: boolean = false;
+  isPriceFromCalculationEntered: boolean = false;
+  isPriceAfterNegotiationEntered: boolean = false;
+  isStartDateEntered: boolean = false;
+  isEndDateEntered: boolean = false;
+  isExpirationDateEntered: boolean = false;
+  isPeriodOfProvisionOfServiceInMonthsEntered: boolean = false;
+  isTypeOfPeriodOfProvisionOfServiceEntered: boolean = false;
+  isDataValidated: boolean = false;
+  isSaveBtnClicked: boolean = false;
 
   constructor(
     protected serviceElementService: ServiceElementService,
@@ -50,14 +64,46 @@ export class ServiceElementUpdateComponent implements OnInit {
   }
 
   onSaveServiceElement() {
-    console.log(this.serviceElement);
+    //validation
+    this.isBMCRegistrationEntered =
+      this.serviceElement?.bmcRegistration !== undefined && this.serviceElement.bmcRegistration!.length > 0 ? true : false;
+    this.isDescriptionEntered =
+      this.serviceElement?.description !== undefined && this.serviceElement.description!.length > 0 ? true : false;
+    this.isEndDateEntered = this.serviceElement?.endDate ? true : false;
+    this.isExpirationDateEntered = this.serviceElement?.expirationDate ? true : false;
+    this.isPeriodOfProvisionOfServiceInMonthsEntered =
+      this.serviceElement?.periodOfProvisionOfServiceInMonths !== undefined && this.serviceElement.periodOfProvisionOfServiceInMonths! > 0
+        ? true
+        : false;
+    this.isPriceAfterNegotiationEntered = this.serviceElement?.price !== undefined && this.serviceElement.price! > 0 ? true : false;
+    this.isPriceFromCalculationEntered =
+      this.serviceElement?.priceFromCalculation !== undefined && this.serviceElement.priceFromCalculation! > 0 ? true : false;
+    this.isStartDateEntered = this.serviceElement?.startDate ? true : false;
+    this.isTypeOfPeriodOfProvisionOfServiceEntered =
+      this.serviceElement?.typeOfPeriodOfProvisionOfService !== undefined &&
+      this.serviceElement.typeOfPeriodOfProvisionOfService!.length > 0
+        ? true
+        : false;
+    this.isValuationNumberEntered =
+      this.serviceElement?.valuationNumber !== undefined && this.serviceElement.valuationNumber!.length > 0 ? true : false;
 
-    this.serviceElementService.sendCreatedServiceElement(this.serviceElement!);
-    this.location.back();
-    // this.serviceElementService.create(this.serviceElement!).subscribe(
-    //   () => {
-    //     this.location.back();
-    //   }
-    // )
+    this.isDataValidated =
+      this.isBMCRegistrationEntered &&
+      this.isDescriptionEntered &&
+      this.isEndDateEntered &&
+      this.isExpirationDateEntered &&
+      this.isPeriodOfProvisionOfServiceInMonthsEntered &&
+      this.isPriceAfterNegotiationEntered &&
+      this.isPriceFromCalculationEntered &&
+      this.isStartDateEntered &&
+      this.isTypeOfPeriodOfProvisionOfServiceEntered &&
+      this.isValuationNumberEntered;
+
+    if (this.isDataValidated) {
+      this.serviceElementService.sendCreatedServiceElement(this.serviceElement!);
+      this.location.back();
+    } else {
+      this.isSaveBtnClicked = true;
+    }
   }
 }

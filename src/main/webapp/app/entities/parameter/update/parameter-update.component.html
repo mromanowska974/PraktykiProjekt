@@ -2,11 +2,11 @@
   <h2>Dodaj lub edytuj parametr</h2>
   <div>
     <p>Nazwa parametru</p>
-    <input type="text" [(ngModel)]="parameter!.name" />
+    <input type="text" [(ngModel)]="parameter!.name" [ngClass]="{ 'error-input': !isNameEntered && isSaveBtnClicked }" />
   </div>
   <div>
     <p>Wartość domyślna</p>
-    <input type="text" [(ngModel)]="parameter!.value" />
+    <input type="text" [(ngModel)]="parameter!.value" [ngClass]="{ 'error-input': !isValueEntered && isSaveBtnClicked }" />
   </div>
   <div class="btn-box">
     <button (click)="onSave()">Dodaj</button>

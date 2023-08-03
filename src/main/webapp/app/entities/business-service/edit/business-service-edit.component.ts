@@ -19,7 +19,7 @@ import { ParameterService } from 'app/entities/parameter/service/parameter.servi
   styleUrls: ['./business-service-edit.component.scss'],
 })
 export class BusinessServiceEditComponent implements OnInit, OnDestroy {
-  sectionSelected: string = 'B';
+  sectionSelected: string = 'C';
 
   businessServiceId: number;
   businessService: BusinessService | null = new BusinessService();
@@ -150,20 +150,20 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   onEditBusinessService() {
     //adding service elements to db
     this.serviceElementsOfMonthlyPaymentType!.forEach(serviceElement => {
-      this.serviceElementService.create(serviceElement).subscribe();
+      if (serviceElement.id === undefined) this.serviceElementService.create(serviceElement).subscribe();
     });
 
     this.serviceElementsOfOneTimePaymentType!.forEach(serviceElement => {
-      this.serviceElementService.create(serviceElement).subscribe();
+      if (serviceElement.id === undefined) this.serviceElementService.create(serviceElement).subscribe();
     });
 
     //adding parameters to db
     this.parametersOfQualityType!.forEach(parameter => {
-      this.parameterService.create(parameter).subscribe();
+      if (parameter.id === undefined) this.parameterService.create(parameter).subscribe();
     });
 
     this.parametersOfQuantityType!.forEach(parameter => {
-      this.parameterService.create(parameter).subscribe();
+      if (parameter.id === undefined) this.parameterService.create(parameter).subscribe();
     });
 
     //deleting parameters

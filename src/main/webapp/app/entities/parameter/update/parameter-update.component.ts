@@ -27,6 +27,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class ParameterUpdateComponent implements OnInit {
   parameter: IParameter | null = {} as IParameter;
 
+  isNameEntered: boolean = false;
+  isValueEntered: boolean = false;
+  isSaveBtnClicked: boolean = false;
+
   constructor(
     protected parameterService: ParameterService,
     protected parameterFormService: ParameterFormService,
@@ -47,7 +51,15 @@ export class ParameterUpdateComponent implements OnInit {
   }
 
   onSave() {
-    this.parameterService.sendCreatedParameter(this.parameter!);
-    this.dialogRef.close();
+    this.isNameEntered = this.parameter!.name !== undefined && this.parameter!.name!.length > 0 ? true : false;
+    this.isValueEntered = this.parameter!.value !== undefined && this.parameter!.value!.length > 0 ? true : false;
+
+    if (this.isNameEntered && this.isValueEntered) {
+      this.parameterService.sendCreatedParameter(this.parameter!);
+      this.dialogRef.close();
+    } else {
+      this.isSaveBtnClicked = true;
+      console.log('czegos brakuje');
+    }
   }
 }
