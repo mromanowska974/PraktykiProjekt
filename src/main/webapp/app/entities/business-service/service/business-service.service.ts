@@ -97,4 +97,9 @@ export class BusinessServiceService {
 
   parametersOfQualityType: IParameter[] | null = [];
   parametersOfQuantityType: IParameter[] | null = [];
+
+  formattedStartDatesMonthly: string[] = [];
+  formattedEndDatesMonthly: string[] = [];
+  formattedStartDatesOneTime: string[] = [];
+  formattedEndDatesOneTime: string[] = [];
 }

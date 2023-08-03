@@ -18,7 +18,7 @@
     <p class="item1">{{ businessService.symbol }}</p>
     <p class="item2">{{ businessService.name }}</p>
     <p class="item3">{{ businessService.employee?.name + ' ' + businessService.employee?.surname }}</p>
-    <p class="item4">{{ businessService.status }}</p>
+    <p class="item4">{{ businessService.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</p>
     <p class="item5">
       <button (click)="onEditPageLoad(businessService.id)">E</button>
       <button (click)="onStatusChange(businessService)">ZS</button>

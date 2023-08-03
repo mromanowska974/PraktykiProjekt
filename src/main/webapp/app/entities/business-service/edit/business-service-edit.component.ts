@@ -12,6 +12,7 @@ import { ParameterUpdateComponent } from 'app/entities/parameter/update/paramete
 import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
 import { IParameter } from 'app/entities/parameter/parameter.model';
 import { ParameterService } from 'app/entities/parameter/service/parameter.service';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'jhi-business-service-edit',
@@ -48,6 +49,11 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
 
   parametersToDelete: IParameter[] | null = [];
 
+  formattedStartDatesMonthly: string[] = [];
+  formattedEndDatesMonthly: string[] = [];
+  formattedStartDatesOneTime: string[] = [];
+  formattedEndDatesOneTime: string[] = [];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -63,13 +69,15 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     // setting business service
     //if business service was saved when clicked Add New Service Element
     if (this.businessServiceService.isBusinessServiceSaved) {
-      console.log(this.businessServiceService.businessService);
       this.businessService = this.businessServiceService.businessService;
       this.serviceElementsOfMonthlyPaymentType = this.businessServiceService.serviceElementsOfMonthlyPaymentType;
       this.serviceElementsOfOneTimePaymentType = this.businessServiceService.serviceElementsOfOneTimePaymentType;
       this.parametersOfQualityType = this.businessServiceService.parametersOfQualityType;
       this.parametersOfQuantityType = this.businessServiceService.parametersOfQuantityType;
-      console.log(this.businessService);
+      this.formattedStartDatesMonthly = this.businessServiceService.formattedStartDatesMonthly;
+      this.formattedEndDatesMonthly = this.businessServiceService.formattedEndDatesMonthly;
+      this.formattedStartDatesOneTime = this.businessServiceService.formattedStartDatesOneTime;
+      this.formattedEndDatesOneTime = this.businessServiceService.formattedEndDatesOneTime;
 
       this.businessServiceService.isBusinessServiceSaved = false;
       this.isDataLoaded = true;
@@ -79,40 +87,49 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       this.getBusinessService();
       this.serviceElementService.findByBusinessServiceAndPaymentType(this.businessServiceId, PaymentType.MONTHLY).subscribe(resp => {
         this.serviceElementsOfMonthlyPaymentType = resp.body;
-        console.log(this.serviceElementsOfMonthlyPaymentType);
+
+        this.serviceElementsOfMonthlyPaymentType?.forEach(serviceElement => {
+          this.formattedStartDatesMonthly.push(serviceElement.startDate!.format('DD.MM.YYYY').toString());
+          this.formattedEndDatesMonthly.push(serviceElement.endDate!.format('DD.MM.YYYY').toString());
+        });
       });
 
       this.serviceElementService.findByBusinessServiceAndPaymentType(this.businessServiceId, PaymentType.DISPOSABLE).subscribe(resp => {
         this.serviceElementsOfOneTimePaymentType = resp.body;
-        console.log(this.serviceElementsOfOneTimePaymentType);
+
+        this.serviceElementsOfOneTimePaymentType?.forEach(serviceElement => {
+          this.formattedStartDatesOneTime.push(serviceElement.startDate!.format('DD.MM.YYYY').toString());
+          this.formattedEndDatesOneTime.push(serviceElement.endDate!.format('DD.MM.YYYY').toString());
+        });
       });
 
       this.parameterService.findByBusinessServiceIdAndParameterType(this.businessServiceId, ParameterType.QUALITY).subscribe(resp => {
         this.parametersOfQualityType = resp.body;
-        console.log(this.parametersOfQualityType);
       });
 
       this.parameterService.findByBusinessServiceIdAndParameterType(this.businessServiceId, ParameterType.QUANTITY).subscribe(resp => {
         this.parametersOfQuantityType = resp.body;
-        console.log(this.parametersOfQuantityType);
       });
     }
 
     //receiving new service element
     this.serviceElementSub = this.serviceElementService.toReceive.subscribe(resp => {
       resp.businessService = this.businessService;
-      //console.log(resp);
+
       if (resp.paymentType === PaymentType.MONTHLY) {
         this.serviceElementsOfMonthlyPaymentType!.push(resp);
+        this.formattedStartDatesMonthly.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
+        this.formattedEndDatesMonthly.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
       } else if (resp.paymentType === PaymentType.DISPOSABLE) {
         this.serviceElementsOfOneTimePaymentType!.push(resp);
+        this.formattedStartDatesOneTime.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
+        this.formattedEndDatesOneTime.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
       }
     });
 
     //receiving new parameter
     this.parameterSub = this.parameterService.toReceive.subscribe(resp => {
       resp.businessService = this.businessService;
-      console.log(resp);
 
       if (resp.type === ParameterType.QUALITY) {
         this.parametersOfQualityType?.push(resp);
@@ -184,6 +201,10 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     this.businessServiceService.serviceElementsOfOneTimePaymentType = this.serviceElementsOfOneTimePaymentType;
     this.businessServiceService.parametersOfQualityType = this.parametersOfQualityType;
     this.businessServiceService.parametersOfQuantityType = this.parametersOfQuantityType;
+    this.businessServiceService.formattedStartDatesMonthly = this.formattedStartDatesMonthly;
+    this.businessServiceService.formattedEndDatesMonthly = this.formattedEndDatesMonthly;
+    this.businessServiceService.formattedStartDatesOneTime = this.formattedStartDatesOneTime;
+    this.businessServiceService.formattedEndDatesOneTime = this.formattedEndDatesOneTime;
 
     this.businessServiceService.isBusinessServiceSaved = true;
     this.router.navigate(['/service-element', 'new'], {
@@ -207,9 +228,5 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     } else if (parameter.type === ParameterType.QUANTITY) {
       this.parametersOfQuantityType?.splice(index, 1);
     }
-
-    console.log(this.parametersOfQualityType);
-    console.log(this.parametersOfQuantityType);
-    console.log(this.parametersToDelete);
   }
 }
