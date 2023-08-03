@@ -136,7 +136,7 @@
             <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
             <td width="9%">{{ serviceElement.typeOfPeriodOfProvisionOfService }}</td>
             <td width="9%">{{ formattedEndDatesMonthly[i] }}</td>
-            <td width="8%">{{ serviceElement.status }}</td>
+            <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</td>
             <td width="8%">
               <button>E</button>
             </td>
@@ -172,7 +172,7 @@
             <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
             <td width="9%">{{ serviceElement.typeOfPeriodOfProvisionOfService }}</td>
             <td width="9%">{{ formattedEndDatesOneTime[i] }}</td>
-            <td width="8%">{{ serviceElement.status }}</td>
+            <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</td>
             <td width="8%">
               <button>E</button>
             </td>

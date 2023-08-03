@@ -106,7 +106,7 @@
   <div class="row-3">
     <div class="row-3">
       <p>Ustaw status usługi</p>
-      <button>AKTYWNA</button>
+      <button (click)="onToggleStatus()">{{ serviceElement!.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</button>
     </div>
     <div class="row-3">
       <p>Wyłącz z dniem</p>

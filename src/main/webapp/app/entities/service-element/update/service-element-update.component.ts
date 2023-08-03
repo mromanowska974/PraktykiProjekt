@@ -56,6 +56,16 @@ export class ServiceElementUpdateComponent implements OnInit {
     if (this.serviceElement) {
       this.serviceElement.paymentType = this.activatedRoute.snapshot.queryParams['paymentType'];
       console.log(this.serviceElement.paymentType);
+      this.serviceElement.status = StatusOfServiceElement.NOT_ACTIVE;
+
+      //for testing only
+      this.serviceElement.bmcRegistration = 'test';
+      this.serviceElement.description = 'test';
+      this.serviceElement.price = 567;
+      this.serviceElement.priceFromCalculation = 678;
+      this.serviceElement.periodOfProvisionOfServiceInMonths = 4;
+      this.serviceElement.typeOfPeriodOfProvisionOfService = 'Minimalny';
+      this.serviceElement.valuationNumber = 'test';
     }
   }
 
@@ -105,5 +115,10 @@ export class ServiceElementUpdateComponent implements OnInit {
     } else {
       this.isSaveBtnClicked = true;
     }
+  }
+
+  onToggleStatus() {
+    if (this.serviceElement?.status === StatusOfServiceElement.NOT_ACTIVE) this.serviceElement.status = StatusOfServiceElement.ACTIVE;
+    else this.serviceElement!.status = StatusOfServiceElement.NOT_ACTIVE;
   }
 }
