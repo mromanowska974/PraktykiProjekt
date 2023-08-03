@@ -73,14 +73,10 @@ export class BusinessServiceComponent implements OnInit, OnChanges {
   }
 
   onStatusChange(businessService: IBusinessService) {
-    console.log('lolo');
-    if (businessService.status === StatusOfServiceElement.ACTIVE) {
-      businessService.status = StatusOfServiceElement.NOT_ACTIVE;
-    }
+    if (businessService.status === StatusOfServiceElement.ACTIVE) businessService.status = StatusOfServiceElement.NOT_ACTIVE;
+    else businessService.status = StatusOfServiceElement.ACTIVE;
 
-    if (businessService.status === StatusOfServiceElement.NOT_ACTIVE) {
-      businessService.status = StatusOfServiceElement.ACTIVE;
-    }
+    this.businessServiceService.update(businessService).subscribe(() => console.log(businessService.status));
   }
 
   onEditPageLoad(id: number) {
