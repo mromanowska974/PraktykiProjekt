@@ -41,6 +41,8 @@ export class InternalServiceAddNewComponent implements OnInit, OnDestroy {
   businessServiceSub: Subscription;
   employeeSub: Subscription;
 
+  internalServiceRegexp: RegExp = /^\d{2}-\d{2}-\d{3}$/;
+
   constructor(
     protected internalServiceService: InternalServiceService,
     protected clientService: ClientService,
@@ -95,7 +97,12 @@ export class InternalServiceAddNewComponent implements OnInit, OnDestroy {
     this.internalService.symbol = this.symbol.nativeElement.value;
     this.internalService.name = this.name.nativeElement.value;
 
-    this.isSymbolEntered = this.internalService.symbol?.length !== 0 && this.internalService.symbol !== undefined ? true : false;
+    this.isSymbolEntered =
+      this.internalService.symbol?.length !== 0 &&
+      this.internalService.symbol !== undefined &&
+      this.internalServiceRegexp.test(this.internalService.symbol!)
+        ? true
+        : false;
     this.isNameEntered = this.internalService.name?.length !== 0 && this.internalService.name !== undefined ? true : false;
 
     this.isDataValidated = this.isSymbolEntered && this.isNameEntered && this.isOwnerLoaded;

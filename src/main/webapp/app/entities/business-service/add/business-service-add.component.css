@@ -23,6 +23,10 @@ select {
   margin: 20px 0px;
 }
 
+.input-1 {
+  width: 40%;
+}
+
 .input3,
 .btn3 {
   width: 33%;

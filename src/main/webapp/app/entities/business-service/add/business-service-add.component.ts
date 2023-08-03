@@ -60,6 +60,8 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
   internalServiceSub: Subscription;
   employeeSub: Subscription;
 
+  businessServiceRexegp: RegExp = /^UB-\d{2}-\d{2}$/;
+
   constructor(
     protected businessServiceService: BusinessServiceService,
     protected businessServiceFormService: BusinessServiceFormService,
@@ -206,7 +208,8 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    this.router.navigate(['/']);
+    //this.router.navigate(['/']);
+    console.log(this.businessServiceRexegp.test('UB-02-23'));
   }
 
   onSave() {
@@ -219,7 +222,14 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
 
   onSaveAndActivate() {
     //save to db
-    this.isSymbolEntered = this.businessService!.symbol?.length !== 0 && this.businessService!.symbol !== undefined ? true : false;
+    this.isSymbolEntered =
+      this.businessService!.symbol?.length !== 0 &&
+      this.businessService!.symbol !== undefined &&
+      this.businessServiceRexegp.test(this.businessService!.symbol!)
+        ? true
+        : false;
+
+    //console.log(this.businessServiceRexegp.test(this.businessService!.symbol!))
     this.isNameEntered = this.businessService!.name?.length !== 0 && this.businessService!.name !== undefined ? true : false;
 
     this.isDataValidated =

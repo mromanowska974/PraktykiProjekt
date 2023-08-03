@@ -5,8 +5,12 @@
     <input
       type="text"
       [(ngModel)]="businessService!.symbol"
-      [ngClass]="{ 'empty-input': isSymbolEntered === false && isSaveButtonClicked === true }"
+      [ngClass]="{
+        'empty-input': isSymbolEntered === false && isSaveButtonClicked === true,
+        'input-1': !businessServiceRexegp.test(businessService!.symbol!)
+      }"
     />
+    <p *ngIf="!businessServiceRexegp.test(businessService!.symbol!)">(format: UB-xx-xx (cyfry) )</p>
   </div>
   <div class="row1">
     <p>Nazwa usługi</p>

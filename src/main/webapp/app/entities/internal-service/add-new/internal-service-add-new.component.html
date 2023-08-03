@@ -2,7 +2,15 @@
   <h2>Dodaj Usługę Wewnętrzną</h2>
   <div class="row1">
     <p>Symbol Usługi Wewnętrznej (UW)</p>
-    <input type="text" [ngClass]="{ 'empty-input': isSymbolEntered === false && isSaveButtonClicked === true }" #symbol />
+    <input
+      type="text"
+      [ngClass]="{
+        'empty-input': isSymbolEntered === false && isSaveButtonClicked === true,
+        'input-not-valid': !this.internalServiceRegexp.test(this.internalService.symbol!)
+      }"
+      #symbol
+    />
+    <p *ngIf="!this.internalServiceRegexp.test(this.internalService.symbol!)">(format: xx-xx-xxx (cyfry) )</p>
   </div>
   <div class="row1">
     <p>Nazwa usługi</p>
