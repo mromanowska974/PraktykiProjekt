@@ -46,6 +46,8 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   serviceElementSub: Subscription;
   parameterSub: Subscription;
 
+  parametersToDelete: IParameter[] | null = [];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -146,6 +148,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   }
 
   onEditBusinessService() {
+    //adding service elements to db
     this.serviceElementsOfMonthlyPaymentType!.forEach(serviceElement => {
       this.serviceElementService.create(serviceElement).subscribe();
     });
@@ -154,16 +157,24 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       this.serviceElementService.create(serviceElement).subscribe();
     });
 
+    //adding parameters to db
     this.parametersOfQualityType!.forEach(parameter => {
-      this.parameterService.create(parameter).subscribe(() => console.log(parameter));
+      this.parameterService.create(parameter).subscribe();
     });
 
     this.parametersOfQuantityType!.forEach(parameter => {
-      this.parameterService.create(parameter).subscribe(() => console.log(parameter));
+      this.parameterService.create(parameter).subscribe();
     });
 
+    //deleting parameters
+    this.parametersToDelete!.forEach(parameter => {
+      this.parameterService.delete(parameter.id).subscribe(() => console.log(parameter));
+    });
+
+    //updating business service
     this.businessServiceService.update(this.businessService!).subscribe();
-    console.log(this.businessService);
+
+    //go back to previous page
     this.router.navigate(['/']);
   }
 
@@ -187,10 +198,18 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   }
 
   onDeleteParameter(parameter: IParameter, index: number) {
+    if (parameter.id !== undefined) {
+      this.parametersToDelete?.push(parameter);
+    }
+
     if (parameter.type === ParameterType.QUALITY) {
       this.parametersOfQualityType?.splice(index, 1);
     } else if (parameter.type === ParameterType.QUANTITY) {
       this.parametersOfQuantityType?.splice(index, 1);
     }
+
+    console.log(this.parametersOfQualityType);
+    console.log(this.parametersOfQuantityType);
+    console.log(this.parametersToDelete);
   }
 }
