@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -81,7 +81,8 @@ export class ParameterService {
   }
 
   //NON-API
-  private parameter = new BehaviorSubject<IParameter>({} as IParameter);
+  //isParameterReceived: boolean = false;
+  private parameter = new Subject<IParameter>();
   toReceive = this.parameter.asObservable();
 
   sendCreatedParameter(parameter: IParameter) {

@@ -200,7 +200,7 @@ public class BusinessServiceResource {
         log.debug("REST request to get all BusinessServices");
         List<BusinessService> businessService = new ArrayList<>();
         if (eagerload) {
-            businessService = businessServiceRepository.findAllWithEagerRelationships();
+            businessService = businessServiceRepository.findAllByOrderById();
         } else {
             businessService = businessServiceRepository.findAll();
         }

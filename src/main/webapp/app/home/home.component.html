@@ -26,11 +26,10 @@
       <p>Powiązane Usługi Wewnętrzne:</p>
     </div>
     <div class="row3">
-      <p *ngIf="!selectedBusinessService || isDefaultValueSelected || selectedBusinessService.internalServices?.length === 0">
-        Brak powiązanych Usług Wewnętrznych
-      </p>
+      <p *ngIf="selectedBusinessService && selectedBusinessService.internalServices?.length === 0">Brak powiązanych Usług Wewnętrznych</p>
+      <p *ngIf="!selectedBusinessService">Nie wybrano Usługi Biznesowej</p>
       <jhi-internal-service
-        *ngIf="selectedBusinessService && !isDefaultValueSelected && selectedBusinessService.internalServices?.length !== 0"
+        *ngIf="selectedBusinessService && selectedBusinessService.internalServices?.length !== 0"
         [internalServices]="selectedBusinessService.internalServices"
       ></jhi-internal-service>
       <p class="error-text" *ngIf="selectedBusinessService === undefined && isAddingISButtonClicked">Najpierw wybierz Usługę Biznesową</p>

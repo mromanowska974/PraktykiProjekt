@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -91,6 +91,15 @@ export class BusinessServiceService {
   //NON-API
   isBusinessServiceSaved: boolean = false;
   businessService: BusinessService | null = new BusinessService();
+  serviceElementIndex: number;
+  action: string = '';
+
+  private serviceElementToSend = new BehaviorSubject<IServiceElement>({} as IServiceElement);
+  toReceive = this.serviceElementToSend.asObservable();
+
+  sendServiceElement(serviceElement: IServiceElement) {
+    this.serviceElementToSend.next(serviceElement);
+  }
 
   serviceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
   serviceElementsOfOneTimePaymentType: IServiceElement[] | null = [];

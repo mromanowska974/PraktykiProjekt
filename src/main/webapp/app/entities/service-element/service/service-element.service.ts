@@ -146,10 +146,12 @@ export class ServiceElementService {
   }
 
   //NON-API
+  isServiceElementReceived: boolean = false;
   private serviceElement = new BehaviorSubject<IServiceElement>({} as IServiceElement);
   toReceive = this.serviceElement.asObservable();
 
   sendCreatedServiceElement(serviceElement: IServiceElement) {
     this.serviceElement.next(serviceElement);
+    this.isServiceElementReceived = true;
   }
 }

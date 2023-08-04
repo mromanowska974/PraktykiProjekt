@@ -31,4 +31,5 @@ public interface BusinessServiceRepository extends BusinessServiceRepositoryWith
     }
 
     List<BusinessService> findBusinessServicesByClient_Id(Long id);
+    List<BusinessService> findAllByOrderById();
 }

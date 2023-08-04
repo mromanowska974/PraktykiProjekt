@@ -43,7 +43,9 @@ export class ParameterUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.data);
-    this.parameter!.type = this.data;
+    if (this.data.action === 'ADD') this.parameter!.type = this.data.parameterType;
+
+    if (this.data.action === 'EDIT') this.parameter = this.data.parameter;
   }
 
   onCancel() {
@@ -54,8 +56,10 @@ export class ParameterUpdateComponent implements OnInit {
     this.isNameEntered = this.parameter!.name !== undefined && this.parameter!.name!.length > 0 ? true : false;
     this.isValueEntered = this.parameter!.value !== undefined && this.parameter!.value!.length > 0 ? true : false;
 
-    if (this.isNameEntered && this.isValueEntered) {
+    if (this.isNameEntered && this.isValueEntered && this.data.action === 'ADD') {
       this.parameterService.sendCreatedParameter(this.parameter!);
+      this.dialogRef.close();
+    } else if (this.isNameEntered && this.isValueEntered && this.data.action === 'EDIT') {
       this.dialogRef.close();
     } else {
       this.isSaveBtnClicked = true;

@@ -25,6 +25,8 @@ import { FormsModule } from '@angular/forms';
 import { InternalServiceAddNewComponent } from './entities/internal-service/add-new/internal-service-add-new.component';
 import { InternalServiceAddExistingComponent } from './entities/internal-service/add-existing/internal-service-add-existing.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -38,6 +40,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
     TranslationModule,
     FormsModule,
     MatDialogModule,
+    BrowserAnimationsModule,
+    MatTooltipModule,
   ],
   providers: [
     Title,

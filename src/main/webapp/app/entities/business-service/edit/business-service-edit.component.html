@@ -69,10 +69,13 @@
             <td width="40%">{{ parameter.value }}</td>
             <td width="20%">
               <button>P</button>
-              <button>E</button>
+              <button (click)="onEditParameter(parameter)">E</button>
               <button (click)="onDeleteParameter(parameter, i)">U</button>
             </td>
           </tr>
+          <div class="empty-list-info" *ngIf="parametersOfQualityType!.length === 0">
+            <p>Brak parametrów</p>
+          </div>
         </table>
       </div>
       <div>
@@ -91,10 +94,13 @@
             <td width="40%">{{ parameter.value }}</td>
             <td width="20%">
               <button>P</button>
-              <button>E</button>
+              <button (click)="onEditParameter(parameter)">E</button>
               <button (click)="onDeleteParameter(parameter, i)">U</button>
             </td>
           </tr>
+          <div class="empty-list-info" *ngIf="parametersOfQuantityType!.length === 0">
+            <p>Brak parametrów</p>
+          </div>
         </table>
       </div>
     </div>
@@ -138,9 +144,12 @@
             <td width="9%">{{ formattedEndDatesMonthly[i] }}</td>
             <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</td>
             <td width="8%">
-              <button>E</button>
+              <button (click)="onEditServiceElement(serviceElement, i)">E</button>
             </td>
           </tr>
+          <div class="empty-list-info" *ngIf="serviceElementsOfMonthlyPaymentType!.length === 0">
+            <p>Brak składowych usługi</p>
+          </div>
         </table>
       </div>
       <div class="table-box">
@@ -174,9 +183,12 @@
             <td width="9%">{{ formattedEndDatesOneTime[i] }}</td>
             <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</td>
             <td width="8%">
-              <button>E</button>
+              <button (click)="onEditServiceElement(serviceElement, i)">E</button>
             </td>
           </tr>
+          <div class="empty-list-info" *ngIf="serviceElementsOfOneTimePaymentType!.length === 0">
+            <p>Brak składowych usługi</p>
+          </div>
         </table>
       </div>
       <div class="row2">

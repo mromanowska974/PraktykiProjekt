@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 
@@ -27,7 +27,7 @@ import dayjs from 'dayjs/esm';
   styleUrls: ['./service-element-update.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
-export class ServiceElementUpdateComponent implements OnInit {
+export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   serviceElement: IServiceElement | null = {} as IServiceElement;
 
   isDescriptionEntered: boolean = false;
@@ -43,6 +43,10 @@ export class ServiceElementUpdateComponent implements OnInit {
   isDataValidated: boolean = false;
   isSaveBtnClicked: boolean = false;
 
+  action: string;
+
+  serviceElementSub: Subscription;
+
   constructor(
     protected serviceElementService: ServiceElementService,
     protected serviceElementFormService: ServiceElementFormService,
@@ -53,20 +57,43 @@ export class ServiceElementUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.action = this.activatedRoute.snapshot.queryParams['action'];
+    console.log(this.action);
     if (this.serviceElement) {
       this.serviceElement.paymentType = this.activatedRoute.snapshot.queryParams['paymentType'];
       console.log(this.serviceElement.paymentType);
       this.serviceElement.status = StatusOfServiceElement.NOT_ACTIVE;
 
+      if (this.action === 'EDIT') {
+        this.serviceElementSub = this.businessServiceService.toReceive.subscribe(serviceElement => {
+          this.serviceElement!.bmcRegistration = serviceElement.bmcRegistration;
+          this.serviceElement!.description = serviceElement.description;
+          this.serviceElement!.price = serviceElement.price;
+          this.serviceElement!.priceFromCalculation = serviceElement.priceFromCalculation;
+          this.serviceElement!.periodOfProvisionOfServiceInMonths = serviceElement.periodOfProvisionOfServiceInMonths;
+          this.serviceElement!.typeOfPeriodOfProvisionOfService = serviceElement.typeOfPeriodOfProvisionOfService;
+          this.serviceElement!.valuationNumber = serviceElement.valuationNumber;
+          this.serviceElement!.startDate = serviceElement.startDate;
+          this.serviceElement!.endDate = serviceElement.endDate;
+          this.serviceElement!.expirationDate = serviceElement.expirationDate;
+          this.serviceElement!.status = serviceElement.status;
+        });
+      }
       //for testing only
-      this.serviceElement.bmcRegistration = 'test';
-      this.serviceElement.description = 'test';
-      this.serviceElement.price = 567;
-      this.serviceElement.priceFromCalculation = 678;
-      this.serviceElement.periodOfProvisionOfServiceInMonths = 4;
-      this.serviceElement.typeOfPeriodOfProvisionOfService = 'Minimalny';
-      this.serviceElement.valuationNumber = 'test';
+      else {
+        this.serviceElement.bmcRegistration = 'test';
+        this.serviceElement.description = 'test';
+        this.serviceElement.price = 567;
+        this.serviceElement.priceFromCalculation = 678;
+        this.serviceElement.periodOfProvisionOfServiceInMonths = 4;
+        this.serviceElement.typeOfPeriodOfProvisionOfService = 'Minimalny';
+        this.serviceElement.valuationNumber = 'test';
+      }
     }
+  }
+
+  ngOnDestroy(): void {
+    if (this.serviceElementSub) this.serviceElementSub.unsubscribe();
   }
 
   onCancel() {

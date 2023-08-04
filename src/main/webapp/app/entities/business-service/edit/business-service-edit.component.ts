@@ -6,7 +6,9 @@ import { IServiceElement } from 'app/entities/service-element/service-element.mo
 import { PaymentType } from 'app/entities/enumerations/payment-type.model';
 import { ServiceElementService } from 'app/entities/service-element/service/service-element.service';
 import { Subscription } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ParameterComponent } from 'app/entities/parameter/list/parameter.component';
 import { ParameterUpdateComponent } from 'app/entities/parameter/update/parameter-update.component';
 import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
@@ -54,6 +56,9 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   formattedStartDatesOneTime: string[] = [];
   formattedEndDatesOneTime: string[] = [];
 
+  editedServiceElementIndex: number;
+  action: string;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -65,15 +70,19 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.businessServiceId = +this.route.snapshot.params['id'];
+    this.action = this.businessServiceService.action;
 
     // setting business service
     //if business service was saved when clicked Add New Service Element
     if (this.businessServiceService.isBusinessServiceSaved) {
       this.businessService = this.businessServiceService.businessService;
+
       this.serviceElementsOfMonthlyPaymentType = this.businessServiceService.serviceElementsOfMonthlyPaymentType;
       this.serviceElementsOfOneTimePaymentType = this.businessServiceService.serviceElementsOfOneTimePaymentType;
+
       this.parametersOfQualityType = this.businessServiceService.parametersOfQualityType;
       this.parametersOfQuantityType = this.businessServiceService.parametersOfQuantityType;
+
       this.formattedStartDatesMonthly = this.businessServiceService.formattedStartDatesMonthly;
       this.formattedEndDatesMonthly = this.businessServiceService.formattedEndDatesMonthly;
       this.formattedStartDatesOneTime = this.businessServiceService.formattedStartDatesOneTime;
@@ -113,19 +122,38 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     }
 
     //receiving new service element
-    this.serviceElementSub = this.serviceElementService.toReceive.subscribe(resp => {
-      resp.businessService = this.businessService;
+    if (this.serviceElementService.isServiceElementReceived) {
+      this.serviceElementSub = this.serviceElementService.toReceive.subscribe(resp => {
+        if (this.action === 'ADD') {
+          resp.businessService = this.businessService;
 
-      if (resp.paymentType === PaymentType.MONTHLY) {
-        this.serviceElementsOfMonthlyPaymentType!.push(resp);
-        this.formattedStartDatesMonthly.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
-        this.formattedEndDatesMonthly.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
-      } else if (resp.paymentType === PaymentType.DISPOSABLE) {
-        this.serviceElementsOfOneTimePaymentType!.push(resp);
-        this.formattedStartDatesOneTime.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
-        this.formattedEndDatesOneTime.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
-      }
-    });
+          if (resp.paymentType === PaymentType.MONTHLY) {
+            this.serviceElementsOfMonthlyPaymentType!.push(resp);
+            this.formattedStartDatesMonthly.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
+            this.formattedEndDatesMonthly.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
+          } else if (resp.paymentType === PaymentType.DISPOSABLE) {
+            this.serviceElementsOfOneTimePaymentType!.push(resp);
+            this.formattedStartDatesOneTime.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
+            this.formattedEndDatesOneTime.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
+          }
+        } else if (this.action === 'EDIT') {
+          this.editedServiceElementIndex = this.businessServiceService.serviceElementIndex;
+          if (resp.paymentType === PaymentType.MONTHLY) {
+            this.serviceElementsOfMonthlyPaymentType![this.editedServiceElementIndex] = resp;
+            this.formattedStartDatesMonthly[this.editedServiceElementIndex] = dayjs(resp.startDate).format('DD.MM.YYYY');
+            this.formattedEndDatesMonthly[this.editedServiceElementIndex] = dayjs(resp.endDate).format('DD.MM.YYYY');
+            console.log(this.editedServiceElementIndex);
+            console.log(this.serviceElementsOfMonthlyPaymentType![this.editedServiceElementIndex]);
+          } else if (resp.paymentType === PaymentType.DISPOSABLE) {
+            this.serviceElementsOfOneTimePaymentType![this.editedServiceElementIndex] = resp;
+            this.formattedStartDatesOneTime[this.editedServiceElementIndex] = dayjs(resp.startDate).format('DD.MM.YYYY');
+            this.formattedEndDatesOneTime[this.editedServiceElementIndex] = dayjs(resp.endDate).format('DD.MM.YYYY');
+          }
+        }
+
+        this.serviceElementService.isServiceElementReceived = false;
+      });
+    }
 
     //receiving new parameter
     this.parameterSub = this.parameterService.toReceive.subscribe(resp => {
@@ -136,6 +164,8 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       } else if (resp.type === ParameterType.QUANTITY) {
         this.parametersOfQuantityType?.push(resp);
       }
+
+      //this.parameterService.isParameterReceived = false;
     });
   }
 
@@ -195,26 +225,57 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     this.router.navigate(['/']);
   }
 
-  onAddServiceElement(paymentType: PaymentType) {
+  saveData() {
     this.businessServiceService.businessService = this.businessService;
+
     this.businessServiceService.serviceElementsOfMonthlyPaymentType = this.serviceElementsOfMonthlyPaymentType;
     this.businessServiceService.serviceElementsOfOneTimePaymentType = this.serviceElementsOfOneTimePaymentType;
+
     this.businessServiceService.parametersOfQualityType = this.parametersOfQualityType;
     this.businessServiceService.parametersOfQuantityType = this.parametersOfQuantityType;
+
     this.businessServiceService.formattedStartDatesMonthly = this.formattedStartDatesMonthly;
     this.businessServiceService.formattedEndDatesMonthly = this.formattedEndDatesMonthly;
     this.businessServiceService.formattedStartDatesOneTime = this.formattedStartDatesOneTime;
     this.businessServiceService.formattedEndDatesOneTime = this.formattedEndDatesOneTime;
 
     this.businessServiceService.isBusinessServiceSaved = true;
+  }
+
+  onAddServiceElement(paymentType: PaymentType) {
+    this.saveData();
+    this.action = 'ADD';
+    this.businessServiceService.action = this.action;
     this.router.navigate(['/service-element', 'new'], {
-      queryParams: { paymentType: paymentType },
+      queryParams: {
+        paymentType: paymentType,
+        action: this.action,
+      },
+    });
+  }
+
+  onEditServiceElement(serviceElement: IServiceElement, index: number) {
+    this.saveData();
+    this.businessServiceService.serviceElementIndex = index;
+    this.action = 'EDIT';
+    this.businessServiceService.action = this.action;
+
+    this.businessServiceService.sendServiceElement(serviceElement);
+
+    this.router.navigate(['/service-element', 'new'], {
+      queryParams: {
+        paymentType: serviceElement.paymentType,
+        action: this.action,
+      },
     });
   }
 
   onAddParameter(parameterType: ParameterType) {
     this.dialogRef.open(ParameterUpdateComponent, {
-      data: parameterType,
+      data: {
+        parameterType: parameterType,
+        action: 'ADD',
+      },
     });
   }
 
@@ -228,5 +289,14 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     } else if (parameter.type === ParameterType.QUANTITY) {
       this.parametersOfQuantityType?.splice(index, 1);
     }
+  }
+
+  onEditParameter(parameter: IParameter) {
+    this.dialogRef.open(ParameterUpdateComponent, {
+      data: {
+        parameter: parameter,
+        action: 'EDIT',
+      },
+    });
   }
 }

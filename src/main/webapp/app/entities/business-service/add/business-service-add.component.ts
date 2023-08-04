@@ -120,6 +120,7 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
     if (this.internalServiceService.isNewInternalServiceCreated) {
       this.internalServiceSub = this.internalServiceService.test.subscribe(resp => {
         this.internalServices?.push(resp);
+        this.internalServiceService.isNewInternalServiceCreated = false;
       });
     }
 
@@ -208,8 +209,7 @@ export class BusinessServiceAddComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    //this.router.navigate(['/']);
-    console.log(this.businessServiceRexegp.test('UB-02-23'));
+    this.router.navigate(['/']);
   }
 
   onSave() {
