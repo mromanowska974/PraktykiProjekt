@@ -15,6 +15,8 @@ import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
 import { IParameter } from 'app/entities/parameter/parameter.model';
 import { ParameterService } from 'app/entities/parameter/service/parameter.service';
 import dayjs from 'dayjs';
+import { Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, WidthType } from 'docx';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'jhi-business-service-edit',
@@ -22,10 +24,11 @@ import dayjs from 'dayjs';
   styleUrls: ['./business-service-edit.component.scss'],
 })
 export class BusinessServiceEditComponent implements OnInit, OnDestroy {
-  sectionSelected: string = 'C';
+  sectionSelected: string = 'B';
 
   businessServiceId: number;
   businessService: BusinessService | null = new BusinessService();
+  oldBusinessService: BusinessService | null = new BusinessService();
   isDataLoaded: boolean = false;
 
   functionalDescription: string;
@@ -39,9 +42,13 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
 
   serviceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
   serviceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
+  oldServiceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
+  oldServiceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
 
   parametersOfQualityType: IParameter[] | null = [];
   parametersOfQuantityType: IParameter[] | null = [];
+  oldParametersOfQualityType: IParameter[] | null = [];
+  oldParametersOfQuantityType: IParameter[] | null = [];
 
   paymentType: typeof PaymentType = PaymentType;
   parameterType: typeof ParameterType = ParameterType;
@@ -76,12 +83,19 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     //if business service was saved when clicked Add New Service Element
     if (this.businessServiceService.isBusinessServiceSaved) {
       this.businessService = this.businessServiceService.businessService;
+      this.oldBusinessService = this.businessServiceService.oldBusinessService;
 
       this.serviceElementsOfMonthlyPaymentType = this.businessServiceService.serviceElementsOfMonthlyPaymentType;
       this.serviceElementsOfOneTimePaymentType = this.businessServiceService.serviceElementsOfOneTimePaymentType;
 
+      this.oldServiceElementsOfMonthlyPaymentType = this.businessServiceService.oldServiceElementsOfMonthlyPaymentType;
+      this.oldServiceElementsOfOneTimePaymentType = this.businessServiceService.oldServiceElementsOfOneTimePaymentType;
+
       this.parametersOfQualityType = this.businessServiceService.parametersOfQualityType;
       this.parametersOfQuantityType = this.businessServiceService.parametersOfQuantityType;
+
+      this.oldParametersOfQualityType = this.businessServiceService.oldParametersOfQualityType;
+      this.oldParametersOfQuantityType = this.businessServiceService.oldParametersOfQuantityType;
 
       this.formattedStartDatesMonthly = this.businessServiceService.formattedStartDatesMonthly;
       this.formattedEndDatesMonthly = this.businessServiceService.formattedEndDatesMonthly;
@@ -95,29 +109,35 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     else {
       this.getBusinessService();
       this.serviceElementService.findByBusinessServiceAndPaymentType(this.businessServiceId, PaymentType.MONTHLY).subscribe(resp => {
-        this.serviceElementsOfMonthlyPaymentType = resp.body;
+        this.oldServiceElementsOfMonthlyPaymentType = resp.body;
+        this.serviceElementsOfMonthlyPaymentType = JSON.parse(JSON.stringify(this.oldServiceElementsOfMonthlyPaymentType));
+        console.log(this.oldServiceElementsOfMonthlyPaymentType);
+        console.log(this.serviceElementsOfMonthlyPaymentType);
 
         this.serviceElementsOfMonthlyPaymentType?.forEach(serviceElement => {
-          this.formattedStartDatesMonthly.push(serviceElement.startDate!.format('DD.MM.YYYY').toString());
-          this.formattedEndDatesMonthly.push(serviceElement.endDate!.format('DD.MM.YYYY').toString());
+          this.formattedStartDatesMonthly.push(dayjs(serviceElement.startDate!).format('DD.MM.YYYY').toString());
+          this.formattedEndDatesMonthly.push(dayjs(serviceElement.endDate!).format('DD.MM.YYYY').toString());
         });
       });
 
       this.serviceElementService.findByBusinessServiceAndPaymentType(this.businessServiceId, PaymentType.DISPOSABLE).subscribe(resp => {
-        this.serviceElementsOfOneTimePaymentType = resp.body;
+        this.oldServiceElementsOfOneTimePaymentType = resp.body;
+        this.serviceElementsOfOneTimePaymentType = JSON.parse(JSON.stringify(this.oldServiceElementsOfOneTimePaymentType));
 
         this.serviceElementsOfOneTimePaymentType?.forEach(serviceElement => {
-          this.formattedStartDatesOneTime.push(serviceElement.startDate!.format('DD.MM.YYYY').toString());
-          this.formattedEndDatesOneTime.push(serviceElement.endDate!.format('DD.MM.YYYY').toString());
+          this.formattedStartDatesOneTime.push(dayjs(serviceElement.startDate!).format('DD.MM.YYYY').toString());
+          this.formattedEndDatesOneTime.push(dayjs(serviceElement.endDate!).format('DD.MM.YYYY').toString());
         });
       });
 
       this.parameterService.findByBusinessServiceIdAndParameterType(this.businessServiceId, ParameterType.QUALITY).subscribe(resp => {
-        this.parametersOfQualityType = resp.body;
+        this.oldParametersOfQualityType = resp.body;
+        this.parametersOfQualityType = JSON.parse(JSON.stringify(this.oldParametersOfQualityType));
       });
 
       this.parameterService.findByBusinessServiceIdAndParameterType(this.businessServiceId, ParameterType.QUANTITY).subscribe(resp => {
-        this.parametersOfQuantityType = resp.body;
+        this.oldParametersOfQuantityType = resp.body;
+        this.parametersOfQuantityType = JSON.parse(JSON.stringify(this.oldParametersOfQuantityType));
       });
     }
 
@@ -181,7 +201,8 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
 
   getBusinessService() {
     this.businessServiceService.find(this.businessServiceId).subscribe(businessService => {
-      this.businessService = businessService.body;
+      this.oldBusinessService = businessService.body;
+      this.businessService = JSON.parse(JSON.stringify(this.oldBusinessService));
       this.isDataLoaded = true;
     });
   }
@@ -226,10 +247,17 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   }
 
   saveData() {
+    this.businessServiceService.oldBusinessService = this.oldBusinessService;
     this.businessServiceService.businessService = this.businessService;
+
+    this.businessServiceService.oldServiceElementsOfMonthlyPaymentType = this.oldServiceElementsOfMonthlyPaymentType;
+    this.businessServiceService.oldServiceElementsOfOneTimePaymentType = this.oldServiceElementsOfOneTimePaymentType;
 
     this.businessServiceService.serviceElementsOfMonthlyPaymentType = this.serviceElementsOfMonthlyPaymentType;
     this.businessServiceService.serviceElementsOfOneTimePaymentType = this.serviceElementsOfOneTimePaymentType;
+
+    this.businessServiceService.oldParametersOfQualityType = this.oldParametersOfQualityType;
+    this.businessServiceService.oldParametersOfQuantityType = this.oldParametersOfQuantityType;
 
     this.businessServiceService.parametersOfQualityType = this.parametersOfQualityType;
     this.businessServiceService.parametersOfQuantityType = this.parametersOfQuantityType;
@@ -280,14 +308,16 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   }
 
   onDeleteParameter(parameter: IParameter, index: number) {
-    if (parameter.id !== undefined) {
-      this.parametersToDelete?.push(parameter);
-    }
+    if (confirm('Czy na pewno chcesz usunąć ten parametr?')) {
+      if (parameter.id !== undefined) {
+        this.parametersToDelete?.push(parameter);
+      }
 
-    if (parameter.type === ParameterType.QUALITY) {
-      this.parametersOfQualityType?.splice(index, 1);
-    } else if (parameter.type === ParameterType.QUANTITY) {
-      this.parametersOfQuantityType?.splice(index, 1);
+      if (parameter.type === ParameterType.QUALITY) {
+        this.parametersOfQualityType?.splice(index, 1);
+      } else if (parameter.type === ParameterType.QUANTITY) {
+        this.parametersOfQuantityType?.splice(index, 1);
+      }
     }
   }
 
@@ -297,6 +327,492 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
         parameter: parameter,
         action: 'EDIT',
       },
+    });
+  }
+
+  onCreateDocxFile() {
+    let parameterRowsQuality: TableRow[] = [];
+    let serviceElementRowsMonthly: TableRow[] = [];
+    let parameterRowsQuantity: TableRow[] = [];
+    let serviceElementRowsOneTime: TableRow[] = [];
+
+    this.oldParametersOfQualityType!.forEach(element => {
+      const newRow: TableRow = new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph({ text: element!.name ? element.name : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.value ? element.value : '' })],
+          }),
+        ],
+      });
+
+      parameterRowsQuality.push(newRow);
+    });
+
+    this.oldParametersOfQuantityType!.forEach(element => {
+      const newRow: TableRow = new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph({ text: element!.name ? element.name : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.value ? element.value : '' })],
+          }),
+        ],
+      });
+
+      parameterRowsQuantity.push(newRow);
+    });
+
+    this.oldServiceElementsOfMonthlyPaymentType!.forEach(element => {
+      console.log(this.oldServiceElementsOfMonthlyPaymentType);
+      const newRow: TableRow = new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph({ text: (this.oldServiceElementsOfMonthlyPaymentType!.indexOf(element) + 1).toString() })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.price ? element.price.toString() : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.description ? element.description : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.valuationNumber ? element.valuationNumber : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.paymentType ? element.paymentType : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.startDate ? element.startDate.toString() : '' })],
+          }),
+          new TableCell({
+            children: [
+              new Paragraph({
+                text: element!.periodOfProvisionOfServiceInMonths ? element.periodOfProvisionOfServiceInMonths.toString() : '',
+              }),
+            ],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.typeOfPeriodOfProvisionOfService ? element.typeOfPeriodOfProvisionOfService : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.endDate ? element.endDate.toString() : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.status ? element.status : '' })],
+          }),
+        ],
+      });
+
+      serviceElementRowsMonthly.push(newRow);
+    });
+
+    this.oldServiceElementsOfOneTimePaymentType!.forEach(element => {
+      const newRow: TableRow = new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph({ text: (this.oldServiceElementsOfOneTimePaymentType!.indexOf(element) + 1).toString() })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.price ? element.price.toString() : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.description ? element.description : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.valuationNumber ? element.valuationNumber : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.paymentType ? element.paymentType : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.startDate ? element.startDate.toString() : '' })],
+          }),
+          new TableCell({
+            children: [
+              new Paragraph({
+                text: element!.periodOfProvisionOfServiceInMonths ? element.periodOfProvisionOfServiceInMonths.toString() : '',
+              }),
+            ],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.typeOfPeriodOfProvisionOfService ? element.typeOfPeriodOfProvisionOfService : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.endDate ? element.endDate.toString() : '' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element!.status ? element.status : '' })],
+          }),
+        ],
+      });
+
+      serviceElementRowsOneTime.push(newRow);
+    });
+
+    const document = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun('Klient: '),
+                new TextRun({
+                  text: this.oldBusinessService!.client! ? this.oldBusinessService!.client!.name! : 'nic',
+                  bold: true,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Symbol usługi: '),
+                new TextRun({
+                  text: this.oldBusinessService! ? this.oldBusinessService!.symbol! : 'nic',
+                  bold: true,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Nazwa usługi: '),
+                new TextRun({
+                  text: this.oldBusinessService! ? this.oldBusinessService!.name! : 'nic',
+                  bold: true,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Dział: '),
+                new TextRun({
+                  text: this.oldBusinessService!.department! ? this.oldBusinessService!.department!.name! : 'nic',
+                  bold: true,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Właściciel: '),
+                new TextRun({
+                  text: this.oldBusinessService!.employee!
+                    ? this.oldBusinessService!.employee!.name! + ' ' + this.oldBusinessService!.employee!.surname
+                    : 'nic',
+                  bold: true,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Opis funkcjonalny: ', break: 1 }),
+                new TextRun({
+                  text: this.oldBusinessService!.functionalDescription! ? this.oldBusinessService!.functionalDescription! : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Wykluczenia: '),
+                new TextRun({
+                  text: this.oldBusinessService!.exclusions! ? this.oldBusinessService!.exclusions! : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Obowiązki i odpowiedzialności stron: '),
+                new TextRun({
+                  text: this.oldBusinessService!.dutiesAndResponsibilities ? this.oldBusinessService!.dutiesAndResponsibilities : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Osoba odpowiedzialna za usługę po stronie Zamawiającego: '),
+                new TextRun({
+                  text: this.oldBusinessService!.personResponsibleForService ? this.oldBusinessService!.personResponsibleForService : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Godziny gwarantowanego świadczenia usługi: '),
+                new TextRun({
+                  text: this.oldBusinessService!.hoursOfService ? this.oldBusinessService!.hoursOfService : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [new TextRun('Parametry jakościowe: ')],
+            }),
+            new Table({
+              columnWidths: [3505, 5505],
+              rows: [
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: {
+                        size: 3505,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Nazwa parametru')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 5505,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Wartość docelowa')],
+                    }),
+                  ],
+                }),
+                ...parameterRowsQuality,
+              ],
+            }),
+            new Paragraph({
+              children: [new TextRun('Parametry pojemnościowe: ')],
+            }),
+            new Table({
+              columnWidths: [3505, 5505],
+              rows: [
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: {
+                        size: 3505,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Nazwa parametru')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 5505,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Wartość docelowa')],
+                    }),
+                  ],
+                }),
+                ...parameterRowsQuantity,
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Koszty uruchomienia usługi: '),
+                new TextRun({
+                  text: this.oldBusinessService!.serviceActivatingCost ? this.oldBusinessService!.serviceActivatingCost : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Cennik usługi: '),
+                new TextRun({
+                  text: this.oldBusinessService!.priceListOfService ? this.oldBusinessService!.priceListOfService : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [new TextRun('Wartość miesięcznej opłaty za usługę: ')],
+            }),
+            new Table({
+              rows: [
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: {
+                        size: 50,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Lp.')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Kwota zł netto/m-c')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Opis usługi')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Nr wyceny')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Typ opłaty')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Data rozpoczęcia świadczenia usługi')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Okres świadczenia usługi (miesiące)')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Typ okresu swiadczenia usługi')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Data zakończenia świadczenia usługi')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Status')],
+                    }),
+                  ],
+                }),
+                ...serviceElementRowsMonthly,
+              ],
+            }),
+            new Paragraph({
+              children: [new TextRun('Inne płatności: ')],
+            }),
+            new Table({
+              //columnWidths: [3505, 5505],
+              rows: [
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: {
+                        size: 50,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Lp.')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Kwota zł netto')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Opis usługi')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Nr wyceny')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Typ opłaty')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Data rozpoczęcia świadczenia usługi')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Okres świadczenia usługi (miesiące)')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Typ okresu swiadczenia usługi')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Data zakończenia świadczenia usługi')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 1000,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Status')],
+                    }),
+                  ],
+                }),
+                ...serviceElementRowsOneTime,
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Uwagi: '),
+                new TextRun({
+                  text: this.oldBusinessService!.notes ? this.oldBusinessService!.notes : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+          ],
+        },
+      ],
+    });
+
+    Packer.toBlob(document).then(blob => {
+      console.log(blob);
+      saveAs(blob, this.businessService?.symbol + '.docx');
+      console.log('Document created successfully');
     });
   }
 }

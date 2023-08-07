@@ -199,7 +199,7 @@
     <div *ngSwitchCase="'D'">D</div>
   </div>
   <div class="all-btns">
-    <button>Utwórz dokument karty (plik .docx)</button>
+    <button (click)="onCreateDocxFile()">Utwórz dokument karty (plik .docx)</button>
     <div class="ok-and-cancel-btns">
       <button (click)="onEditBusinessService()">Ok</button>
       <button (click)="onCancel()">Anuluj</button>

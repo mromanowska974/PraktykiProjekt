@@ -91,6 +91,7 @@ export class BusinessServiceService {
   //NON-API
   isBusinessServiceSaved: boolean = false;
   businessService: BusinessService | null = new BusinessService();
+  oldBusinessService: BusinessService | null = new BusinessService();
   serviceElementIndex: number;
   action: string = '';
 
@@ -104,8 +105,14 @@ export class BusinessServiceService {
   serviceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
   serviceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
 
+  oldServiceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
+  oldServiceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
+
   parametersOfQualityType: IParameter[] | null = [];
   parametersOfQuantityType: IParameter[] | null = [];
+
+  oldParametersOfQualityType: IParameter[] | null = [];
+  oldParametersOfQuantityType: IParameter[] | null = [];
 
   formattedStartDatesMonthly: string[] = [];
   formattedEndDatesMonthly: string[] = [];
