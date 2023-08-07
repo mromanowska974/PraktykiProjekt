@@ -99,7 +99,7 @@
           [(ngModel)]="serviceElement!.typeOfPeriodOfProvisionOfService"
           [ngClass]="{ 'error-input': !isTypeOfPeriodOfProvisionOfServiceEntered && isSaveBtnClicked }"
         >
-          <option *ngFor="let type of typeOfPeriodOfProvisionOfService" [value]="type">{{ TypeOfPeriodMapping[type] }}</option>
+          <option *ngFor="let type of typeOfPeriodEnumValues" [value]="type">{{ TypeOfPeriodMapping[type] }}</option>
         </select>
       </div>
     </div>
@@ -113,15 +113,16 @@
       <p>Wyłącz z dniem</p>
       <input
         type="datetime-local"
-        [(ngModel)]="serviceElement!.expirationDate"
+        [(ngModel)]="expirationDate"
         class="date-input"
         [ngClass]="{ 'error-input': !isExpirationDateEntered && isSaveBtnClicked }"
+        [readOnly]="serviceElement!.typeOfPeriodOfProvisionOfService === typeOfPeriodOfProvisionOfService.FIXED"
       />
     </div>
   </div>
   <div class="row-2">
     <input type="checkbox" /> Wyślij przypomnienie dotyczące konieczności przedłużenia usługi na kolejny okres w dniu
-    <input type="datetime-local" [(ngModel)]="serviceElement!.expirationDate" class="date-input" />
+    <input type="datetime-local" [(ngModel)]="expirationDate" class="date-input" />
   </div>
   <div class="btn-box-2">
     <button (click)="onSaveServiceElement()">Zapisz</button>

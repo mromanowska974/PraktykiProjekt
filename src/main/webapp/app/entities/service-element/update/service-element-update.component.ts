@@ -21,6 +21,7 @@ import { prototype } from 'events';
 import dayjs from 'dayjs/esm';
 import { TypeOfPeriodOfProvisionOfService } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
 import { TypeOfPeriodMapping } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
+import exp from 'constants';
 
 @Component({
   standalone: true,
@@ -50,9 +51,12 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   serviceElementSub: Subscription;
 
   endDate: string;
+  expirationDate: string;
 
   public TypeOfPeriodMapping: typeof TypeOfPeriodMapping = TypeOfPeriodMapping;
-  public typeOfPeriodOfProvisionOfService: any = [];
+  public typeOfPeriodEnumValues: any = [];
+
+  typeOfPeriodOfProvisionOfService: typeof TypeOfPeriodOfProvisionOfService = TypeOfPeriodOfProvisionOfService;
 
   constructor(
     protected serviceElementService: ServiceElementService,
@@ -62,7 +66,7 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     private location: Location
   ) {
-    this.typeOfPeriodOfProvisionOfService = Object.values(TypeOfPeriodOfProvisionOfService);
+    this.typeOfPeriodEnumValues = Object.values(TypeOfPeriodOfProvisionOfService);
   }
 
   ngOnInit(): void {
@@ -105,13 +109,14 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   }
 
   setEndDate() {
-    console.log('zaszła wgl zmiana');
     this.endDate = dayjs(this.serviceElement?.startDate)
       .add(this.serviceElement!.periodOfProvisionOfServiceInMonths!, 'month')
       .format('YYYY-MM-DDTHH:mm');
     this.serviceElement!.endDate = dayjs(this.endDate);
-    console.log(this.serviceElement?.endDate.toISOString());
-    console.log(this.serviceElement?.startDate);
+
+    if (this.serviceElement?.typeOfPeriodOfProvisionOfService === TypeOfPeriodOfProvisionOfService.FIXED) {
+      this.expirationDate = this.endDate;
+    }
   }
 
   onCancel() {
@@ -120,12 +125,13 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
 
   onSaveServiceElement() {
     //validation
+    this.serviceElement!.expirationDate = dayjs(this.expirationDate);
     this.isBMCRegistrationEntered =
       this.serviceElement?.bmcRegistration !== undefined && this.serviceElement.bmcRegistration!.length > 0 ? true : false;
     this.isDescriptionEntered =
       this.serviceElement?.description !== undefined && this.serviceElement.description!.length > 0 ? true : false;
     this.isEndDateEntered = this.serviceElement?.endDate ? true : false;
-    this.isExpirationDateEntered = this.serviceElement?.expirationDate ? true : false;
+    this.isExpirationDateEntered = this.expirationDate ? true : false;
     this.isPeriodOfProvisionOfServiceInMonthsEntered =
       this.serviceElement?.periodOfProvisionOfServiceInMonths !== undefined && this.serviceElement.periodOfProvisionOfServiceInMonths! > 0
         ? true
@@ -154,7 +160,7 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
       this.isTypeOfPeriodOfProvisionOfServiceEntered &&
       this.isValuationNumberEntered;
 
-    console.log(dayjs(this.serviceElement?.startDate).add(this.serviceElement!.periodOfProvisionOfServiceInMonths!, 'month'));
+    console.log(this.expirationDate);
     if (this.isDataValidated) {
       this.serviceElementService.sendCreatedServiceElement(this.serviceElement!);
       this.location.back();
