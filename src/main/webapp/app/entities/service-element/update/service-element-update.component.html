@@ -70,15 +70,17 @@
           [(ngModel)]="serviceElement!.startDate"
           class="date-input"
           [ngClass]="{ 'error-input': !isStartDateEntered && isSaveBtnClicked }"
+          (change)="setEndDate()"
         />
       </div>
       <div class="row-1">
         <p>Data zakończenia świadczenia usługi</p>
         <input
           type="datetime-local"
-          [(ngModel)]="serviceElement!.endDate"
+          [(ngModel)]="endDate"
           class="date-input"
           [ngClass]="{ 'error-input': !isEndDateEntered && isSaveBtnClicked }"
+          readonly
         />
       </div>
     </div>
@@ -97,8 +99,7 @@
           [(ngModel)]="serviceElement!.typeOfPeriodOfProvisionOfService"
           [ngClass]="{ 'error-input': !isTypeOfPeriodOfProvisionOfServiceEntered && isSaveBtnClicked }"
         >
-          <option>Minimalny</option>
-          <option>Maksymalny</option>
+          <option *ngFor="let type of typeOfPeriodOfProvisionOfService" [value]="type">{{ TypeOfPeriodMapping[type] }}</option>
         </select>
       </div>
     </div>

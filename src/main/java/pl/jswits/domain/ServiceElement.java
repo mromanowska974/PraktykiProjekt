@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import pl.jswits.domain.enumeration.PaymentType;
 import pl.jswits.domain.enumeration.StatusOfServiceElement;
+import pl.jswits.domain.enumeration.TypeOfPeriodOfProvisionOfService;
 
 /**
  * A ServiceElement.
@@ -39,16 +38,13 @@ public class ServiceElement implements Serializable {
     private PaymentType paymentType;
 
     @Column(name = "start_date")
-    private ZonedDateTime startDate;
+    private Instant startDate;
 
     @Column(name = "period_of_provision_of_service_in_months")
     private Integer periodOfProvisionOfServiceInMonths;
 
-    @Column(name = "type_of_period_of_provision_of_service")
-    private String typeOfPeriodOfProvisionOfService;
-
     @Column(name = "end_date")
-    private ZonedDateTime endDate;
+    private Instant endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -61,7 +57,11 @@ public class ServiceElement implements Serializable {
     private Float priceFromCalculation;
 
     @Column(name = "expiration_date")
-    private ZonedDateTime expirationDate;
+    private Instant expirationDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_of_period_of_provision_of_service")
+    private TypeOfPeriodOfProvisionOfService typeOfPeriodOfProvisionOfService;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
@@ -144,16 +144,16 @@ public class ServiceElement implements Serializable {
         this.paymentType = paymentType;
     }
 
-    public ZonedDateTime getStartDate() {
+    public Instant getStartDate() {
         return this.startDate;
     }
 
-    public ServiceElement startDate(ZonedDateTime startDate) {
+    public ServiceElement startDate(Instant startDate) {
         this.setStartDate(startDate);
         return this;
     }
 
-    public void setStartDate(ZonedDateTime startDate) {
+    public void setStartDate(Instant startDate) {
         this.startDate = startDate;
     }
 
@@ -170,29 +170,16 @@ public class ServiceElement implements Serializable {
         this.periodOfProvisionOfServiceInMonths = periodOfProvisionOfServiceInMonths;
     }
 
-    public String getTypeOfPeriodOfProvisionOfService() {
-        return this.typeOfPeriodOfProvisionOfService;
-    }
-
-    public ServiceElement typeOfPeriodOfProvisionOfService(String typeOfPeriodOfProvisionOfService) {
-        this.setTypeOfPeriodOfProvisionOfService(typeOfPeriodOfProvisionOfService);
-        return this;
-    }
-
-    public void setTypeOfPeriodOfProvisionOfService(String typeOfPeriodOfProvisionOfService) {
-        this.typeOfPeriodOfProvisionOfService = typeOfPeriodOfProvisionOfService;
-    }
-
-    public ZonedDateTime getEndDate() {
+    public Instant getEndDate() {
         return this.endDate;
     }
 
-    public ServiceElement endDate(ZonedDateTime endDate) {
+    public ServiceElement endDate(Instant endDate) {
         this.setEndDate(endDate);
         return this;
     }
 
-    public void setEndDate(ZonedDateTime endDate) {
+    public void setEndDate(Instant endDate) {
         this.endDate = endDate;
     }
 
@@ -235,17 +222,30 @@ public class ServiceElement implements Serializable {
         this.priceFromCalculation = priceFromCalculation;
     }
 
-    public ZonedDateTime getExpirationDate() {
+    public Instant getExpirationDate() {
         return this.expirationDate;
     }
 
-    public ServiceElement expirationDate(ZonedDateTime expirationDate) {
+    public ServiceElement expirationDate(Instant expirationDate) {
         this.setExpirationDate(expirationDate);
         return this;
     }
 
-    public void setExpirationDate(ZonedDateTime expirationDate) {
+    public void setExpirationDate(Instant expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public TypeOfPeriodOfProvisionOfService getTypeOfPeriodOfProvisionOfService() {
+        return this.typeOfPeriodOfProvisionOfService;
+    }
+
+    public ServiceElement typeOfPeriodOfProvisionOfService(TypeOfPeriodOfProvisionOfService typeOfPeriodOfProvisionOfService) {
+        this.setTypeOfPeriodOfProvisionOfService(typeOfPeriodOfProvisionOfService);
+        return this;
+    }
+
+    public void setTypeOfPeriodOfProvisionOfService(TypeOfPeriodOfProvisionOfService typeOfPeriodOfProvisionOfService) {
+        this.typeOfPeriodOfProvisionOfService = typeOfPeriodOfProvisionOfService;
     }
 
     public BusinessService getBusinessService() {
@@ -304,12 +304,12 @@ public class ServiceElement implements Serializable {
             ", paymentType='" + getPaymentType() + "'" +
             ", startDate='" + getStartDate() + "'" +
             ", periodOfProvisionOfServiceInMonths=" + getPeriodOfProvisionOfServiceInMonths() +
-            ", typeOfPeriodOfProvisionOfService='" + getTypeOfPeriodOfProvisionOfService() + "'" +
             ", endDate='" + getEndDate() + "'" +
             ", status='" + getStatus() + "'" +
             ", bmcRegistration='" + getBmcRegistration() + "'" +
             ", priceFromCalculation=" + getPriceFromCalculation() +
             ", expirationDate='" + getExpirationDate() + "'" +
+            ", typeOfPeriodOfProvisionOfService='" + getTypeOfPeriodOfProvisionOfService() + "'" +
             "}";
     }
 }

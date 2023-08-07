@@ -29,10 +29,6 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "typeOfPeriodOfProvisionOfService",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "endDate",
       "fieldType": "Instant"
     },
@@ -52,6 +48,11 @@
     {
       "fieldName": "expirationDate",
       "fieldType": "Instant"
+    },
+    {
+      "fieldName": "typeOfPeriodOfProvisionOfService",
+      "fieldType": "TypeOfPeriodOfProvisionOfService",
+      "fieldValues": "MINIMAL,FIXED"
     }
   ],
   "name": "ServiceElement",

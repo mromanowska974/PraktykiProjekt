@@ -19,6 +19,8 @@ import { PaymentType } from 'app/entities/enumerations/payment-type.model';
 import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
 import { prototype } from 'events';
 import dayjs from 'dayjs/esm';
+import { TypeOfPeriodOfProvisionOfService } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
+import { TypeOfPeriodMapping } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
 
 @Component({
   standalone: true,
@@ -47,6 +49,11 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
 
   serviceElementSub: Subscription;
 
+  endDate: string;
+
+  public TypeOfPeriodMapping: typeof TypeOfPeriodMapping = TypeOfPeriodMapping;
+  public typeOfPeriodOfProvisionOfService: any = [];
+
   constructor(
     protected serviceElementService: ServiceElementService,
     protected serviceElementFormService: ServiceElementFormService,
@@ -54,11 +61,12 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
     protected internalServiceService: InternalServiceService,
     protected activatedRoute: ActivatedRoute,
     private location: Location
-  ) {}
+  ) {
+    this.typeOfPeriodOfProvisionOfService = Object.values(TypeOfPeriodOfProvisionOfService);
+  }
 
   ngOnInit(): void {
     this.action = this.activatedRoute.snapshot.queryParams['action'];
-    console.log(this.action);
     if (this.serviceElement) {
       this.serviceElement.paymentType = this.activatedRoute.snapshot.queryParams['paymentType'];
       console.log(this.serviceElement.paymentType);
@@ -86,7 +94,7 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
         this.serviceElement.price = 567;
         this.serviceElement.priceFromCalculation = 678;
         this.serviceElement.periodOfProvisionOfServiceInMonths = 4;
-        this.serviceElement.typeOfPeriodOfProvisionOfService = 'Minimalny';
+        this.serviceElement.typeOfPeriodOfProvisionOfService = TypeOfPeriodOfProvisionOfService.MINIMAL;
         this.serviceElement.valuationNumber = 'test';
       }
     }
@@ -94,6 +102,16 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.serviceElementSub) this.serviceElementSub.unsubscribe();
+  }
+
+  setEndDate() {
+    console.log('zaszła wgl zmiana');
+    this.endDate = dayjs(this.serviceElement?.startDate)
+      .add(this.serviceElement!.periodOfProvisionOfServiceInMonths!, 'month')
+      .format('YYYY-MM-DDTHH:mm');
+    this.serviceElement!.endDate = dayjs(this.endDate);
+    console.log(this.serviceElement?.endDate.toISOString());
+    console.log(this.serviceElement?.startDate);
   }
 
   onCancel() {
@@ -136,6 +154,7 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
       this.isTypeOfPeriodOfProvisionOfServiceEntered &&
       this.isValuationNumberEntered;
 
+    console.log(dayjs(this.serviceElement?.startDate).add(this.serviceElement!.periodOfProvisionOfServiceInMonths!, 'month'));
     if (this.isDataValidated) {
       this.serviceElementService.sendCreatedServiceElement(this.serviceElement!);
       this.location.back();

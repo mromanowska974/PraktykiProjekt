@@ -3,6 +3,7 @@ import { IBusinessService } from 'app/entities/business-service/business-service
 import { IInternalService } from 'app/entities/internal-service/internal-service.model';
 import { PaymentType } from 'app/entities/enumerations/payment-type.model';
 import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
+import { TypeOfPeriodOfProvisionOfService } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
 
 export interface IServiceElement {
   id: number;
@@ -12,12 +13,12 @@ export interface IServiceElement {
   paymentType?: keyof typeof PaymentType | null;
   startDate?: dayjs.Dayjs | null;
   periodOfProvisionOfServiceInMonths?: number | null;
-  typeOfPeriodOfProvisionOfService?: string | null;
   endDate?: dayjs.Dayjs | null;
   status?: keyof typeof StatusOfServiceElement | null;
   bmcRegistration?: string | null;
   priceFromCalculation?: number | null;
   expirationDate?: dayjs.Dayjs | null;
+  typeOfPeriodOfProvisionOfService?: keyof typeof TypeOfPeriodOfProvisionOfService | null;
   businessService?: Pick<IBusinessService, 'id'> | null;
   internalService?: Pick<IInternalService, 'id'> | null;
 }
@@ -30,12 +31,12 @@ export class ServiceElement implements IServiceElement {
   paymentType?: keyof typeof PaymentType | null;
   startDate?: dayjs.Dayjs | null;
   periodOfProvisionOfServiceInMonths?: number | null;
-  typeOfPeriodOfProvisionOfService?: string | null;
   endDate?: dayjs.Dayjs | null;
   status?: keyof typeof StatusOfServiceElement | null;
   bmcRegistration?: string | null;
   priceFromCalculation?: number | null;
   expirationDate?: dayjs.Dayjs | null;
+  typeOfPeriodOfProvisionOfService?: keyof typeof TypeOfPeriodOfProvisionOfService | null;
   businessService?: Pick<IBusinessService, 'id'> | null;
   internalService?: Pick<IInternalService, 'id'> | null;
 }

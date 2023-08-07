@@ -24,12 +24,12 @@
       "paymentType": "Payment Type",
       "startDate": "Start Date",
       "periodOfProvisionOfServiceInMonths": "Period Of Provision Of Service In Months",
-      "typeOfPeriodOfProvisionOfService": "Type Of Period Of Provision Of Service",
       "endDate": "End Date",
       "status": "Status",
       "bmcRegistration": "Bmc Registration",
       "priceFromCalculation": "Price From Calculation",
       "expirationDate": "Expiration Date",
+      "typeOfPeriodOfProvisionOfService": "Type Of Period Of Provision Of Service",
       "businessService": "Business Service",
       "internalService": "Internal Service"
     }

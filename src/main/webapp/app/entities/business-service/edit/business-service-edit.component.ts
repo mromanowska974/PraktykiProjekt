@@ -17,6 +17,7 @@ import { ParameterService } from 'app/entities/parameter/service/parameter.servi
 import dayjs from 'dayjs';
 import { Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, WidthType } from 'docx';
 import { saveAs } from 'file-saver';
+import { TypeOfPeriodMapping } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
 
 @Component({
   selector: 'jhi-business-service-edit',
@@ -66,6 +67,9 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
 
   editedServiceElementIndex: number;
   action: string;
+
+  public TypeOfPeriodMapping: typeof TypeOfPeriodMapping = TypeOfPeriodMapping;
+  public typeOfPeriodOfProvisionOfService: any = [];
 
   constructor(
     private router: Router,

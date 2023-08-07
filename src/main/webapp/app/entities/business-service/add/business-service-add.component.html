@@ -27,6 +27,7 @@
       class="input3"
       [(ngModel)]="ownerName"
       [ngClass]="{ 'empty-input': isOwnerLoaded === false && isSaveButtonClicked === true }"
+      readonly
     />
     <button class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
   </div>

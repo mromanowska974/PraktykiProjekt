@@ -141,7 +141,7 @@
             <td width="9%">{{ serviceElement.paymentType == paymentType.MONTHLY ? 'Miesięczna' : '' }}</td>
             <td width="9%">{{ formattedStartDatesMonthly[i] }}</td>
             <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
-            <td width="9%">{{ serviceElement.typeOfPeriodOfProvisionOfService }}</td>
+            <td width="9%">{{ TypeOfPeriodMapping[serviceElement!.typeOfPeriodOfProvisionOfService!] }}</td>
             <td width="9%">{{ formattedEndDatesMonthly[i] }}</td>
             <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</td>
             <td width="8%">
@@ -184,7 +184,7 @@
             <td width="9%">{{ serviceElement.paymentType == paymentType.DISPOSABLE ? 'Jednorazowa' : '' }}</td>
             <td width="9%">{{ formattedStartDatesOneTime[i] }}</td>
             <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
-            <td width="9%">{{ serviceElement.typeOfPeriodOfProvisionOfService }}</td>
+            <td width="9%">{{ TypeOfPeriodMapping[serviceElement!.typeOfPeriodOfProvisionOfService!] }}</td>
             <td width="9%">{{ formattedEndDatesOneTime[i] }}</td>
             <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</td>
             <td width="8%">

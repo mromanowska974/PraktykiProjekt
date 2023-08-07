@@ -1,0 +1,9 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "TypeOfPeriodOfProvisionOfService": {
+      "null": "",
+      "MINIMAL": "MINIMAL",
+      "FIXED": "FIXED"
+    }
+  }
+}
