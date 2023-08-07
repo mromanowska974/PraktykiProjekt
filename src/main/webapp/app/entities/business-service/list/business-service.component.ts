@@ -31,10 +31,10 @@ import { IClient } from 'app/entities/client/client.model';
     FormatMediumDatePipe,
   ],
 })
-export class BusinessServiceComponent implements OnInit, OnChanges {
+export class BusinessServiceComponent implements OnChanges {
   businessServices?: IBusinessService[] | null;
   @Input() client: IClient | null;
-  @Input() isDefaultValueSelected: boolean;
+  @Input() isDefaultValueSelected: boolean = true;
   @Output() selectedBusinessService = new EventEmitter<BusinessService>();
 
   clickedElementIndex: number;
@@ -66,12 +66,6 @@ export class BusinessServiceComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit(): void {
-    this.businessServiceService.query().subscribe(businessServices => {
-      this.businessServices = businessServices.body;
-    });
-  }
-
   onStatusChange(businessService: IBusinessService) {
     if (businessService.status === StatusOfServiceElement.ACTIVE) businessService.status = StatusOfServiceElement.NOT_ACTIVE;
     else businessService.status = StatusOfServiceElement.ACTIVE;
@@ -85,7 +79,17 @@ export class BusinessServiceComponent implements OnInit, OnChanges {
 
   onBusinessServiceSelected(businessService: BusinessService, index: number) {
     this.clickedElementIndex = index;
-    console.log(this.clickedElementIndex);
     this.selectedBusinessService.emit(businessService);
+  }
+
+  onDeleteBusinessService(businessService) {
+    if (confirm('Czy na pewno chcesz usunąć wybraną Usługę Biznesową?')) {
+      this.businessServiceService.delete(businessService.id).subscribe(() => {
+        console.log(this.businessServices);
+        this.businessServices?.splice(businessService, 1);
+        console.log(this.businessServices);
+        window.location.reload();
+      });
+    }
   }
 }

@@ -24,7 +24,7 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./business-service-edit.component.scss'],
 })
 export class BusinessServiceEditComponent implements OnInit, OnDestroy {
-  sectionSelected: string = 'B';
+  sectionSelected: string = 'C';
 
   businessServiceId: number;
   businessService: BusinessService | null = new BusinessService();
@@ -57,6 +57,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   parameterSub: Subscription;
 
   parametersToDelete: IParameter[] | null = [];
+  serviceElementsToDelete: IServiceElement[] | null = [];
 
   formattedStartDatesMonthly: string[] = [];
   formattedEndDatesMonthly: string[] = [];
@@ -239,6 +240,11 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       this.parameterService.delete(parameter.id).subscribe(() => console.log(parameter));
     });
 
+    //deleting service elements
+    this.serviceElementsToDelete!.forEach(serviceElement => {
+      this.serviceElementService.delete(serviceElement.id).subscribe(() => console.log(serviceElement));
+    });
+
     //updating business service
     this.businessServiceService.update(this.businessService!).subscribe();
 
@@ -296,6 +302,20 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
         action: this.action,
       },
     });
+  }
+
+  onDeleteServiceElement(serviceElement: IServiceElement, index: number) {
+    if (confirm('Czy na pewno chcesz usunąć tą składową usługi?')) {
+      if (serviceElement.id !== undefined) {
+        this.serviceElementsToDelete?.push(serviceElement);
+      }
+
+      if (serviceElement.paymentType === PaymentType.MONTHLY) {
+        this.serviceElementsOfMonthlyPaymentType?.splice(index, 1);
+      } else if (serviceElement.paymentType === PaymentType.DISPOSABLE) {
+        this.serviceElementsOfOneTimePaymentType?.splice(index, 1);
+      }
+    }
   }
 
   onAddParameter(parameterType: ParameterType) {

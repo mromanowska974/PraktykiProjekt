@@ -19,20 +19,26 @@
 
 .sections {
   display: flex;
+  position: relative;
+  box-shadow: 0px 5px 5px -5px black;
 }
 
 .sections > a {
   background-color: lightgray;
-  border: 1px solid black;
+  // border: 1px solid black;
   text-align: center;
   width: 25%;
   color: black;
   text-decoration: none;
 }
 
-.selected-section {
-  background: gray !important;
+.selected-section,
+.sections > a:hover {
+  background: rgb(251, 156, 73) !important;
   color: white !important;
+  /*najwyzej sie wywali jak sie nie spodoba xd*/
+  position: relative;
+  box-shadow: 3px 3px 10px inset rgb(255, 214, 179), -3px -3px 10px inset rgb(215, 133, 61);
 }
 
 .all-btns {
@@ -51,14 +57,17 @@
 }
 
 table {
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
+  // border: 1px solid black;
 }
 
 tr {
   display: flex;
-  border: 1px solid black;
+}
+
+th {
+  font-weight: 500;
 }
 
 .table-box > table > tr {
@@ -66,7 +75,11 @@ tr {
 }
 
 table > tr:first-child {
-  background-color: lightgray;
+  background-color: rgb(251, 156, 73);
+  color: white;
+  // border: 1px solid black;
+  position: relative;
+  box-shadow: 0px 6px 5px -5px rgb(86, 86, 86);
 }
 
 .row3 {
@@ -84,4 +97,12 @@ table > tr:first-child {
 .empty-list-info {
   border: 1px solid black;
   text-align: center;
+}
+
+.rowN {
+  background-color: rgb(213, 213, 213);
+}
+
+.rowN1 {
+  background-color: rgb(238, 238, 238);
 }
