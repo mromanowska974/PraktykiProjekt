@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="row1" *ngFor="let service of internalServices">
+<div class="my-container">
+  <div class="row1" *ngFor="let service of internalServices; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
     <p>{{ service.symbol }} ({{ service.name }})</p>
   </div>
 </div>

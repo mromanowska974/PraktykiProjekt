@@ -10,7 +10,7 @@
   <div>
     <div class="row2">
       <p>Lista kart Usług Biznesowych:</p>
-      <button (click)="onAddNewBusinessService(selectedClient ? selectedClient : undefined)">Dodaj nową kartę</button>
+      <button jhiOrange3dButton (click)="onAddNewBusinessService(selectedClient ? selectedClient : undefined)">Dodaj nową kartę</button>
     </div>
     <div>
       <jhi-business-service
@@ -26,16 +26,18 @@
       <p>Powiązane Usługi Wewnętrzne:</p>
     </div>
     <div class="row3">
-      <p *ngIf="selectedBusinessService && selectedBusinessService.internalServices?.length === 0">Brak powiązanych Usług Wewnętrznych</p>
-      <p *ngIf="!selectedBusinessService">Nie wybrano Usługi Biznesowej</p>
+      <p class="no-list" *ngIf="selectedBusinessService && selectedBusinessService.internalServices?.length === 0">
+        Brak powiązanych Usług Wewnętrznych
+      </p>
+      <p class="no-list" *ngIf="!selectedBusinessService">Nie wybrano Usługi Biznesowej</p>
       <jhi-internal-service
         *ngIf="selectedBusinessService && selectedBusinessService.internalServices?.length !== 0"
         [internalServices]="selectedBusinessService.internalServices"
       ></jhi-internal-service>
       <p class="error-text" *ngIf="selectedBusinessService === undefined && isAddingISButtonClicked">Najpierw wybierz Usługę Biznesową</p>
       <div class="btn-box">
-        <button class="add" (click)="onLoadAddNewInternalService()">Dodaj nową Usługę Wewnętrzną</button>
-        <button (click)="onAddExistingInternalService()">Dodaj istniejące UW</button>
+        <button jhiOrange3dButton class="add" (click)="onLoadAddNewInternalService()">Dodaj nową Usługę Wewnętrzną</button>
+        <button jhiOrange3dButton (click)="onAddExistingInternalService()">Dodaj istniejące UW</button>
       </div>
     </div>
   </div>

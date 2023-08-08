@@ -27,6 +27,7 @@ import { InternalServiceAddExistingComponent } from './entities/internal-service
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Orange3dButtonDirective } from './directives/orange3d-button/orange3d-button.directive';
 
 @NgModule({
   imports: [
@@ -52,7 +53,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     { provide: MatDialogRef, useValue: {} },
   ],
   bootstrap: [MainComponent],
-  declarations: [BusinessServiceEditComponent, InternalServiceAddExistingComponent],
+  declarations: [InternalServiceAddExistingComponent],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

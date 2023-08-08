@@ -1,7 +1,9 @@
 h2 {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   background-color: lightgray;
   padding: 10px;
+  position: relative;
+  box-shadow: 0px -5px 5px inset rgb(184, 184, 184), 0px 5px 5px inset rgb(232, 232, 232);
 }
 
 .container {
@@ -57,13 +59,15 @@ p {
   flex-direction: column;
 }
 
-table {
-  border: 1px solid black;
-}
-
 .tableheader {
   background-color: gray;
   color: white;
+  position: relative;
+  box-shadow: 0px -6px 5px -5px inset rgb(62, 62, 62), 0px 6px 5px -5px inset rgb(234, 234, 234);
+}
+
+th {
+  font-weight: 600 !important;
 }
 
 .tablebox > button {
@@ -104,10 +108,30 @@ tr > td:last-child > button {
 }
 
 .no-list {
-  border: 1px solid black;
+  background-color: rgb(213, 213, 213);
   text-align: center;
 }
 
 .empty-input {
   border: 2px solid red;
+}
+
+.rowN {
+  background-color: rgb(213, 213, 213);
+}
+
+.rowN1 {
+  background-color: rgb(238, 238, 238);
+}
+
+.rowN:hover,
+.rowN1:hover {
+  background-color: rgb(251, 156, 73);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  /* border: 1px solid black; */
+  /*najwyzej sie wywali jak sie nie spodoba xd*/
+  position: relative;
+  box-shadow: 0px 3px 10px inset rgb(255, 214, 179), 0px -3px 10px inset rgb(215, 133, 61);
 }

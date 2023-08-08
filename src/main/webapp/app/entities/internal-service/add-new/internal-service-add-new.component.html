@@ -23,11 +23,12 @@
       class="input3"
       [ngClass]="{ 'empty-input': isOwnerLoaded === false && isSaveButtonClicked === true }"
       [(ngModel)]="ownerName"
+      readonly
     />
-    <button class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
+    <button jhiOrange3dButton class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
   </div>
   <div class="btns">
-    <button (click)="onCancel()">Anuluj</button>
-    <button (click)="onSave()">Zapisz</button>
+    <button jhiOrange3dButton (click)="onCancel()">Anuluj</button>
+    <button jhiOrange3dButton (click)="onSave()">Zapisz</button>
   </div>
 </div>

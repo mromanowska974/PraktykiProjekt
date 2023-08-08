@@ -38,7 +38,6 @@ Main page styles
 }
 
 .row3 > p:first-child {
-  border: 1px solid black;
   width: 50vw;
   text-align: center;
 }
@@ -54,6 +53,10 @@ select {
   width: 40%;
   height: 60%;
   margin-left: 5%;
+}
+
+.no-list {
+  background-color: rgb(213, 213, 213);
 }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */

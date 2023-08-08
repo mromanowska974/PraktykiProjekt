@@ -9,6 +9,9 @@
   <div *ngIf="businessServices?.length === 0" class="no-list">
     <p>Nie znaleziono usług biznesowych dla klienta {{ client!.name }}</p>
   </div>
+  <div *ngIf="businessServices === undefined" class="no-list">
+    <p>Brak danych</p>
+  </div>
   <div class="scrollbar">
     <div
       class="list-row"
@@ -19,11 +22,11 @@
       <p class="item1">{{ businessService.symbol }}</p>
       <p class="item2">{{ businessService.name }}</p>
       <p class="item3">{{ businessService.employee?.name + ' ' + businessService.employee?.surname }}</p>
-      <p class="item4">{{ businessService.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</p>
+      <p class="item4">{{ businessService.status === 'ACTIVE' ? 'Aktywna' : 'Nieaktywna' }}</p>
       <p class="item5">
         <button title="Edytuj" (click)="onEditPageLoad(businessService.id)">E</button>
         <button title="Zmień status" (click)="onStatusChange(businessService)">ZS</button>
-        <button (click)="onDeleteBusinessService(businessService)">U</button>
+        <button (click)="onDeleteBusinessService(businessService, i)">U</button>
       </p>
     </div>
   </div>

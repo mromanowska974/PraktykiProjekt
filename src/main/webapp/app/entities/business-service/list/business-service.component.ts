@@ -82,13 +82,13 @@ export class BusinessServiceComponent implements OnChanges {
     this.selectedBusinessService.emit(businessService);
   }
 
-  onDeleteBusinessService(businessService) {
+  onDeleteBusinessService(businessService: BusinessService, index: number) {
     if (confirm('Czy na pewno chcesz usunąć wybraną Usługę Biznesową?')) {
       this.businessServiceService.delete(businessService.id).subscribe(() => {
         console.log(this.businessServices);
-        this.businessServices?.splice(businessService, 1);
+        this.businessServices?.splice(index, 1);
         console.log(this.businessServices);
-        window.location.reload();
+        //window.location.reload();
       });
     }
   }

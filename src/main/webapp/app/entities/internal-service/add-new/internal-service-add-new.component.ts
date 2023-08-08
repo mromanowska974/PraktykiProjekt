@@ -12,13 +12,14 @@ import { CommonModule, Location } from '@angular/common';
 import { BusinessService } from 'app/entities/business-service/business-service.model';
 import { BusinessServiceService } from 'app/entities/business-service/service/business-service.service';
 import { Subscription } from 'rxjs';
+import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
 
 @Component({
   standalone: true,
   selector: 'jhi-internal-service-add-new',
   templateUrl: './internal-service-add-new.component.html',
   styleUrls: ['./internal-service-add-new.component.scss'],
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, Orange3dButtonDirective],
 })
 export class InternalServiceAddNewComponent implements OnInit, OnDestroy {
   ownerName: string;

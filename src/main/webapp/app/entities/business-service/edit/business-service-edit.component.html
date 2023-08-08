@@ -56,7 +56,7 @@
       <div>
         <div class="row4">
           <p>Parametry jakościowe usługi</p>
-          <button (click)="onAddParameter(parameterType.QUALITY)">Dodaj parametr</button>
+          <button jhiOrange3dButton (click)="onAddParameter(parameterType.QUALITY)">Dodaj parametr</button>
         </div>
         <table>
           <tr>
@@ -80,7 +80,7 @@
       <div>
         <div class="row4">
           <p>Parametry pojemnościowe usługi</p>
-          <button (click)="onAddParameter(parameterType.QUANTITY)">Dodaj parametr</button>
+          <button jhiOrange3dButton (click)="onAddParameter(parameterType.QUANTITY)">Dodaj parametr</button>
         </div>
         <table>
           <tr>
@@ -114,7 +114,7 @@
       <div class="table-box">
         <div class="row3">
           <p>Wartość miesięcznej opłaty za usługę</p>
-          <button (click)="onAddServiceElement(paymentType.MONTHLY)">Dodaj składową usługi</button>
+          <button jhiOrange3dButton (click)="onAddServiceElement(paymentType.MONTHLY)">Dodaj składową usługi</button>
         </div>
         <table>
           <tr>
@@ -143,7 +143,7 @@
             <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
             <td width="9%">{{ TypeOfPeriodMapping[serviceElement!.typeOfPeriodOfProvisionOfService!] }}</td>
             <td width="9%">{{ formattedEndDatesMonthly[i] }}</td>
-            <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</td>
+            <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nieaktywna' }}</td>
             <td width="8%">
               <button (click)="onEditServiceElement(serviceElement, i)">E</button>
               <button (click)="onDeleteServiceElement(serviceElement, i)">U</button>
@@ -157,7 +157,7 @@
       <div class="table-box">
         <div class="row3">
           <p>Inne płatności:</p>
-          <button (click)="onAddServiceElement(paymentType.DISPOSABLE)">Dodaj składową usługi</button>
+          <button jhiOrange3dButton (click)="onAddServiceElement(paymentType.DISPOSABLE)">Dodaj składową usługi</button>
         </div>
         <table>
           <tr>
@@ -186,7 +186,7 @@
             <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
             <td width="9%">{{ TypeOfPeriodMapping[serviceElement!.typeOfPeriodOfProvisionOfService!] }}</td>
             <td width="9%">{{ formattedEndDatesOneTime[i] }}</td>
-            <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</td>
+            <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nieaktywna' }}</td>
             <td width="8%">
               <button (click)="onEditServiceElement(serviceElement, i)">E</button>
               <button (click)="onDeleteServiceElement(serviceElement, i)">U</button>
@@ -199,16 +199,16 @@
       </div>
       <div class="row2">
         <p>Uwagi</p>
-        <textarea name="notes" [(ngModel)]="businessService.notes"> </textarea>
+        <textarea name="notes" [(ngModel)]="businessService!.notes"> </textarea>
       </div>
     </div>
     <div *ngSwitchCase="'D'">D</div>
   </div>
   <div class="all-btns">
-    <button (click)="onCreateDocxFile()">Utwórz dokument karty (plik .docx)</button>
+    <button jhiOrange3dButton (click)="onCreateDocxFile()">Utwórz dokument karty (plik .docx)</button>
     <div class="ok-and-cancel-btns">
-      <button (click)="onEditBusinessService()">Ok</button>
-      <button (click)="onCancel()">Anuluj</button>
+      <button jhiOrange3dButton (click)="onEditBusinessService()">Ok</button>
+      <button jhiOrange3dButton (click)="onCancel()">Anuluj</button>
     </div>
   </div>
 </div>

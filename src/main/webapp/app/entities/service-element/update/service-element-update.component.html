@@ -1,4 +1,9 @@
 <div class="container">
+  <h2>
+    <span *ngIf="action === 'ADD'">Dodaj</span>
+    <span *ngIf="action === 'EDIT'">Edytuj</span>
+    składową usługi
+  </h2>
   <div class="box-1">
     <p>Opis usługi</p>
     <textarea [(ngModel)]="serviceElement!.description" [ngClass]="{ 'error-input': !isDescriptionEntered && isSaveBtnClicked }"></textarea>
@@ -20,9 +25,9 @@
     />
   </div>
   <div class="btn-box">
-    <button>Dołącz wsad techniczny</button>
+    <button jhiOrange3dButton>Dołącz wsad techniczny</button>
     <p>Nazwa_wsadu.docx</p>
-    <button>Pokaż wsad</button>
+    <button jhiOrange3dButton>Pokaż wsad</button>
   </div>
   <div class="box-2">
     <p>Wartość <span *ngIf="serviceElement!.paymentType === 'MONTHLY'">miesięcznej </span>opłaty za usługę</p>
@@ -48,18 +53,18 @@
     </div>
   </div>
   <div class="btn-box">
-    <button>Dołącz protokół z negocjacji</button>
+    <button jhiOrange3dButton>Dołącz protokół z negocjacji</button>
     <p>negocjacje.pdf</p>
-    <button>Pokaż skan</button>
+    <button jhiOrange3dButton>Pokaż skan</button>
   </div>
   <div class="row-2">
     <p>Wymagany protokół odbioru do uruchomienia usługi</p>
     <div class="radio-box"><input type="radio" name="protocol" /> Tak <input type="radio" name="protocol" /> Nie</div>
   </div>
   <div class="btn-box">
-    <button>Dołącz protokół odbioru</button>
+    <button jhiOrange3dButton>Dołącz protokół odbioru</button>
     <p>odbiór.pdf</p>
-    <button>Pokaż skan</button>
+    <button jhiOrange3dButton>Pokaż skan</button>
   </div>
   <div class="big-box">
     <div class="row-1">
@@ -107,7 +112,7 @@
   <div class="row-3">
     <div class="row-3">
       <p>Ustaw status usługi</p>
-      <button (click)="onToggleStatus()">{{ serviceElement!.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</button>
+      <button jhiOrange3dButton (click)="onToggleStatus()">{{ serviceElement!.status === 'ACTIVE' ? 'Aktywna' : 'Nie aktywna' }}</button>
     </div>
     <div class="row-3">
       <p>Wyłącz z dniem</p>
@@ -125,7 +130,7 @@
     <input type="datetime-local" [(ngModel)]="expirationDate" class="date-input" />
   </div>
   <div class="btn-box-2">
-    <button (click)="onSaveServiceElement()">Zapisz</button>
-    <button (click)="onCancel()">Anuluj</button>
+    <button jhiOrange3dButton (click)="onSaveServiceElement()">Zapisz</button>
+    <button jhiOrange3dButton (click)="onCancel()">Anuluj</button>
   </div>
 </div>

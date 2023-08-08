@@ -29,7 +29,7 @@
       [ngClass]="{ 'empty-input': isOwnerLoaded === false && isSaveButtonClicked === true }"
       readonly
     />
-    <button class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
+    <button jhiOrange3dButton class="btn3" (click)="openEmployeesList()">Wybierz z listy pracowników</button>
   </div>
   <div class="row1">
     <p>Dział</p>
@@ -66,7 +66,7 @@
         <th width="40%">Nazwa</th>
         <th>Właściciel</th>
       </tr>
-      <tr *ngFor="let internalService of internalServices; let i = index">
+      <tr *ngFor="let internalService of internalServices; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
         <td>{{ internalService.symbol }}</td>
         <td>{{ internalService.name }}</td>
         <td>
@@ -79,8 +79,8 @@
       <p>Brak usług wewnętrznych.</p>
     </div>
     <div class="btns">
-      <button (click)="onLoadAddNewInternalService()">Dodaj nowe UW</button>
-      <button (click)="openInternalServicesList()">Dodaj istniejące UW</button>
+      <button jhiOrange3dButton (click)="onLoadAddNewInternalService()">Dodaj nowe UW</button>
+      <button jhiOrange3dButton (click)="openInternalServicesList()">Dodaj istniejące UW</button>
     </div>
   </div>
   <div class="chckbx">
@@ -88,8 +88,8 @@
     <label for="chckbx"> Wyślij powiadomienie do właściciela usługi biznesowej w momencie aktywacji usługi </label>
   </div>
   <div class="btns">
-    <button (click)="onCancel()">Anuluj</button>
-    <button (click)="onSave()">Zapisz robocze</button>
-    <button (click)="onSaveAndActivate()">Zapisz i aktywuj</button>
+    <button jhiOrange3dButton (click)="onCancel()">Anuluj</button>
+    <button jhiOrange3dButton (click)="onSave()">Zapisz robocze</button>
+    <button jhiOrange3dButton (click)="onSaveAndActivate()">Zapisz i aktywuj</button>
   </div>
 </div>

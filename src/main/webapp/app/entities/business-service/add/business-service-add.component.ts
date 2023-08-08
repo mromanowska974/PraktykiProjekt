@@ -23,13 +23,14 @@ import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-serv
 import { EmployeeComponent } from 'app/entities/employee/list/employee.component';
 import { InternalServiceAddExistingComponent } from 'app/entities/internal-service/add-existing/internal-service-add-existing.component';
 import { ClickedButtonFrom } from 'app/entities/enumerations/clicked-button-from.model';
+import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
 
 @Component({
   standalone: true,
   selector: 'jhi-business-service-add',
   templateUrl: './business-service-add.component.html',
   styleUrls: ['./business-service-add.component.css'],
-  imports: [SharedModule, FormsModule, ReactiveFormsModule, MatDialogModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, MatDialogModule, Orange3dButtonDirective],
 })
 export class BusinessServiceAddComponent implements OnInit, OnDestroy {
   clients: IClient[] | null;

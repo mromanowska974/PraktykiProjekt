@@ -15,13 +15,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { InternalServiceAddExistingComponent } from 'app/entities/internal-service/add-existing/internal-service-add-existing.component';
 import { ClickedButtonFrom } from 'app/entities/enumerations/clicked-button-from.model';
 import { FormsModule } from '@angular/forms';
+import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
 
 @Component({
   standalone: true,
   selector: 'jhi-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [SharedModule, RouterModule, BusinessServiceComponent, InternalServiceComponent, FormsModule],
+  imports: [SharedModule, RouterModule, BusinessServiceComponent, InternalServiceComponent, FormsModule, Orange3dButtonDirective],
 })
 export default class HomeComponent implements OnInit {
   clients: IClient[] | null;

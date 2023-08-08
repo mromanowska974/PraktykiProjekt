@@ -20,7 +20,7 @@
   color: white;
   grid-row: 1;
   position: relative;
-  box-shadow: 0px 5px 5px -5px black;
+  box-shadow: 0px -5px 10px -5px inset black, 0px 5px 10px -5px inset rgb(196, 196, 196);
 }
 
 .rowN {
@@ -54,6 +54,7 @@
 .no-list {
   text-align: center;
   padding: 20px;
+  background-color: rgb(213, 213, 213);
 }
 
 .list-row:hover,
@@ -72,5 +73,4 @@
   max-height: 300px;
   overflow-y: scroll;
   position: relative;
-  box-shadow: 0px 5px 5px -5px black;
 }

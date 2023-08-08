@@ -22,13 +22,14 @@ import dayjs from 'dayjs/esm';
 import { TypeOfPeriodOfProvisionOfService } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
 import { TypeOfPeriodMapping } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
 import exp from 'constants';
+import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
 
 @Component({
   standalone: true,
   selector: 'jhi-service-element-update',
   templateUrl: './service-element-update.component.html',
   styleUrls: ['./service-element-update.component.css'],
-  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  imports: [SharedModule, FormsModule, ReactiveFormsModule, Orange3dButtonDirective],
 })
 export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   serviceElement: IServiceElement | null = {} as IServiceElement;
@@ -50,6 +51,7 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
 
   serviceElementSub: Subscription;
 
+  startDate: string;
   endDate: string;
   expirationDate: string;
 
@@ -86,8 +88,11 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
           this.serviceElement!.typeOfPeriodOfProvisionOfService = serviceElement.typeOfPeriodOfProvisionOfService;
           this.serviceElement!.valuationNumber = serviceElement.valuationNumber;
           this.serviceElement!.startDate = serviceElement.startDate;
+          this.startDate! = dayjs(this.serviceElement!.startDate).format('YYYY-MM-DDTHH:mm');
           this.serviceElement!.endDate = serviceElement.endDate;
+          this.endDate! = dayjs(this.serviceElement!.endDate).format('YYYY-MM-DDTHH:mm');
           this.serviceElement!.expirationDate = serviceElement.expirationDate;
+          this.expirationDate! = dayjs(this.serviceElement!.expirationDate).format('YYYY-MM-DDTHH:mm');
           this.serviceElement!.status = serviceElement.status;
         });
       }

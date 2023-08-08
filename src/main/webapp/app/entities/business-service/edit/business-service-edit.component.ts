@@ -18,11 +18,16 @@ import dayjs from 'dayjs';
 import { Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, WidthType } from 'docx';
 import { saveAs } from 'file-saver';
 import { TypeOfPeriodMapping } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
+import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'jhi-business-service-edit',
   templateUrl: './business-service-edit.component.html',
   styleUrls: ['./business-service-edit.component.scss'],
+  imports: [Orange3dButtonDirective, FormsModule, CommonModule],
 })
 export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   sectionSelected: string = 'C';
