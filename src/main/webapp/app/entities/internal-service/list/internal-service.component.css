@@ -18,9 +18,17 @@
   background-color: rgb(251, 156, 73);
   color: white;
   font-weight: 500;
-  cursor: pointer;
   /* border: 1px solid black; */
   /*najwyzej sie wywali jak sie nie spodoba xd*/
   position: relative;
   box-shadow: 0px 3px 10px inset rgb(255, 214, 179), 0px -3px 10px inset rgb(215, 133, 61);
+}
+
+.row1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-box {
+  margin: 5px 5px;
 }

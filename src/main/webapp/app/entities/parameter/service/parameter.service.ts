@@ -43,6 +43,13 @@ export class ParameterService {
     });
   }
 
+  findByInternalServiceIdAndParameterType(id: number, parameterType: ParameterType): Observable<EntityArrayResponseType> {
+    return this.http.get<IParameter[]>(`${this.resourceUrl}/byIS/${id}`, {
+      params: new HttpParams().append('parameterType', parameterType),
+      observe: 'response',
+    });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IParameter[]>(this.resourceUrl, { params: options, observe: 'response' });

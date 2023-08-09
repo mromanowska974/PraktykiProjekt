@@ -188,6 +188,12 @@ public class ServiceElementResource {
         return serviceElementRepository.findServiceElementsByBusinessServiceIdAndPaymentType(id, paymentType);
     }
 
+    @GetMapping("/service-elements/byIS/{id}")
+    public List<ServiceElement> getServiceElementsByInternalServiceId(@PathVariable Long id, @RequestParam PaymentType paymentType) {
+        log.debug("REST request to get ServiceElements By Business Service Id");
+        return serviceElementRepository.findServiceElementsByInternalServiceIdAndPaymentType(id, paymentType);
+    }
+
     /**
      * {@code GET  /service-elements/:id} : get the "id" serviceElement.
      *

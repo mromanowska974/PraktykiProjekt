@@ -1,343 +1,206 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <form name="editForm" role="form" novalidate [formGroup]="editForm">
-      <h2
-        id="jhi-internal-service-heading"
-        data-cy="InternalServiceCreateUpdateHeading"
-        jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.home.createOrEditLabel"
-      >
-        Dodaj lub edytuj: Internal Service
-      </h2>
-
-      <div>
-        <jhi-alert-error></jhi-alert-error>
-
-        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
-          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.name" for="field_name"
-            >Name</label
-          >
-          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.symbol" for="field_symbol"
-            >Symbol</label
-          >
-          <input type="text" class="form-control" name="symbol" id="field_symbol" data-cy="symbol" formControlName="symbol" />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.functionalDescription"
-            for="field_functionalDescription"
-            >Functional Description</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="functionalDescription"
-            id="field_functionalDescription"
-            data-cy="functionalDescription"
-            formControlName="functionalDescription"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.serviceComissions"
-            for="field_serviceComissions"
-            >Service Comissions</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="serviceComissions"
-            id="field_serviceComissions"
-            data-cy="serviceComissions"
-            formControlName="serviceComissions"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.exclusions"
-            for="field_exclusions"
-            >Exclusions</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="exclusions"
-            id="field_exclusions"
-            data-cy="exclusions"
-            formControlName="exclusions"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.dutiesAndResponsibilities"
-            for="field_dutiesAndResponsibilities"
-            >Duties And Responsibilities</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="dutiesAndResponsibilities"
-            id="field_dutiesAndResponsibilities"
-            data-cy="dutiesAndResponsibilities"
-            formControlName="dutiesAndResponsibilities"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.personResponsibleForService"
-            for="field_personResponsibleForService"
-            >Person Responsible For Service</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="personResponsibleForService"
-            id="field_personResponsibleForService"
-            data-cy="personResponsibleForService"
-            formControlName="personResponsibleForService"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.hoursOfService"
-            for="field_hoursOfService"
-            >Hours Of Service</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="hoursOfService"
-            id="field_hoursOfService"
-            data-cy="hoursOfService"
-            formControlName="hoursOfService"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.serviceActivatingCost"
-            for="field_serviceActivatingCost"
-            >Service Activating Cost</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="serviceActivatingCost"
-            id="field_serviceActivatingCost"
-            data-cy="serviceActivatingCost"
-            formControlName="serviceActivatingCost"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.priceListOfService"
-            for="field_priceListOfService"
-            >Price List Of Service</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="priceListOfService"
-            id="field_priceListOfService"
-            data-cy="priceListOfService"
-            formControlName="priceListOfService"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.notes" for="field_notes"
-            >Notes</label
-          >
-          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.status" for="field_status"
-            >Status</label
-          >
-          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
-            <option [ngValue]="null">{{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceCard.null' | translate }}</option>
-            <option *ngFor="let statusOfServiceCard of statusOfServiceCardValues" [value]="statusOfServiceCard">
-              {{ 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.StatusOfServiceCard.' + statusOfServiceCard | translate }}
-            </option>
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.criticalService"
-            for="field_criticalService"
-            >Critical Service</label
-          >
-          <input
-            type="checkbox"
-            class="form-check"
-            name="criticalService"
-            id="field_criticalService"
-            data-cy="criticalService"
-            formControlName="criticalService"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.guaranteedLevelsOfProvisionOfService"
-            for="field_guaranteedLevelsOfProvisionOfService"
-            >Guaranteed Levels Of Provision Of Service</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="guaranteedLevelsOfProvisionOfService"
-            id="field_guaranteedLevelsOfProvisionOfService"
-            data-cy="guaranteedLevelsOfProvisionOfService"
-            formControlName="guaranteedLevelsOfProvisionOfService"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.periodOfProvisionOfService"
-            for="field_periodOfProvisionOfService"
-            >Period Of Provision Of Service</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="periodOfProvisionOfService"
-            id="field_periodOfProvisionOfService"
-            data-cy="periodOfProvisionOfService"
-            formControlName="periodOfProvisionOfService"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.windowOfService"
-            for="field_windowOfService"
-            >Window Of Service</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="windowOfService"
-            id="field_windowOfService"
-            data-cy="windowOfService"
-            formControlName="windowOfService"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.levelOfAccessibility"
-            for="field_levelOfAccessibility"
-            >Level Of Accessibility</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="levelOfAccessibility"
-            id="field_levelOfAccessibility"
-            data-cy="levelOfAccessibility"
-            formControlName="levelOfAccessibility"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.planDisasterRecovery"
-            for="field_planDisasterRecovery"
-            >Plan Disaster Recovery</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="planDisasterRecovery"
-            id="field_planDisasterRecovery"
-            data-cy="planDisasterRecovery"
-            formControlName="planDisasterRecovery"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.rPO" for="field_rPO"
-            >R PO</label
-          >
-          <input type="text" class="form-control" name="rPO" id="field_rPO" data-cy="rPO" formControlName="rPO" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.rTO" for="field_rTO"
-            >R TO</label
-          >
-          <input type="text" class="form-control" name="rTO" id="field_rTO" data-cy="rTO" formControlName="rTO" />
-        </div>
-
-        <div class="mb-3">
-          <label
-            class="form-label"
-            jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.internalService.employee"
-            for="field_employee"
-            >Employee</label
-          >
-          <select
-            class="form-control"
-            id="field_employee"
-            data-cy="employee"
-            name="employee"
-            formControlName="employee"
-            [compareWith]="compareEmployee"
-          >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="employeeOption" *ngFor="let employeeOption of employeesSharedCollection">{{ employeeOption.id }}</option>
-          </select>
-        </div>
+<div class="container" *ngIf="isDataLoaded && internalService">
+  <div class="data-box">
+    <div class="row1">
+      <p>Symbol usługi:</p>
+      <p>{{ internalService.symbol }}</p>
+    </div>
+    <div class="row1">
+      <p>Nazwa usługi:</p>
+      <p>{{ internalService.name }}</p>
+    </div>
+  </div>
+  <div class="data-box">
+    <div class="row1">
+      <p>Właściciel:</p>
+      <p *ngIf="internalService.employee">{{ internalService.employee.name }} {{ internalService.employee.surname }}</p>
+    </div>
+  </div>
+  <div class="sections">
+    <a (click)="onSelectSection('A')" [ngClass]="{ 'selected-section': sectionSelected === 'A' }">A. Informacje podstawowe</a>
+    <a (click)="onSelectSection('B')" [ngClass]="{ 'selected-section': sectionSelected === 'B' }">B. Parametry uzgodnione w ramach umowy</a>
+    <a (click)="onSelectSection('C')" [ngClass]="{ 'selected-section': sectionSelected === 'C' }">C. Rozliczenie kosztów usługi</a>
+    <a (click)="onSelectSection('D')" [ngClass]="{ 'selected-section': sectionSelected === 'D' }">kontrolling</a>
+  </div>
+  <div [ngSwitch]="sectionSelected">
+    <div *ngSwitchCase="'A'" class="section-a">
+      <div class="row2">
+        <p>Opis funkcjonalny</p>
+        <textarea name="functionalDescription" [(ngModel)]="internalService.functionalDescription"> </textarea>
       </div>
-
-      <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Anuluj</span>
-        </button>
-
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Zapisz</span>
-        </button>
+      <div class="row2">
+        <p>Wykluczenia</p>
+        <textarea name="exclusions" [(ngModel)]="internalService.exclusions"> </textarea>
       </div>
-    </form>
+      <div class="row2">
+        <p>Obowiązki i odpowiedzialności stron</p>
+        <textarea name="dutiesAndResponsibilities" [(ngModel)]="internalService.dutiesAndResponsibilities"> </textarea>
+      </div>
+    </div>
+    <div *ngSwitchCase="'B'" class="section-b">
+      <div class="row2">
+        <p>Osoba odpowiedzialna za usługę po stronie Zamawiającego</p>
+        <textarea name="personResponsibleForService" [(ngModel)]="internalService.personResponsibleForService"> </textarea>
+      </div>
+      <div class="row2">
+        <p>Godziny gwarantowanego świadczenia usługi</p>
+        <textarea name="hoursOfService" [(ngModel)]="internalService.hoursOfService"> </textarea>
+      </div>
+      <div>
+        <div class="row4">
+          <p>Parametry jakościowe usługi</p>
+          <button jhiOrange3dButton (click)="onAddParameter(parameterType.QUALITY)">Dodaj parametr</button>
+        </div>
+        <table>
+          <tr>
+            <th width="40%">Nazwa parametru</th>
+            <th width="40%">Wartość docelowa</th>
+            <th width="20%">Akcje</th>
+          </tr>
+          <tr *ngFor="let parameter of parametersOfQualityType; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
+            <td width="40%">{{ parameter.name }}</td>
+            <td width="40%">{{ parameter.value }}</td>
+            <td width="20%">
+              <button (click)="onEditParameter(parameter)">E</button>
+              <button (click)="onDeleteParameter(parameter, i)">U</button>
+            </td>
+          </tr>
+          <div class="empty-list-info" *ngIf="parametersOfQualityType!.length === 0">
+            <p>Brak parametrów</p>
+          </div>
+        </table>
+      </div>
+      <div>
+        <div class="row4">
+          <p>Parametry pojemnościowe usługi</p>
+          <button jhiOrange3dButton (click)="onAddParameter(parameterType.QUANTITY)">Dodaj parametr</button>
+        </div>
+        <table>
+          <tr>
+            <th width="40%">Nazwa parametru</th>
+            <th width="40%">Wartość docelowa</th>
+            <th width="20%">Akcje</th>
+          </tr>
+          <tr *ngFor="let parameter of parametersOfQuantityType; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
+            <td width="40%">{{ parameter.name }}</td>
+            <td width="40%">{{ parameter.value }}</td>
+            <td width="20%">
+              <button (click)="onEditParameter(parameter)">E</button>
+              <button (click)="onDeleteParameter(parameter, i)">U</button>
+            </td>
+          </tr>
+          <div class="empty-list-info" *ngIf="parametersOfQuantityType!.length === 0">
+            <p>Brak parametrów</p>
+          </div>
+        </table>
+      </div>
+    </div>
+    <div *ngSwitchCase="'C'" class="section-c">
+      <div class="row2">
+        <p>Koszty uruchomienia usługi</p>
+        <textarea name="serviceActivatingCost" [(ngModel)]="internalService.serviceActivatingCost"> </textarea>
+      </div>
+      <div class="row2">
+        <p>Cennik usługi</p>
+        <textarea name="priceListOfService" [(ngModel)]="internalService.priceListOfService"> </textarea>
+      </div>
+      <div class="table-box">
+        <div class="row3">
+          <p>Wartość miesięcznej opłaty za usługę</p>
+          <button jhiOrange3dButton (click)="onAddServiceElement(paymentType.MONTHLY)">Dodaj składową usługi</button>
+        </div>
+        <table>
+          <tr>
+            <th width="3%">Lp.</th>
+            <th width="7%">Kwota zł netto/m-c</th>
+            <th width="15%">Opis usługi</th>
+            <th width="15%">Nr wyceny</th>
+            <th width="9%">Typ opłaty</th>
+            <th width="9%">Data rozpoczęcia świadczenia usługi</th>
+            <th width="8%">Okres świadczenia usługi (miesiące)</th>
+            <th width="9%">Typ okresu swiadczenia usługi</th>
+            <th width="9%">Data zakończenia świadczenia usługi</th>
+            <th width="8%">Status</th>
+            <th width="8%">Akcje</th>
+          </tr>
+          <tr
+            *ngFor="let serviceElement of serviceElementsOfMonthlyPaymentType; let i = index"
+            [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }"
+          >
+            <td width="3%">{{ i + 1 }}</td>
+            <td width="7%">{{ serviceElement.price }}</td>
+            <td width="15%">{{ serviceElement.description }}</td>
+            <td width="15%">{{ serviceElement.valuationNumber }}</td>
+            <td width="9%">{{ serviceElement.paymentType == paymentType.MONTHLY ? 'Miesięczna' : '' }}</td>
+            <td width="9%">{{ formattedStartDatesMonthly[i] }}</td>
+            <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
+            <td width="9%">{{ TypeOfPeriodMapping[serviceElement!.typeOfPeriodOfProvisionOfService!] }}</td>
+            <td width="9%">{{ formattedEndDatesMonthly[i] }}</td>
+            <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nieaktywna' }}</td>
+            <td width="8%">
+              <button (click)="onEditServiceElement(serviceElement, i)">E</button>
+              <button (click)="onDeleteServiceElement(serviceElement, i)">U</button>
+            </td>
+          </tr>
+          <div class="empty-list-info" *ngIf="serviceElementsOfMonthlyPaymentType!.length === 0">
+            <p>Brak składowych usługi</p>
+          </div>
+        </table>
+      </div>
+      <div class="table-box">
+        <div class="row3">
+          <p>Inne płatności:</p>
+          <button jhiOrange3dButton (click)="onAddServiceElement(paymentType.DISPOSABLE)">Dodaj składową usługi</button>
+        </div>
+        <table>
+          <tr>
+            <th width="3%">Lp.</th>
+            <th width="7%">Kwota zł netto</th>
+            <th width="15%">Opis usługi</th>
+            <th width="15%">Nr wyceny</th>
+            <th width="9%">Typ opłaty</th>
+            <th width="9%">Data rozpoczęcia świadczenia usługi</th>
+            <th width="8%">Okres świadczenia usługi (miesiące)</th>
+            <th width="9%">Typ okresu swiadczenia usługi</th>
+            <th width="9%">Data zakończenia świadczenia usługi</th>
+            <th width="8%">Status</th>
+            <th width="8%">Akcje</th>
+          </tr>
+          <tr
+            *ngFor="let serviceElement of serviceElementsOfOneTimePaymentType; let i = index"
+            [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }"
+          >
+            <td width="3%">{{ i + 1 }}</td>
+            <td width="7%">{{ serviceElement.price }}</td>
+            <td width="15%">{{ serviceElement.description }}</td>
+            <td width="15%">{{ serviceElement.valuationNumber }}</td>
+            <td width="9%">{{ serviceElement.paymentType == paymentType.DISPOSABLE ? 'Jednorazowa' : '' }}</td>
+            <td width="9%">{{ formattedStartDatesOneTime[i] }}</td>
+            <td width="8%">{{ serviceElement.periodOfProvisionOfServiceInMonths }}</td>
+            <td width="9%">{{ TypeOfPeriodMapping[serviceElement!.typeOfPeriodOfProvisionOfService!] }}</td>
+            <td width="9%">{{ formattedEndDatesOneTime[i] }}</td>
+            <td width="8%">{{ serviceElement.status === 'ACTIVE' ? 'Aktywna' : 'Nieaktywna' }}</td>
+            <td width="8%">
+              <button (click)="onEditServiceElement(serviceElement, i)">E</button>
+              <button (click)="onDeleteServiceElement(serviceElement, i)">U</button>
+            </td>
+          </tr>
+          <div class="empty-list-info" *ngIf="serviceElementsOfOneTimePaymentType!.length === 0">
+            <p>Brak składowych usługi</p>
+          </div>
+        </table>
+      </div>
+      <div class="row2">
+        <p>Uwagi</p>
+        <textarea name="notes" [(ngModel)]="internalService!.notes"> </textarea>
+      </div>
+    </div>
+    <div *ngSwitchCase="'D'">D</div>
+  </div>
+  <div class="all-btns">
+    <button jhiOrange3dButton (click)="onCreateDocxFile()">Utwórz dokument karty (plik .docx)</button>
+    <div class="ok-and-cancel-btns">
+      <button jhiOrange3dButton (click)="onEditBusinessService()">Ok</button>
+      <button jhiOrange3dButton (click)="onCancel()">Anuluj</button>
+    </div>
   </div>
 </div>

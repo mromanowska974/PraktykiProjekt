@@ -72,6 +72,15 @@ export class ServiceElementService {
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
+  findByInternalServiceAndPaymentType(id: number, paymentType: PaymentType): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<RestServiceElement[]>(`${this.resourceUrl}/byIS/${id}`, {
+        params: new HttpParams().append('paymentType', paymentType),
+        observe: 'response',
+      })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http

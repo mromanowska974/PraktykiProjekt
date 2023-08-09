@@ -6,6 +6,10 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IInternalService, InternalService, NewInternalService } from '../internal-service.model';
+import { IParameter } from 'app/entities/parameter/parameter.model';
+import { IServiceElement } from 'app/entities/service-element/service-element.model';
+import { PaymentType } from 'app/entities/enumerations/payment-type.model';
+import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
 
 export type PartialUpdateInternalService = Partial<IInternalService> & Pick<IInternalService, 'id'>;
 
@@ -89,4 +93,40 @@ export class InternalServiceService {
   sendCreatedInternalService(internalService: InternalService | undefined) {
     this.internalServiceCreated.next(internalService);
   }
+
+  isInternalServiceSaved: boolean = false;
+  internalService: InternalService | null = new InternalService();
+  oldInternalService: InternalService | null = new InternalService();
+  serviceElementIndex: number;
+  action: string = '';
+
+  private serviceElementToSend = new BehaviorSubject<IServiceElement>({} as IServiceElement);
+  toReceive = this.serviceElementToSend.asObservable();
+
+  sendServiceElement(serviceElement: IServiceElement) {
+    this.serviceElementToSend.next(serviceElement);
+  }
+
+  serviceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
+  serviceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
+
+  oldServiceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
+  oldServiceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
+
+  parametersOfQualityType: IParameter[] | null = [];
+  parametersOfQuantityType: IParameter[] | null = [];
+
+  oldParametersOfQualityType: IParameter[] | null = [];
+  oldParametersOfQuantityType: IParameter[] | null = [];
+
+  formattedStartDatesMonthly: string[] = [];
+  formattedEndDatesMonthly: string[] = [];
+  formattedStartDatesOneTime: string[] = [];
+  formattedEndDatesOneTime: string[] = [];
+
+  parametersToDelete: IParameter[] | null = [];
+  serviceElementsToDelete: IServiceElement[] | null = [];
+
+  parametersToEdit: { index: number; parameterType: ParameterType }[] | null = [];
+  serviceElementsToEdit: { index: number; paymentType: PaymentType }[] | null = [];
 }

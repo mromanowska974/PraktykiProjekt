@@ -9,6 +9,8 @@ import { BusinessService, IBusinessService, NewBusinessService } from '../busine
 import { InternalService } from 'app/entities/internal-service/internal-service.model';
 import { IServiceElement } from 'app/entities/service-element/service-element.model';
 import { IParameter } from 'app/entities/parameter/parameter.model';
+import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
+import { PaymentType } from 'app/entities/enumerations/payment-type.model';
 
 export type PartialUpdateBusinessService = Partial<IBusinessService> & Pick<IBusinessService, 'id'>;
 
@@ -118,4 +120,10 @@ export class BusinessServiceService {
   formattedEndDatesMonthly: string[] = [];
   formattedStartDatesOneTime: string[] = [];
   formattedEndDatesOneTime: string[] = [];
+
+  parametersToDelete: IParameter[] | null = [];
+  serviceElementsToDelete: IServiceElement[] | null = [];
+
+  parametersToEdit: { index: number; parameterType: ParameterType }[] | null = [];
+  serviceElementsToEdit: { index: number; paymentType: PaymentType }[] | null = [];
 }

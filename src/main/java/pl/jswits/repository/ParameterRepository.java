@@ -13,4 +13,5 @@ import pl.jswits.domain.enumeration.ParameterType;
 @Repository
 public interface ParameterRepository extends JpaRepository<Parameter, Long> {
     List<Parameter> findParametersByBusinessServiceIdAndType(Long id, ParameterType parameterType);
+    List<Parameter> findParametersByInternalServiceIdAndType(Long id, ParameterType parameterType);
 }

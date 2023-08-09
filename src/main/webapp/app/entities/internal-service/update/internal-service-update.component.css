@@ -1,0 +1,120 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row1 {
+  display: flex;
+}
+
+.row1 > p:last-child {
+  font-weight: 600;
+  margin-left: 15px;
+}
+
+.sections {
+  display: flex;
+  position: relative;
+  box-shadow: 0px 5px 5px -5px black;
+}
+
+.sections > a {
+  background-color: lightgray;
+  /* border: 1px solid black; */
+  text-align: center;
+  width: 25%;
+  color: black;
+  text-decoration: none;
+}
+
+.selected-section,
+.sections > a:hover {
+  background: rgb(251, 156, 73) !important;
+  color: white !important;
+  /*najwyzej sie wywali jak sie nie spodoba xd*/
+  position: relative;
+  box-shadow: 3px 3px 10px inset rgb(255, 214, 179), -3px -3px 10px inset rgb(215, 133, 61);
+}
+
+.all-btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.section-a,
+.section-b,
+.section-c {
+  margin: 15px 0px;
+}
+
+.row2 > textarea {
+  width: 100%;
+}
+
+table {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+}
+
+tr {
+  display: flex;
+}
+
+th {
+  font-weight: 500;
+}
+
+.table-box > table > tr {
+  text-align: center !important;
+}
+
+table > tr:first-child {
+  background-color: gray;
+  color: white;
+  /* border: 1px solid black; */
+  position: relative;
+  box-shadow: 0px -6px 5px -5px inset rgb(62, 62, 62), 0px 6px 5px -5px inset rgb(234, 234, 234);
+}
+
+.row3 {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0px;
+}
+
+.row4 {
+  display: flex;
+  margin: 15px 0px;
+  justify-content: space-between;
+}
+
+.empty-list-info {
+  background-color: rgb(213, 213, 213);
+  text-align: center;
+}
+
+.rowN {
+  background-color: rgb(213, 213, 213);
+}
+
+.rowN1 {
+  background-color: rgb(238, 238, 238);
+}
+
+.rowN:hover,
+.rowN1:hover {
+  background-color: rgb(251, 156, 73);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  /* border: 1px solid black; */
+  /*najwyzej sie wywali jak sie nie spodoba xd*/
+  position: relative;
+  box-shadow: 0px 3px 10px inset rgb(255, 214, 179), 0px -3px 10px inset rgb(215, 133, 61);
+}

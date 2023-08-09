@@ -41,20 +41,9 @@ const internalServiceRoute: Routes = [
     },
     canActivate: [UserRouteAccessService],
   },
-  // {
-  //   path: 'add',
-  //   component: InternalServiceAddNewComponent,
-  //   resolve: {
-  //     internalService: InternalServiceResolve,
-  //   },
-  //   canActivate: [UserRouteAccessService],
-  // },
   {
     path: 'add/:id',
     component: InternalServiceAddNewComponent,
-    // resolve: {
-    //   internalService: InternalServiceResolve,
-    // },
     canActivate: [UserRouteAccessService],
   },
 ];

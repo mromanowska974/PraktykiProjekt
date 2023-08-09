@@ -65,6 +65,9 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   parametersToDelete: IParameter[] | null = [];
   serviceElementsToDelete: IServiceElement[] | null = [];
 
+  parametersToEdit: { index: number; parameterType: ParameterType }[] | null = [];
+  serviceElementsToEdit: { index: number; paymentType: PaymentType }[] | null = [];
+
   formattedStartDatesMonthly: string[] = [];
   formattedEndDatesMonthly: string[] = [];
   formattedStartDatesOneTime: string[] = [];
@@ -112,6 +115,11 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       this.formattedStartDatesOneTime = this.businessServiceService.formattedStartDatesOneTime;
       this.formattedEndDatesOneTime = this.businessServiceService.formattedEndDatesOneTime;
 
+      this.parametersToDelete = this.businessServiceService.parametersToDelete;
+      this.parametersToEdit = this.businessServiceService.parametersToEdit;
+      this.serviceElementsToDelete = this.businessServiceService.serviceElementsToDelete;
+      this.serviceElementsToEdit = this.businessServiceService.serviceElementsToEdit;
+
       this.businessServiceService.isBusinessServiceSaved = false;
       this.isDataLoaded = true;
     }
@@ -121,8 +129,6 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       this.serviceElementService.findByBusinessServiceAndPaymentType(this.businessServiceId, PaymentType.MONTHLY).subscribe(resp => {
         this.oldServiceElementsOfMonthlyPaymentType = resp.body;
         this.serviceElementsOfMonthlyPaymentType = JSON.parse(JSON.stringify(this.oldServiceElementsOfMonthlyPaymentType));
-        console.log(this.oldServiceElementsOfMonthlyPaymentType);
-        console.log(this.serviceElementsOfMonthlyPaymentType);
 
         this.serviceElementsOfMonthlyPaymentType?.forEach(serviceElement => {
           this.formattedStartDatesMonthly.push(dayjs(serviceElement.startDate!).format('DD.MM.YYYY').toString());
@@ -168,16 +174,51 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
           }
         } else if (this.action === 'EDIT') {
           this.editedServiceElementIndex = this.businessServiceService.serviceElementIndex;
+          resp.businessService = this.businessService;
+
           if (resp.paymentType === PaymentType.MONTHLY) {
+            console.log(resp.businessService);
+
+            //if exists in "old" list
+            if (this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex]) {
+              resp.id = this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex].id;
+              console.log(resp);
+            }
+
             this.serviceElementsOfMonthlyPaymentType![this.editedServiceElementIndex] = resp;
             this.formattedStartDatesMonthly[this.editedServiceElementIndex] = dayjs(resp.startDate).format('DD.MM.YYYY');
             this.formattedEndDatesMonthly[this.editedServiceElementIndex] = dayjs(resp.endDate).format('DD.MM.YYYY');
-            console.log(this.editedServiceElementIndex);
-            console.log(this.serviceElementsOfMonthlyPaymentType![this.editedServiceElementIndex]);
+
+            if (
+              !this.serviceElementsToEdit?.find(el => {
+                return el.index === this.editedServiceElementIndex && el.paymentType === 'MONTHLY';
+              }) &&
+              resp.id !== undefined
+            ) {
+              this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.MONTHLY });
+              console.log(this.serviceElementsToEdit);
+            }
           } else if (resp.paymentType === PaymentType.DISPOSABLE) {
+            console.log(resp.businessService);
+            //if exists in "old" list
+            if (this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex]) {
+              resp.id = this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex].id;
+              console.log(resp);
+            }
+
             this.serviceElementsOfOneTimePaymentType![this.editedServiceElementIndex] = resp;
             this.formattedStartDatesOneTime[this.editedServiceElementIndex] = dayjs(resp.startDate).format('DD.MM.YYYY');
             this.formattedEndDatesOneTime[this.editedServiceElementIndex] = dayjs(resp.endDate).format('DD.MM.YYYY');
+
+            if (
+              !this.serviceElementsToEdit?.find(el => {
+                return el.index === this.editedServiceElementIndex && el.paymentType === 'DISPOSABLE';
+              }) &&
+              resp.id !== undefined
+            ) {
+              this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.DISPOSABLE });
+              console.log(this.serviceElementsToEdit);
+            }
           }
         }
 
@@ -254,6 +295,17 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       this.serviceElementService.delete(serviceElement.id).subscribe(() => console.log(serviceElement));
     });
 
+    //updating parameters
+
+    //updating service elements
+    this.serviceElementsToEdit!.forEach(serviceElementData => {
+      if (serviceElementData.paymentType === 'MONTHLY') {
+        this.serviceElementService.update(this.serviceElementsOfMonthlyPaymentType![serviceElementData.index]).subscribe();
+      } else if (serviceElementData.paymentType === 'DISPOSABLE') {
+        this.serviceElementService.update(this.serviceElementsOfOneTimePaymentType![serviceElementData.index]).subscribe();
+      }
+    });
+
     //updating business service
     this.businessServiceService.update(this.businessService!).subscribe();
 
@@ -281,6 +333,11 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     this.businessServiceService.formattedEndDatesMonthly = this.formattedEndDatesMonthly;
     this.businessServiceService.formattedStartDatesOneTime = this.formattedStartDatesOneTime;
     this.businessServiceService.formattedEndDatesOneTime = this.formattedEndDatesOneTime;
+
+    this.businessServiceService.parametersToDelete = this.parametersToDelete;
+    this.businessServiceService.parametersToEdit = this.parametersToEdit;
+    this.businessServiceService.serviceElementsToDelete = this.serviceElementsToDelete;
+    this.businessServiceService.serviceElementsToEdit = this.serviceElementsToEdit;
 
     this.businessServiceService.isBusinessServiceSaved = true;
   }

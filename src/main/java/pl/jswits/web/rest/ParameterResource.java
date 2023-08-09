@@ -164,6 +164,15 @@ public class ParameterResource {
         return parameterRepository.findParametersByBusinessServiceIdAndType(id, parameterType);
     }
 
+    @GetMapping("/parameters/byIS/{id}")
+    public List<Parameter> getParametersByInternalServiceIdAndParameterType(
+        @PathVariable Long id,
+        @RequestParam ParameterType parameterType
+    ) {
+        log.debug("REST request to get Parameters By Business Service Id And Parameter Type");
+        return parameterRepository.findParametersByInternalServiceIdAndType(id, parameterType);
+    }
+
     /**
      * {@code GET  /parameters/:id} : get the "id" parameter.
      *

@@ -40,9 +40,11 @@ export class InternalServiceComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  ngOnInit(): void {
-    // this.internalServiceService.query().subscribe(internalServices => {
-    //   this.internalServices = internalServices.body;
-    // });
+  ngOnInit(): void {}
+
+  onEditInternalService(internalService: IInternalService) {
+    this.router.navigate(['/internal-service', internalService.id, 'edit']);
   }
+
+  onDelete() {}
 }

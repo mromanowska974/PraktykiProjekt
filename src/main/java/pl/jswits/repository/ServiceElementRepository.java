@@ -13,4 +13,5 @@ import pl.jswits.domain.enumeration.PaymentType;
 @Repository
 public interface ServiceElementRepository extends JpaRepository<ServiceElement, Long> {
     List<ServiceElement> findServiceElementsByBusinessServiceIdAndPaymentType(Long id, PaymentType paymentType);
+    List<ServiceElement> findServiceElementsByInternalServiceIdAndPaymentType(Long id, PaymentType paymentType);
 }
