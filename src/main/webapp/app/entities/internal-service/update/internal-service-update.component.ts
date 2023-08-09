@@ -37,7 +37,7 @@ import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d
   imports: [SharedModule, FormsModule, ReactiveFormsModule, Orange3dButtonDirective],
 })
 export class InternalServiceUpdateComponent implements OnInit {
-  sectionSelected: string = 'B';
+  sectionSelected: string = 'D';
 
   internalServiceId: number;
   internalService: IInternalService | null = {} as IInternalService;

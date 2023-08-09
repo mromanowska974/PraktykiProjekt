@@ -19,13 +19,20 @@
     <a (click)="onSelectSection('A')" [ngClass]="{ 'selected-section': sectionSelected === 'A' }">A. Informacje podstawowe</a>
     <a (click)="onSelectSection('B')" [ngClass]="{ 'selected-section': sectionSelected === 'B' }">B. Parametry uzgodnione w ramach umowy</a>
     <a (click)="onSelectSection('C')" [ngClass]="{ 'selected-section': sectionSelected === 'C' }">C. Rozliczenie kosztów usługi</a>
-    <a (click)="onSelectSection('D')" [ngClass]="{ 'selected-section': sectionSelected === 'D' }">kontrolling</a>
+    <a (click)="onSelectSection('D')" [ngClass]="{ 'selected-section': sectionSelected === 'D' }">D. Informacje wewnętrzne</a>
+    <a (click)="onSelectSection('E')" [ngClass]="{ 'selected-section': sectionSelected === 'E' }">E. Dostępność</a>
+    <a (click)="onSelectSection('F')" [ngClass]="{ 'selected-section': sectionSelected === 'F' }">F. Disaster Recovery</a>
+    <a (click)="onSelectSection('G')" [ngClass]="{ 'selected-section': sectionSelected === 'G' }">G. Pozostałe informacje</a>
   </div>
   <div [ngSwitch]="sectionSelected">
-    <div *ngSwitchCase="'A'" class="section-a">
+    <div *ngSwitchCase="'A'" class="section">
       <div class="row2">
         <p>Opis funkcjonalny</p>
         <textarea name="functionalDescription" [(ngModel)]="internalService.functionalDescription"> </textarea>
+      </div>
+      <div class="row2">
+        <p>Zlecenie usługi</p>
+        <textarea name="serviceComissions" [(ngModel)]="internalService.serviceComissions"> </textarea>
       </div>
       <div class="row2">
         <p>Wykluczenia</p>
@@ -35,18 +42,18 @@
         <p>Obowiązki i odpowiedzialności stron</p>
         <textarea name="dutiesAndResponsibilities" [(ngModel)]="internalService.dutiesAndResponsibilities"> </textarea>
       </div>
-    </div>
-    <div *ngSwitchCase="'B'" class="section-b">
       <div class="row2">
         <p>Osoba odpowiedzialna za usługę po stronie Zamawiającego</p>
         <textarea name="personResponsibleForService" [(ngModel)]="internalService.personResponsibleForService"> </textarea>
       </div>
+    </div>
+    <div *ngSwitchCase="'B'" class="section">
       <div class="row2">
         <p>Godziny gwarantowanego świadczenia usługi</p>
         <textarea name="hoursOfService" [(ngModel)]="internalService.hoursOfService"> </textarea>
       </div>
       <div>
-        <div class="row4">
+        <div class="row3">
           <p>Parametry jakościowe usługi</p>
           <button jhiOrange3dButton (click)="onAddParameter(parameterType.QUALITY)">Dodaj parametr</button>
         </div>
@@ -70,7 +77,7 @@
         </table>
       </div>
       <div>
-        <div class="row4">
+        <div class="row3">
           <p>Parametry pojemnościowe usługi</p>
           <button jhiOrange3dButton (click)="onAddParameter(parameterType.QUANTITY)">Dodaj parametr</button>
         </div>
@@ -94,7 +101,7 @@
         </table>
       </div>
     </div>
-    <div *ngSwitchCase="'C'" class="section-c">
+    <div *ngSwitchCase="'C'" class="section">
       <div class="row2">
         <p>Koszty uruchomienia usługi</p>
         <textarea name="serviceActivatingCost" [(ngModel)]="internalService.serviceActivatingCost"> </textarea>
@@ -194,7 +201,141 @@
         <textarea name="notes" [(ngModel)]="internalService!.notes"> </textarea>
       </div>
     </div>
-    <div *ngSwitchCase="'D'">D</div>
+    <div *ngSwitchCase="'D'" class="section">
+      <div class="row4">
+        <p>Status Karty Usługi IT</p>
+        <select>
+          <option>Obowiązująca</option>
+          <option>Nieobowiązująca</option>
+        </select>
+      </div>
+      <div class="row4">
+        <p>Usługa krytyczna</p>
+        <div><input type="radio" name="criticalService" />Tak <input type="radio" name="criticalService" />Nie</div>
+      </div>
+      <div class="ul-box">
+        <div class="row3">
+          <p>Produkty krytyczne:</p>
+          <button jhiOrange3dButton>Dodaj produkt</button>
+        </div>
+        <ul>
+          <li>
+            1
+            <div>
+              <button>E</button>
+              <button>U</button>
+            </div>
+          </li>
+          <li>
+            2
+            <div>
+              <button>E</button>
+              <button>U</button>
+            </div>
+          </li>
+          <li>
+            3
+            <div>
+              <button>E</button>
+              <button>U</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="ul-box">
+        <div class="row3">
+          <p>Produkty ważne:</p>
+          <button jhiOrange3dButton>Dodaj produkt</button>
+        </div>
+        <ul>
+          <li>
+            1
+            <div>
+              <button>E</button>
+              <button>U</button>
+            </div>
+          </li>
+          <li>
+            2
+            <div>
+              <button>E</button>
+              <button>U</button>
+            </div>
+          </li>
+          <li>
+            3
+            <div>
+              <button>E</button>
+              <button>U</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="row2">
+        <p>Gwarantowane Poziomy Świadczenia Usługi:</p>
+        <textarea name="guaranteedLevelsOfProvisionOfService" [(ngModel)]="internalService.guaranteedLevelsOfProvisionOfService"></textarea>
+      </div>
+    </div>
+    <div *ngSwitchCase="'E'" class="section">
+      <div class="row2">
+        <p>Czas Świadczenia Usługi:</p>
+        <textarea name="periodOfProvisionOfService" [(ngModel)]="internalService.periodOfProvisionOfService"></textarea>
+      </div>
+      <div class="row2">
+        <p>Okno Serwisowe:</p>
+        <textarea name="windowOfService" [(ngModel)]="internalService.windowOfService"></textarea>
+      </div>
+      <div class="row2">
+        <p>Poziom Dostępności:</p>
+        <textarea name="levelOfAccessibility" [(ngModel)]="internalService.levelOfAccessibility"></textarea>
+      </div>
+    </div>
+    <div *ngSwitchCase="'F'" class="section">
+      <div class="row2">
+        <p>Plan Disaster Recovery:</p>
+        <textarea name="planDisasterRecovery" [(ngModel)]="internalService.planDisasterRecovery"></textarea>
+      </div>
+      <div class="row2">
+        <p>RPO:</p>
+        <textarea name="rPO" [(ngModel)]="internalService.rPO"></textarea>
+      </div>
+      <div class="row2">
+        <p>RTO:</p>
+        <textarea name="rTO" [(ngModel)]="internalService.rTO"></textarea>
+      </div>
+    </div>
+    <div *ngSwitchCase="'G'" class="section">
+      <div>
+        <p>Firmy zewnętrzne wspierające realizację Usługi IT:</p>
+        <table>
+          <tr>
+            <th width="5%">Lp.</th>
+            <th width="29%">Firma zewnętrzna</th>
+            <th width="29%">Numer umowy</th>
+            <th width="29%">Parametry SLA</th>
+            <th width="8%">Akcje</th>
+          </tr>
+          <tr>
+            <td width="5%">1</td>
+            <td width="29%">Firma kogucik</td>
+            <td width="29%">123</td>
+            <td width="29%">co to wgl jest xd</td>
+            <td>
+              <button>E</button>
+              <button>U</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="ul-box">
+        <p>Wspierane Usługi Biznesowe:</p>
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+      </div>
+    </div>
   </div>
   <div class="all-btns">
     <button jhiOrange3dButton (click)="onCreateDocxFile()">Utwórz dokument karty (plik .docx)</button>

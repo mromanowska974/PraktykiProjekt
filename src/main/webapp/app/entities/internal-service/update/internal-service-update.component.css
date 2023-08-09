@@ -46,9 +46,7 @@
   justify-content: space-between;
 }
 
-.section-a,
-.section-b,
-.section-c {
+.section {
   margin: 15px 0px;
 }
 
@@ -82,16 +80,15 @@ table > tr:first-child {
   box-shadow: 0px -6px 5px -5px inset rgb(62, 62, 62), 0px 6px 5px -5px inset rgb(234, 234, 234);
 }
 
-.row3 {
+.row3,
+.row4 {
   display: flex;
   justify-content: space-between;
   margin: 15px 0px;
 }
 
 .row4 {
-  display: flex;
-  margin: 15px 0px;
-  justify-content: space-between;
+  width: 30%;
 }
 
 .empty-list-info {
@@ -117,4 +114,22 @@ table > tr:first-child {
   /*najwyzej sie wywali jak sie nie spodoba xd*/
   position: relative;
   box-shadow: 0px 3px 10px inset rgb(255, 214, 179), 0px -3px 10px inset rgb(215, 133, 61);
+}
+
+ul {
+  border: 1px solid red;
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+li {
+  border: 1px solid blue;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 10px;
+}
+
+.ul-box {
+  border: 1px solid lime;
+  width: 50%;
 }
