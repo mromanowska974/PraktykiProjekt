@@ -274,7 +274,7 @@ export class InternalServiceUpdateComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-  onEditBusinessService() {
+  onEditInternalService() {
     //adding service elements to db
     this.serviceElementsOfMonthlyPaymentType!.forEach(serviceElement => {
       if (serviceElement.id === undefined) this.serviceElementService.create(serviceElement).subscribe();
@@ -301,6 +301,17 @@ export class InternalServiceUpdateComponent implements OnInit {
     //deleting service elements
     this.serviceElementsToDelete!.forEach(serviceElement => {
       this.serviceElementService.delete(serviceElement.id).subscribe(() => console.log(serviceElement));
+    });
+
+    //updating parameters
+
+    //updating service elements
+    this.serviceElementsToEdit!.forEach(serviceElementData => {
+      if (serviceElementData.paymentType === 'MONTHLY') {
+        this.serviceElementService.update(this.serviceElementsOfMonthlyPaymentType![serviceElementData.index]).subscribe();
+      } else if (serviceElementData.paymentType === 'DISPOSABLE') {
+        this.serviceElementService.update(this.serviceElementsOfOneTimePaymentType![serviceElementData.index]).subscribe();
+      }
     });
 
     //updating business service

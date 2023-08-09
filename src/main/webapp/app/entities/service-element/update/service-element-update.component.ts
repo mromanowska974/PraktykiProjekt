@@ -95,6 +95,23 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
           this.expirationDate! = dayjs(this.serviceElement!.expirationDate).format('YYYY-MM-DDTHH:mm');
           this.serviceElement!.status = serviceElement.status;
         });
+
+        this.serviceElementSub = this.internalServiceService.toReceive.subscribe(serviceElement => {
+          this.serviceElement!.bmcRegistration = serviceElement.bmcRegistration;
+          this.serviceElement!.description = serviceElement.description;
+          this.serviceElement!.price = serviceElement.price;
+          this.serviceElement!.priceFromCalculation = serviceElement.priceFromCalculation;
+          this.serviceElement!.periodOfProvisionOfServiceInMonths = serviceElement.periodOfProvisionOfServiceInMonths;
+          this.serviceElement!.typeOfPeriodOfProvisionOfService = serviceElement.typeOfPeriodOfProvisionOfService;
+          this.serviceElement!.valuationNumber = serviceElement.valuationNumber;
+          this.serviceElement!.startDate = serviceElement.startDate;
+          this.startDate! = dayjs(this.serviceElement!.startDate).format('YYYY-MM-DDTHH:mm');
+          this.serviceElement!.endDate = serviceElement.endDate;
+          this.endDate! = dayjs(this.serviceElement!.endDate).format('YYYY-MM-DDTHH:mm');
+          this.serviceElement!.expirationDate = serviceElement.expirationDate;
+          this.expirationDate! = dayjs(this.serviceElement!.expirationDate).format('YYYY-MM-DDTHH:mm');
+          this.serviceElement!.status = serviceElement.status;
+        });
       }
       //for testing only
       else {
