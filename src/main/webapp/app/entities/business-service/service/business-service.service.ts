@@ -95,6 +95,7 @@ export class BusinessServiceService {
   businessService: BusinessService | null = new BusinessService();
   oldBusinessService: BusinessService | null = new BusinessService();
   serviceElementIndex: number;
+  parameterIndex: number;
   action: string = '';
 
   private serviceElementToSend = new BehaviorSubject<IServiceElement>({} as IServiceElement);

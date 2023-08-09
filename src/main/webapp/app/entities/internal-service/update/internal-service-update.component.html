@@ -60,7 +60,7 @@
             <td width="40%">{{ parameter.name }}</td>
             <td width="40%">{{ parameter.value }}</td>
             <td width="20%">
-              <button (click)="onEditParameter(parameter)">E</button>
+              <button (click)="onEditParameter(parameter, i)">E</button>
               <button (click)="onDeleteParameter(parameter, i)">U</button>
             </td>
           </tr>
@@ -84,7 +84,7 @@
             <td width="40%">{{ parameter.name }}</td>
             <td width="40%">{{ parameter.value }}</td>
             <td width="20%">
-              <button (click)="onEditParameter(parameter)">E</button>
+              <button (click)="onEditParameter(parameter, i)">E</button>
               <button (click)="onDeleteParameter(parameter, i)">U</button>
             </td>
           </tr>

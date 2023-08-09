@@ -37,7 +37,7 @@ import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d
   imports: [SharedModule, FormsModule, ReactiveFormsModule, Orange3dButtonDirective],
 })
 export class InternalServiceUpdateComponent implements OnInit {
-  sectionSelected: string = 'C';
+  sectionSelected: string = 'B';
 
   internalServiceId: number;
   internalService: IInternalService | null = {} as IInternalService;
@@ -81,6 +81,7 @@ export class InternalServiceUpdateComponent implements OnInit {
   formattedEndDatesOneTime: string[] = [];
 
   editedServiceElementIndex: number;
+  editedParameterIndex: number;
   action: string;
 
   public TypeOfPeriodMapping: typeof TypeOfPeriodMapping = TypeOfPeriodMapping;
@@ -238,10 +239,35 @@ export class InternalServiceUpdateComponent implements OnInit {
     this.parameterSub = this.parameterService.toReceive.subscribe(resp => {
       resp.internalService = this.internalService;
 
-      if (resp.type === ParameterType.QUALITY) {
-        this.parametersOfQualityType?.push(resp);
-      } else if (resp.type === ParameterType.QUANTITY) {
-        this.parametersOfQuantityType?.push(resp);
+      if (this.action === 'ADD') {
+        if (resp.type === ParameterType.QUALITY) {
+          this.parametersOfQualityType?.push(resp);
+        } else if (resp.type === ParameterType.QUANTITY) {
+          this.parametersOfQuantityType?.push(resp);
+        }
+      } else if (this.action === 'EDIT') {
+        this.editedParameterIndex = this.internalServiceService.parameterIndex;
+        console.log(this.editedParameterIndex);
+
+        if (
+          resp.type === 'QUALITY' &&
+          !this.parametersToEdit?.find(el => {
+            return el.index === this.editedParameterIndex && el.parameterType === 'QUALITY';
+          }) &&
+          resp.id !== undefined
+        ) {
+          console.log('weszlo');
+          this.parametersToEdit?.push({ index: this.editedParameterIndex, parameterType: ParameterType.QUALITY });
+        } else if (
+          resp.type === 'QUANTITY' &&
+          !this.parametersToEdit?.find(el => {
+            return el.index === this.editedParameterIndex && el.parameterType === 'QUANTITY';
+          }) &&
+          resp.id !== undefined
+        ) {
+          this.parametersToEdit?.push({ index: this.editedParameterIndex, parameterType: ParameterType.QUANTITY });
+        }
+        console.log(this.parametersToEdit);
       }
 
       //this.parameterService.isParameterReceived = false;
@@ -304,6 +330,13 @@ export class InternalServiceUpdateComponent implements OnInit {
     });
 
     //updating parameters
+    this.parametersToEdit!.forEach(parameterData => {
+      if (parameterData.parameterType === 'QUALITY') {
+        this.parameterService.update(this.parametersOfQualityType![parameterData.index]).subscribe();
+      } else if (parameterData.parameterType === 'QUANTITY') {
+        this.parameterService.update(this.parametersOfQuantityType![parameterData.index]).subscribe();
+      }
+    });
 
     //updating service elements
     this.serviceElementsToEdit!.forEach(serviceElementData => {
@@ -393,10 +426,12 @@ export class InternalServiceUpdateComponent implements OnInit {
   }
 
   onAddParameter(parameterType: ParameterType) {
+    this.action = 'ADD';
+
     this.dialogRef.open(ParameterUpdateComponent, {
       data: {
         parameterType: parameterType,
-        action: 'ADD',
+        action: this.action,
       },
     });
   }
@@ -415,11 +450,15 @@ export class InternalServiceUpdateComponent implements OnInit {
     }
   }
 
-  onEditParameter(parameter: IParameter) {
+  onEditParameter(parameter: IParameter, index: number) {
+    this.internalServiceService.parameterIndex = index;
+    this.action = 'EDIT';
+    this.internalServiceService.action = this.action;
+
     this.dialogRef.open(ParameterUpdateComponent, {
       data: {
         parameter: parameter,
-        action: 'EDIT',
+        action: this.action,
       },
     });
   }

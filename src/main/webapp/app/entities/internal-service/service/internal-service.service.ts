@@ -98,6 +98,7 @@ export class InternalServiceService {
   internalService: InternalService | null = new InternalService();
   oldInternalService: InternalService | null = new InternalService();
   serviceElementIndex: number;
+  parameterIndex: number;
   action: string = '';
 
   private serviceElementToSend = new BehaviorSubject<IServiceElement>({} as IServiceElement);

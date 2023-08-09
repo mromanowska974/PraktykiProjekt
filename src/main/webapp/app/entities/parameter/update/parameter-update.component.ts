@@ -56,10 +56,8 @@ export class ParameterUpdateComponent implements OnInit {
     this.isNameEntered = this.parameter!.name !== undefined && this.parameter!.name!.length > 0 ? true : false;
     this.isValueEntered = this.parameter!.value !== undefined && this.parameter!.value!.length > 0 ? true : false;
 
-    if (this.isNameEntered && this.isValueEntered && this.data.action === 'ADD') {
+    if (this.isNameEntered && this.isValueEntered) {
       this.parameterService.sendCreatedParameter(this.parameter!);
-      this.dialogRef.close();
-    } else if (this.isNameEntered && this.isValueEntered && this.data.action === 'EDIT') {
       this.dialogRef.close();
     } else {
       this.isSaveBtnClicked = true;

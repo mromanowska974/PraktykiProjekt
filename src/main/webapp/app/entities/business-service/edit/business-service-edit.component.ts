@@ -7,7 +7,7 @@ import { PaymentType } from 'app/entities/enumerations/payment-type.model';
 import { ServiceElementService } from 'app/entities/service-element/service/service-element.service';
 import { Subscription } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ParameterComponent } from 'app/entities/parameter/list/parameter.component';
 import { ParameterUpdateComponent } from 'app/entities/parameter/update/parameter-update.component';
@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
   imports: [Orange3dButtonDirective, FormsModule, CommonModule],
 })
 export class BusinessServiceEditComponent implements OnInit, OnDestroy {
-  sectionSelected: string = 'C';
+  sectionSelected: string = 'B';
 
   businessServiceId: number;
   businessService: BusinessService | null = new BusinessService();
@@ -74,6 +74,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   formattedEndDatesOneTime: string[] = [];
 
   editedServiceElementIndex: number;
+  editedParameterIndex: number;
   action: string;
 
   public TypeOfPeriodMapping: typeof TypeOfPeriodMapping = TypeOfPeriodMapping;
@@ -85,7 +86,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     private businessServiceService: BusinessServiceService,
     private serviceElementService: ServiceElementService,
     private parameterService: ParameterService,
-    private dialogRef: MatDialog
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -177,8 +178,6 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
           resp.businessService = this.businessService;
 
           if (resp.paymentType === PaymentType.MONTHLY) {
-            console.log(resp.businessService);
-
             //if exists in "old" list
             if (this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex]) {
               resp.id = this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex].id;
@@ -196,14 +195,11 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
               resp.id !== undefined
             ) {
               this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.MONTHLY });
-              console.log(this.serviceElementsToEdit);
             }
           } else if (resp.paymentType === PaymentType.DISPOSABLE) {
-            console.log(resp.businessService);
             //if exists in "old" list
             if (this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex]) {
               resp.id = this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex].id;
-              console.log(resp);
             }
 
             this.serviceElementsOfOneTimePaymentType![this.editedServiceElementIndex] = resp;
@@ -217,7 +213,6 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
               resp.id !== undefined
             ) {
               this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.DISPOSABLE });
-              console.log(this.serviceElementsToEdit);
             }
           }
         }
@@ -230,10 +225,35 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     this.parameterSub = this.parameterService.toReceive.subscribe(resp => {
       resp.businessService = this.businessService;
 
-      if (resp.type === ParameterType.QUALITY) {
-        this.parametersOfQualityType?.push(resp);
-      } else if (resp.type === ParameterType.QUANTITY) {
-        this.parametersOfQuantityType?.push(resp);
+      if (this.action === 'ADD') {
+        if (resp.type === ParameterType.QUALITY) {
+          this.parametersOfQualityType?.push(resp);
+        } else if (resp.type === ParameterType.QUANTITY) {
+          this.parametersOfQuantityType?.push(resp);
+        }
+      } else if (this.action === 'EDIT') {
+        this.editedParameterIndex = this.businessServiceService.parameterIndex;
+        console.log(this.editedParameterIndex);
+
+        if (
+          resp.type === 'QUALITY' &&
+          !this.parametersToEdit?.find(el => {
+            return el.index === this.editedParameterIndex && el.parameterType === 'QUALITY';
+          }) &&
+          resp.id !== undefined
+        ) {
+          console.log('weszlo');
+          this.parametersToEdit?.push({ index: this.editedParameterIndex, parameterType: ParameterType.QUALITY });
+        } else if (
+          resp.type === 'QUANTITY' &&
+          !this.parametersToEdit?.find(el => {
+            return el.index === this.editedParameterIndex && el.parameterType === 'QUANTITY';
+          }) &&
+          resp.id !== undefined
+        ) {
+          this.parametersToEdit?.push({ index: this.editedParameterIndex, parameterType: ParameterType.QUANTITY });
+        }
+        console.log(this.parametersToEdit);
       }
 
       //this.parameterService.isParameterReceived = false;
@@ -296,6 +316,13 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     });
 
     //updating parameters
+    this.parametersToEdit!.forEach(parameterData => {
+      if (parameterData.parameterType === 'QUALITY') {
+        this.parameterService.update(this.parametersOfQualityType![parameterData.index]).subscribe();
+      } else if (parameterData.parameterType === 'QUANTITY') {
+        this.parameterService.update(this.parametersOfQuantityType![parameterData.index]).subscribe();
+      }
+    });
 
     //updating service elements
     this.serviceElementsToEdit!.forEach(serviceElementData => {
@@ -385,10 +412,12 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   }
 
   onAddParameter(parameterType: ParameterType) {
-    this.dialogRef.open(ParameterUpdateComponent, {
+    this.action = 'ADD';
+
+    this.dialog.open(ParameterUpdateComponent, {
       data: {
         parameterType: parameterType,
-        action: 'ADD',
+        action: this.action,
       },
     });
   }
@@ -407,11 +436,15 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  onEditParameter(parameter: IParameter) {
-    this.dialogRef.open(ParameterUpdateComponent, {
+  onEditParameter(parameter: IParameter, index: number) {
+    this.businessServiceService.parameterIndex = index;
+    this.action = 'EDIT';
+    this.businessServiceService.action = this.action;
+
+    this.dialog.open(ParameterUpdateComponent, {
       data: {
         parameter: parameter,
-        action: 'EDIT',
+        action: this.action,
       },
     });
   }
