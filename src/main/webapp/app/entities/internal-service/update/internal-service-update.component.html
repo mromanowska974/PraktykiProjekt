@@ -330,9 +330,9 @@
       <div class="ul-box">
         <p>Wspierane Usługi Biznesowe:</p>
         <ul>
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
+          <li *ngFor="let businessService of businessServices; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
+            {{ businessService.symbol }} - {{ businessService.name }}
+          </li>
         </ul>
       </div>
     </div>

@@ -117,19 +117,16 @@ table > tr:first-child {
 }
 
 ul {
-  border: 1px solid red;
   list-style-type: none;
   padding-left: 0px;
 }
 
 li {
-  border: 1px solid blue;
   display: flex;
   justify-content: space-between;
   padding-right: 10px;
 }
 
 .ul-box {
-  border: 1px solid lime;
   width: 50%;
 }

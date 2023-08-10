@@ -5,10 +5,8 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pl.jswits.domain.BusinessService;
-import pl.jswits.domain.Client;
 
 /**
  * Spring Data JPA repository for the BusinessService entity.
@@ -31,5 +29,14 @@ public interface BusinessServiceRepository extends BusinessServiceRepositoryWith
     }
 
     List<BusinessService> findBusinessServicesByClient_Id(Long id);
+
+    @Query(
+        value = "SELECT * FROM business_service bs \n" +
+        "INNER JOIN rel_business_service__internal_service rel ON bs.id = rel.business_service_id\n" +
+        "WHERE rel.internal_service_id = ?1 ",
+        nativeQuery = true
+    )
+    List<BusinessService> findBusinessServicesByInternalServiceId(Long id);
+
     List<BusinessService> findAllByOrderById();
 }

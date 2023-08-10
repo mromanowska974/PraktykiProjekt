@@ -44,6 +44,13 @@ export class BusinessServiceService {
     return this.http.get<IBusinessService>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findByInternalService(id: number): Observable<HttpResponse<{ name: string; symbol: string }[]>> {
+    return this.http.get<{ name: string; symbol: string }[]>(`${this.resourceUrl}/byIS`, {
+      observe: 'response',
+      params: new HttpParams().append('id', id),
+    });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IBusinessService[]>(this.resourceUrl, { params: options, observe: 'response' });

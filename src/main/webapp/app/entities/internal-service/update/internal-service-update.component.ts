@@ -37,7 +37,7 @@ import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d
   imports: [SharedModule, FormsModule, ReactiveFormsModule, Orange3dButtonDirective],
 })
 export class InternalServiceUpdateComponent implements OnInit {
-  sectionSelected: string = 'D';
+  sectionSelected: string = 'G';
 
   internalServiceId: number;
   internalService: IInternalService | null = {} as IInternalService;
@@ -52,6 +52,8 @@ export class InternalServiceUpdateComponent implements OnInit {
   serviceActivatingCost: string;
   priceListOfService: string;
   notes: string;
+
+  businessServices: { name: any; symbol: any }[] = [];
 
   serviceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
   serviceElementsOfOneTimePaymentType: IServiceElement[] | null = [];
@@ -91,6 +93,7 @@ export class InternalServiceUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private internalServiceService: InternalServiceService,
+    private businessServiceService: BusinessServiceService,
     private serviceElementService: ServiceElementService,
     private parameterService: ParameterService,
     private dialogRef: MatDialog
@@ -100,8 +103,8 @@ export class InternalServiceUpdateComponent implements OnInit {
     this.internalServiceId = +this.route.snapshot.params['id'];
     this.action = this.internalServiceService.action;
 
-    // setting business service
-    //if business service was saved when clicked Add New Service Element
+    // setting internal service
+    //if internal service was saved when clicked Add New Service Element
     if (this.internalServiceService.isInternalServiceSaved) {
       this.internalService = this.internalServiceService.internalService;
       this.oldInternalService = this.internalServiceService.oldInternalService;
@@ -131,9 +134,14 @@ export class InternalServiceUpdateComponent implements OnInit {
       this.internalServiceService.isInternalServiceSaved = false;
       this.isDataLoaded = true;
     }
-    //if clicked Edit Business Service from Home page
+    //if clicked Edit Internal Service from Home page
     else {
-      this.getBusinessService();
+      this.getInternalService();
+
+      this.businessServiceService.findByInternalService(this.internalServiceId).subscribe(resp => {
+        this.businessServices = resp.body!;
+      });
+
       this.serviceElementService.findByInternalServiceAndPaymentType(this.internalServiceId, PaymentType.MONTHLY).subscribe(resp => {
         this.oldServiceElementsOfMonthlyPaymentType = resp.body;
         this.serviceElementsOfMonthlyPaymentType = JSON.parse(JSON.stringify(this.oldServiceElementsOfMonthlyPaymentType));
@@ -284,7 +292,7 @@ export class InternalServiceUpdateComponent implements OnInit {
     }
   }
 
-  getBusinessService() {
+  getInternalService() {
     this.internalServiceService.find(this.internalServiceId).subscribe(businessService => {
       this.oldInternalService = businessService.body;
       this.internalService = JSON.parse(JSON.stringify(this.oldInternalService));

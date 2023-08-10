@@ -2,10 +2,8 @@ package pl.jswits.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.jswits.domain.BusinessService;
-import pl.jswits.domain.Client;
 import pl.jswits.domain.InternalService;
 import pl.jswits.repository.BusinessServiceRepository;
 import pl.jswits.repository.InternalServiceRepository;
@@ -226,6 +223,24 @@ public class BusinessServiceResource {
         List<BusinessService> businessService = new ArrayList<>();
         businessService = businessServiceRepository.findBusinessServicesByClient_Id(clientId);
         return businessService;
+    }
+
+    @GetMapping("/business-services/byIS")
+    public List<Map<String, String>> getBusinessServicesByInternalService(@RequestParam Long id) {
+        log.debug("REST request to get BusinessServices by InternalService");
+        List<BusinessService> businessServices = new ArrayList<>();
+        businessServices = businessServiceRepository.findBusinessServicesByInternalServiceId(id);
+
+        List<Map<String, String>> maps = new ArrayList<>();
+        if (businessServices != null) {
+            businessServices.forEach(businessService -> {
+                Map<String, String> map = new HashMap<>();
+                map.put("name", businessService.getName());
+                map.put("symbol", businessService.getSymbol());
+                maps.add(map);
+            });
+        }
+        return maps;
     }
 
     /**

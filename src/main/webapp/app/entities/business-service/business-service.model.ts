@@ -3,6 +3,7 @@ import { IClient } from 'app/entities/client/client.model';
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { IDepartment } from 'app/entities/department/department.model';
 import { StatusOfServiceElement } from 'app/entities/enumerations/status-of-service-element.model';
+import { IParameter } from '../parameter/parameter.model';
 
 export interface IBusinessService {
   id: number;
@@ -40,6 +41,7 @@ export class BusinessService implements IBusinessService {
   client?: Pick<IClient, 'id' | 'name'> | null;
   employee?: Pick<IEmployee, 'id' | 'name' | 'surname'> | null;
   department?: Pick<IDepartment, 'id' | 'name'> | null;
+  parameters?: IParameter[];
 }
 
 export type NewBusinessService = Omit<IBusinessService, 'id'> & { id: null };
