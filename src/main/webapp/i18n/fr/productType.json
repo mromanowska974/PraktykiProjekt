@@ -1,0 +1,9 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "ProductType": {
+      "null": "",
+      "CRITICAL": "CRITICAL",
+      "IMPORTANT": "IMPORTANT"
+    }
+  }
+}

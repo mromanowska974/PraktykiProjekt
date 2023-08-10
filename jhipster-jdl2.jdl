@@ -1,0 +1,10 @@
+
+entity Product{
+	name String,
+    type ProductType
+}
+
+enum ProductType{
+	CRITICAL,
+    IMPORTANT
+}

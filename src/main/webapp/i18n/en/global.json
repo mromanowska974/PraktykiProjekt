@@ -15,6 +15,7 @@
         "internalService": "Internal Service",
         "parameter": "Parameter",
         "serviceElement": "Service Element",
+        "product": "Product",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

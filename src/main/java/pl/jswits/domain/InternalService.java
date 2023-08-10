@@ -96,6 +96,10 @@ public class InternalService implements Serializable {
     @JsonIgnoreProperties(value = { "internalService" }, allowSetters = true)
     private Set<ExternalCompany> externalCompanies = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "internalService")
+    @JsonIgnoreProperties(value = { "internalService" }, allowSetters = true)
+    private Set<Product> products = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "businessServices", "internalServices" }, allowSetters = true)
     private Employee employee;

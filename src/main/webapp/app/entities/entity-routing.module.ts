@@ -44,6 +44,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.home.title' },
         loadChildren: () => import('./service-element/service-element.routes'),
       },
+      {
+        path: 'product',
+        data: { pageTitle: 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.home.title' },
+        loadChildren: () => import('./product/product.routes'),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

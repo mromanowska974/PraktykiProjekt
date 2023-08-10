@@ -3,3 +3,8 @@ export enum StatusOfServiceCard {
 
   NON_BINDING = 'NON_BINDING',
 }
+
+export const StatusMapping: Record<StatusOfServiceCard, string> = {
+  [StatusOfServiceCard.BINDING]: 'Obowiązująca',
+  [StatusOfServiceCard.NON_BINDING]: 'Nieobowiązująca',
+};

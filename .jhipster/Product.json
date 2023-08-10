@@ -1,0 +1,27 @@
+{
+  "applications": "*",
+  "changelogDate": "20230810112132",
+  "entityTableName": "product",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "ProductType",
+      "fieldValues": "CRITICAL,IMPORTANT"
+    }
+  ],
+  "name": "Product",
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "internalService",
+      "relationshipName": "internalService",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

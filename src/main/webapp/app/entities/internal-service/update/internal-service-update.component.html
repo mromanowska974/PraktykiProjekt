@@ -204,14 +204,20 @@
     <div *ngSwitchCase="'D'" class="section">
       <div class="row4">
         <p>Status Karty Usługi IT</p>
-        <select>
+        <!-- <select>
           <option>Obowiązująca</option>
           <option>Nieobowiązująca</option>
+        </select> -->
+        <select [(ngModel)]="internalService.status">
+          <option *ngFor="let value of statusEnumValues" [value]="value">{{ StatusMapping[value] }}</option>
         </select>
       </div>
       <div class="row4">
         <p>Usługa krytyczna</p>
-        <div><input type="radio" name="criticalService" />Tak <input type="radio" name="criticalService" />Nie</div>
+        <div>
+          <input [(ngModel)]="internalService.criticalService" type="radio" [value]="true" name="criticalService" />Tak
+          <input [(ngModel)]="internalService.criticalService" type="radio" [value]="false" name="criticalService" />Nie
+        </div>
       </div>
       <div class="ul-box">
         <div class="row3">

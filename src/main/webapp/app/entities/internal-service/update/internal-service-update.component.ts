@@ -12,7 +12,7 @@ import { IInternalService } from '../internal-service.model';
 import { InternalServiceService } from '../service/internal-service.service';
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { EmployeeService } from 'app/entities/employee/service/employee.service';
-import { StatusOfServiceCard } from 'app/entities/enumerations/status-of-service-card.model';
+import { StatusMapping, StatusOfServiceCard } from 'app/entities/enumerations/status-of-service-card.model';
 import { BusinessService } from 'app/entities/business-service/business-service.model';
 import { IServiceElement } from 'app/entities/service-element/service-element.model';
 import { IParameter } from 'app/entities/parameter/parameter.model';
@@ -40,7 +40,7 @@ import { ExternalCompanyUpdateComponent } from 'app/entities/external-company/up
   imports: [SharedModule, FormsModule, ReactiveFormsModule, Orange3dButtonDirective],
 })
 export class InternalServiceUpdateComponent implements OnInit {
-  sectionSelected: string = 'G';
+  sectionSelected: string = 'D';
 
   internalServiceId: number;
   internalService: IInternalService | null = {} as IInternalService;
@@ -99,6 +99,9 @@ export class InternalServiceUpdateComponent implements OnInit {
   public TypeOfPeriodMapping: typeof TypeOfPeriodMapping = TypeOfPeriodMapping;
   public typeOfPeriodOfProvisionOfService: any = [];
 
+  public StatusMapping: typeof StatusMapping = StatusMapping;
+  public statusEnumValues: any = [];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -108,11 +111,18 @@ export class InternalServiceUpdateComponent implements OnInit {
     private externalCompanyService: ExternalCompanyService,
     private parameterService: ParameterService,
     private dialogRef: MatDialog
-  ) {}
+  ) {
+    this.statusEnumValues = Object.values(StatusOfServiceCard);
+  }
 
   ngOnInit(): void {
     this.internalServiceId = +this.route.snapshot.params['id'];
     this.action = this.internalServiceService.action;
+
+    //business services need to be always loaded
+    this.businessServiceService.findByInternalService(this.internalServiceId).subscribe(resp => {
+      this.businessServices = resp.body!;
+    });
 
     // setting internal service
     //if internal service was saved when clicked Add New Service Element
@@ -154,11 +164,6 @@ export class InternalServiceUpdateComponent implements OnInit {
     else {
       //internal service
       this.getInternalService();
-
-      //business services
-      this.businessServiceService.findByInternalService(this.internalServiceId).subscribe(resp => {
-        this.businessServices = resp.body!;
-      });
 
       //service elements
       this.serviceElementService.findByInternalServiceAndPaymentType(this.internalServiceId, PaymentType.MONTHLY).subscribe(resp => {
