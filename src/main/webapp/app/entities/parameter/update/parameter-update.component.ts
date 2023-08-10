@@ -42,7 +42,6 @@ export class ParameterUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data);
     if (this.data.action === 'ADD') this.parameter!.type = this.data.parameterType;
 
     if (this.data.action === 'EDIT') this.parameter = this.data.parameter;
@@ -61,7 +60,6 @@ export class ParameterUpdateComponent implements OnInit {
       this.dialogRef.close();
     } else {
       this.isSaveBtnClicked = true;
-      console.log('czegos brakuje');
     }
   }
 }

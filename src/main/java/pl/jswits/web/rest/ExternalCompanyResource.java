@@ -154,6 +154,12 @@ public class ExternalCompanyResource {
         return externalCompanyRepository.findAll();
     }
 
+    @GetMapping("/external-companies/byIS")
+    public List<ExternalCompany> getExternalCompaniesByInternalService(@RequestParam Long id) {
+        log.debug("REST request to get all External Companies By Internal Service");
+        return externalCompanyRepository.findExternalCompaniesByInternalServiceId(id);
+    }
+
     /**
      * {@code GET  /external-companies/:id} : get the "id" externalCompany.
      *

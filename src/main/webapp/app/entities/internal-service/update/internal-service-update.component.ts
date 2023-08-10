@@ -28,6 +28,9 @@ import { ParameterUpdateComponent } from 'app/entities/parameter/update/paramete
 import { Packer, Paragraph, Table, TableCell, TableRow, TextRun, WidthType, Document } from 'docx';
 import saveAs from 'file-saver';
 import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
+import { ExternalCompanyService } from 'app/entities/external-company/service/external-company.service';
+import { IExternalCompany } from 'app/entities/external-company/external-company.model';
+import { ExternalCompanyUpdateComponent } from 'app/entities/external-company/update/external-company-update.component';
 
 @Component({
   standalone: true,
@@ -65,17 +68,23 @@ export class InternalServiceUpdateComponent implements OnInit {
   oldParametersOfQualityType: IParameter[] | null = [];
   oldParametersOfQuantityType: IParameter[] | null = [];
 
+  oldExternalCompanies: IExternalCompany[] = [];
+  externalCompanies: IExternalCompany[] = [];
+
   paymentType: typeof PaymentType = PaymentType;
   parameterType: typeof ParameterType = ParameterType;
 
   serviceElementSub: Subscription;
   parameterSub: Subscription;
+  externalCompanySub: Subscription;
 
   parametersToDelete: IParameter[] | null = [];
   serviceElementsToDelete: IServiceElement[] | null = [];
+  externalCompaniesToDelete: IExternalCompany[] = [];
 
   parametersToEdit: { index: number; parameterType: ParameterType }[] | null = [];
   serviceElementsToEdit: { index: number; paymentType: PaymentType }[] | null = [];
+  externalCompaniesToEdit: number[] = [];
 
   formattedStartDatesMonthly: string[] = [];
   formattedEndDatesMonthly: string[] = [];
@@ -84,6 +93,7 @@ export class InternalServiceUpdateComponent implements OnInit {
 
   editedServiceElementIndex: number;
   editedParameterIndex: number;
+  editedExternalCompanyIndex: number;
   action: string;
 
   public TypeOfPeriodMapping: typeof TypeOfPeriodMapping = TypeOfPeriodMapping;
@@ -95,6 +105,7 @@ export class InternalServiceUpdateComponent implements OnInit {
     private internalServiceService: InternalServiceService,
     private businessServiceService: BusinessServiceService,
     private serviceElementService: ServiceElementService,
+    private externalCompanyService: ExternalCompanyService,
     private parameterService: ParameterService,
     private dialogRef: MatDialog
   ) {}
@@ -121,6 +132,9 @@ export class InternalServiceUpdateComponent implements OnInit {
       this.oldParametersOfQualityType = this.internalServiceService.oldParametersOfQualityType;
       this.oldParametersOfQuantityType = this.internalServiceService.oldParametersOfQuantityType;
 
+      this.externalCompanies = this.internalServiceService.externalCompanies;
+      this.oldExternalCompanies = this.internalServiceService.oldExternalCompanies;
+
       this.formattedStartDatesMonthly = this.internalServiceService.formattedStartDatesMonthly;
       this.formattedEndDatesMonthly = this.internalServiceService.formattedEndDatesMonthly;
       this.formattedStartDatesOneTime = this.internalServiceService.formattedStartDatesOneTime;
@@ -130,18 +144,23 @@ export class InternalServiceUpdateComponent implements OnInit {
       this.parametersToEdit = this.internalServiceService.parametersToEdit;
       this.serviceElementsToDelete = this.internalServiceService.serviceElementsToDelete;
       this.serviceElementsToEdit = this.internalServiceService.serviceElementsToEdit;
+      this.externalCompaniesToDelete = this.internalServiceService.externalCompaniesToDelete;
+      this.externalCompaniesToEdit = this.internalServiceService.externalCompaniesToEdit;
 
       this.internalServiceService.isInternalServiceSaved = false;
       this.isDataLoaded = true;
     }
     //if clicked Edit Internal Service from Home page
     else {
+      //internal service
       this.getInternalService();
 
+      //business services
       this.businessServiceService.findByInternalService(this.internalServiceId).subscribe(resp => {
         this.businessServices = resp.body!;
       });
 
+      //service elements
       this.serviceElementService.findByInternalServiceAndPaymentType(this.internalServiceId, PaymentType.MONTHLY).subscribe(resp => {
         this.oldServiceElementsOfMonthlyPaymentType = resp.body;
         this.serviceElementsOfMonthlyPaymentType = JSON.parse(JSON.stringify(this.oldServiceElementsOfMonthlyPaymentType));
@@ -164,6 +183,7 @@ export class InternalServiceUpdateComponent implements OnInit {
         });
       });
 
+      //parameters
       this.parameterService.findByInternalServiceIdAndParameterType(this.internalServiceId, ParameterType.QUALITY).subscribe(resp => {
         this.oldParametersOfQualityType = resp.body;
         this.parametersOfQualityType = JSON.parse(JSON.stringify(this.oldParametersOfQualityType));
@@ -172,6 +192,12 @@ export class InternalServiceUpdateComponent implements OnInit {
       this.parameterService.findByInternalServiceIdAndParameterType(this.internalServiceId, ParameterType.QUANTITY).subscribe(resp => {
         this.oldParametersOfQuantityType = resp.body;
         this.parametersOfQuantityType = JSON.parse(JSON.stringify(this.oldParametersOfQuantityType));
+      });
+
+      //external companies
+      this.externalCompanyService.findByInternalService(this.internalServiceId).subscribe(resp => {
+        this.oldExternalCompanies = resp.body!;
+        this.externalCompanies = JSON.parse(JSON.stringify(this.oldExternalCompanies));
       });
     }
 
@@ -200,7 +226,6 @@ export class InternalServiceUpdateComponent implements OnInit {
             //if exists in "old" list
             if (this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex]) {
               resp.id = this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex].id;
-              console.log(resp);
             }
 
             this.serviceElementsOfMonthlyPaymentType![this.editedServiceElementIndex] = resp;
@@ -214,13 +239,11 @@ export class InternalServiceUpdateComponent implements OnInit {
               resp.id !== undefined
             ) {
               this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.MONTHLY });
-              console.log(this.serviceElementsToEdit);
             }
           } else if (resp.paymentType === PaymentType.DISPOSABLE) {
             //if exists in "old" list
             if (this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex]) {
               resp.id = this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex].id;
-              console.log(resp);
             }
 
             this.serviceElementsOfOneTimePaymentType![this.editedServiceElementIndex] = resp;
@@ -234,7 +257,6 @@ export class InternalServiceUpdateComponent implements OnInit {
               resp.id !== undefined
             ) {
               this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.DISPOSABLE });
-              console.log(this.serviceElementsToEdit);
             }
           }
         }
@@ -255,7 +277,6 @@ export class InternalServiceUpdateComponent implements OnInit {
         }
       } else if (this.action === 'EDIT') {
         this.editedParameterIndex = this.internalServiceService.parameterIndex;
-        console.log(this.editedParameterIndex);
 
         if (
           resp.type === 'QUALITY' &&
@@ -264,7 +285,6 @@ export class InternalServiceUpdateComponent implements OnInit {
           }) &&
           resp.id !== undefined
         ) {
-          console.log('weszlo');
           this.parametersToEdit?.push({ index: this.editedParameterIndex, parameterType: ParameterType.QUALITY });
         } else if (
           resp.type === 'QUANTITY' &&
@@ -275,10 +295,30 @@ export class InternalServiceUpdateComponent implements OnInit {
         ) {
           this.parametersToEdit?.push({ index: this.editedParameterIndex, parameterType: ParameterType.QUANTITY });
         }
-        console.log(this.parametersToEdit);
       }
 
       //this.parameterService.isParameterReceived = false;
+    });
+
+    //receiving new external company
+    this.externalCompanySub = this.externalCompanyService.toReceive.subscribe(resp => {
+      resp.internalService = this.internalService;
+
+      if (this.action === 'ADD') {
+        this.externalCompanies.push(resp);
+      } else if (this.action === 'EDIT') {
+        this.editedExternalCompanyIndex = this.internalServiceService.externalCompanyIndex;
+
+        if (
+          !this.externalCompaniesToEdit?.find(el => {
+            console.log(el);
+            return el === this.editedExternalCompanyIndex;
+          }) &&
+          resp.id !== undefined
+        ) {
+          this.externalCompaniesToEdit?.push(this.editedExternalCompanyIndex);
+        }
+      }
     });
   }
 
@@ -289,6 +329,10 @@ export class InternalServiceUpdateComponent implements OnInit {
 
     if (this.parameterSub) {
       this.parameterSub.unsubscribe();
+    }
+
+    if (this.externalCompanySub) {
+      this.externalCompanySub.unsubscribe();
     }
   }
 
@@ -327,14 +371,24 @@ export class InternalServiceUpdateComponent implements OnInit {
       if (parameter.id === undefined) this.parameterService.create(parameter).subscribe();
     });
 
+    //adding external companies
+    this.externalCompanies.forEach(externalCompany => {
+      if (externalCompany.id === undefined) this.externalCompanyService.create(externalCompany).subscribe();
+    });
+
     //deleting parameters
     this.parametersToDelete!.forEach(parameter => {
-      this.parameterService.delete(parameter.id).subscribe(() => console.log(parameter));
+      this.parameterService.delete(parameter.id).subscribe();
     });
 
     //deleting service elements
     this.serviceElementsToDelete!.forEach(serviceElement => {
-      this.serviceElementService.delete(serviceElement.id).subscribe(() => console.log(serviceElement));
+      this.serviceElementService.delete(serviceElement.id).subscribe();
+    });
+
+    //deleting external services
+    this.externalCompaniesToDelete.forEach(externalCompany => {
+      this.externalCompanyService.delete(externalCompany.id).subscribe();
     });
 
     //updating parameters
@@ -355,6 +409,11 @@ export class InternalServiceUpdateComponent implements OnInit {
       }
     });
 
+    //updating external company
+    this.externalCompaniesToEdit.forEach(externalCompany => {
+      this.externalCompanyService.update(this.externalCompanies![externalCompany]).subscribe();
+    });
+
     //updating business service
     this.internalServiceService.update(this.internalService!).subscribe();
 
@@ -363,6 +422,7 @@ export class InternalServiceUpdateComponent implements OnInit {
   }
 
   saveData() {
+    //data old(not edited) and new (edited)
     this.internalServiceService.oldInternalService = this.oldInternalService;
     this.internalServiceService.internalService = this.internalService;
 
@@ -378,15 +438,24 @@ export class InternalServiceUpdateComponent implements OnInit {
     this.internalServiceService.parametersOfQualityType = this.parametersOfQualityType;
     this.internalServiceService.parametersOfQuantityType = this.parametersOfQuantityType;
 
+    this.internalServiceService.oldExternalCompanies = this.oldExternalCompanies;
+    this.internalServiceService.externalCompanies = this.externalCompanies;
+
+    //formatted dates
     this.internalServiceService.formattedStartDatesMonthly = this.formattedStartDatesMonthly;
     this.internalServiceService.formattedEndDatesMonthly = this.formattedEndDatesMonthly;
     this.internalServiceService.formattedStartDatesOneTime = this.formattedStartDatesOneTime;
     this.internalServiceService.formattedEndDatesOneTime = this.formattedEndDatesOneTime;
 
+    //lists to edit/delete
     this.internalServiceService.parametersToDelete = this.parametersToDelete;
     this.internalServiceService.parametersToEdit = this.parametersToEdit;
+
     this.internalServiceService.serviceElementsToDelete = this.serviceElementsToDelete;
     this.internalServiceService.serviceElementsToEdit = this.serviceElementsToEdit;
+
+    this.internalServiceService.externalCompaniesToDelete = this.externalCompaniesToDelete;
+    this.internalServiceService.externalCompaniesToEdit = this.externalCompaniesToEdit;
 
     this.internalServiceService.isInternalServiceSaved = true;
   }
@@ -469,6 +538,39 @@ export class InternalServiceUpdateComponent implements OnInit {
         action: this.action,
       },
     });
+  }
+
+  onAddExternalCompany() {
+    this.action = 'ADD';
+
+    this.dialogRef.open(ExternalCompanyUpdateComponent, {
+      data: {
+        action: this.action,
+      },
+    });
+  }
+
+  onEditExternalCompany(externalCompany: IExternalCompany, index: number) {
+    this.internalServiceService.externalCompanyIndex = index;
+    this.action = 'EDIT';
+    this.internalServiceService.action = this.action;
+
+    this.dialogRef.open(ExternalCompanyUpdateComponent, {
+      data: {
+        externalCompany: externalCompany,
+        action: this.action,
+      },
+    });
+  }
+
+  onDeleteExternalCompany(externalCompany: IExternalCompany, index: number) {
+    if (confirm('Czy na pewno chcesz usunąć ten parametr?')) {
+      if (externalCompany.id !== undefined) {
+        this.externalCompaniesToDelete?.push(externalCompany);
+      }
+
+      this.externalCompanies?.splice(index, 1);
+    }
   }
 
   onCreateDocxFile() {

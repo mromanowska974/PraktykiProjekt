@@ -10,6 +10,7 @@ import { IParameter } from 'app/entities/parameter/parameter.model';
 import { IServiceElement } from 'app/entities/service-element/service-element.model';
 import { PaymentType } from 'app/entities/enumerations/payment-type.model';
 import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
+import { IExternalCompany } from 'app/entities/external-company/external-company.model';
 
 export type PartialUpdateInternalService = Partial<IInternalService> & Pick<IInternalService, 'id'>;
 
@@ -99,6 +100,7 @@ export class InternalServiceService {
   oldInternalService: InternalService | null = new InternalService();
   serviceElementIndex: number;
   parameterIndex: number;
+  externalCompanyIndex: number;
   action: string = '';
 
   private serviceElementToSend = new BehaviorSubject<IServiceElement>({} as IServiceElement);
@@ -120,6 +122,9 @@ export class InternalServiceService {
   oldParametersOfQualityType: IParameter[] | null = [];
   oldParametersOfQuantityType: IParameter[] | null = [];
 
+  externalCompanies: IExternalCompany[] = [];
+  oldExternalCompanies: IExternalCompany[] = [];
+
   formattedStartDatesMonthly: string[] = [];
   formattedEndDatesMonthly: string[] = [];
   formattedStartDatesOneTime: string[] = [];
@@ -127,7 +132,9 @@ export class InternalServiceService {
 
   parametersToDelete: IParameter[] | null = [];
   serviceElementsToDelete: IServiceElement[] | null = [];
+  externalCompaniesToDelete: IExternalCompany[] = [];
 
   parametersToEdit: { index: number; parameterType: ParameterType }[] | null = [];
   serviceElementsToEdit: { index: number; paymentType: PaymentType }[] | null = [];
+  externalCompaniesToEdit: number[] = [];
 }

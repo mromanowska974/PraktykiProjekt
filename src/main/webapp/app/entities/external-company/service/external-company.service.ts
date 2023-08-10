@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -18,7 +18,8 @@ export class ExternalCompanyService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(externalCompany: NewExternalCompany): Observable<EntityResponseType> {
+  //API
+  create(externalCompany: IExternalCompany): Observable<EntityResponseType> {
     return this.http.post<IExternalCompany>(this.resourceUrl, externalCompany, { observe: 'response' });
   }
 
@@ -36,6 +37,13 @@ export class ExternalCompanyService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IExternalCompany>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findByInternalService(id: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IExternalCompany[]>(`${this.resourceUrl}/byIS`, {
+      observe: 'response',
+      params: new HttpParams().append('id', id),
+    });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
@@ -75,5 +83,13 @@ export class ExternalCompanyService {
       return [...externalCompaniesToAdd, ...externalCompanyCollection];
     }
     return externalCompanyCollection;
+  }
+
+  //NON-API
+  private externalCompany = new Subject<IExternalCompany>();
+  toReceive = this.externalCompany.asObservable();
+
+  sendCreatedExternalCompany(externalCompany: IExternalCompany) {
+    this.externalCompany.next(externalCompany);
   }
 }

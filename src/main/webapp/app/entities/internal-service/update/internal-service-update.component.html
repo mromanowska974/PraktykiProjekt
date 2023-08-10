@@ -306,7 +306,10 @@
     </div>
     <div *ngSwitchCase="'G'" class="section">
       <div>
-        <p>Firmy zewnętrzne wspierające realizację Usługi IT:</p>
+        <div class="row3">
+          <p>Firmy zewnętrzne wspierające realizację Usługi IT:</p>
+          <button jhiOrange3dButton (click)="onAddExternalCompany()">Dodaj informacje o firmie zewnętrznej</button>
+        </div>
         <table>
           <tr>
             <th width="5%">Lp.</th>
@@ -315,14 +318,14 @@
             <th width="29%">Parametry SLA</th>
             <th width="8%">Akcje</th>
           </tr>
-          <tr>
-            <td width="5%">1</td>
-            <td width="29%">Firma kogucik</td>
-            <td width="29%">123</td>
-            <td width="29%">co to wgl jest xd</td>
+          <tr *ngFor="let externalCompany of externalCompanies; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
+            <td width="5%">{{ i + 1 }}</td>
+            <td width="29%">{{ externalCompany.name }}</td>
+            <td width="29%">{{ externalCompany.contractNumber }}</td>
+            <td width="29%">{{ externalCompany.sLAParameters }}</td>
             <td>
-              <button>E</button>
-              <button>U</button>
+              <button (click)="onEditExternalCompany(externalCompany, i)">E</button>
+              <button (click)="onDeleteExternalCompany(externalCompany, i)">U</button>
             </td>
           </tr>
         </table>

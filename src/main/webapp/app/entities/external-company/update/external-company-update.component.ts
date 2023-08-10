@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -12,97 +12,51 @@ import { IExternalCompany } from '../external-company.model';
 import { ExternalCompanyService } from '../service/external-company.service';
 import { IInternalService } from 'app/entities/internal-service/internal-service.model';
 import { InternalServiceService } from 'app/entities/internal-service/service/internal-service.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ParameterUpdateComponent } from 'app/entities/parameter/update/parameter-update.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-external-company-update',
   templateUrl: './external-company-update.component.html',
+  styleUrls: ['./external-company-update.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ExternalCompanyUpdateComponent implements OnInit {
-  isSaving = false;
-  externalCompany: IExternalCompany | null = null;
+  externalCompany: IExternalCompany | null = {} as IExternalCompany;
 
-  internalServicesSharedCollection: IInternalService[] = [];
-
-  editForm: ExternalCompanyFormGroup = this.externalCompanyFormService.createExternalCompanyFormGroup();
+  isNameEntered: boolean = false;
+  isContractNumberEntered: boolean = false;
+  isSLAParameterEntered: boolean = false;
+  isSaveBtnClicked: boolean = false;
 
   constructor(
     protected externalCompanyService: ExternalCompanyService,
-    protected externalCompanyFormService: ExternalCompanyFormService,
-    protected internalServiceService: InternalServiceService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    @Inject(MAT_DIALOG_DATA) public data,
+    private dialogRef: MatDialogRef<ParameterUpdateComponent>
   ) {}
 
-  compareInternalService = (o1: IInternalService | null, o2: IInternalService | null): boolean =>
-    this.internalServiceService.compareInternalService(o1, o2);
-
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ externalCompany }) => {
-      this.externalCompany = externalCompany;
-      if (externalCompany) {
-        this.updateForm(externalCompany);
-      }
-
-      this.loadRelationshipsOptions();
-    });
+    if (this.data.action === 'EDIT') this.externalCompany = this.data.externalCompany;
   }
 
-  previousState(): void {
-    window.history.back();
+  onCancel() {
+    this.dialogRef.close();
   }
 
-  save(): void {
-    this.isSaving = true;
-    const externalCompany = this.externalCompanyFormService.getExternalCompany(this.editForm);
-    if (externalCompany.id !== null) {
-      this.subscribeToSaveResponse(this.externalCompanyService.update(externalCompany));
+  onSave() {
+    this.isNameEntered = this.externalCompany!.name !== undefined && this.externalCompany!.name!.length > 0 ? true : false;
+    this.isContractNumberEntered =
+      this.externalCompany!.contractNumber !== undefined && this.externalCompany!.contractNumber!.length > 0 ? true : false;
+    this.isSLAParameterEntered =
+      this.externalCompany!.sLAParameters !== undefined && this.externalCompany!.sLAParameters!.length > 0 ? true : false;
+
+    if (this.isNameEntered && this.isContractNumberEntered && this.isSLAParameterEntered) {
+      this.externalCompanyService.sendCreatedExternalCompany(this.externalCompany!);
+      this.dialogRef.close();
     } else {
-      this.subscribeToSaveResponse(this.externalCompanyService.create(externalCompany));
+      this.isSaveBtnClicked = true;
     }
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IExternalCompany>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
-      error: () => this.onSaveError(),
-    });
-  }
-
-  protected onSaveSuccess(): void {
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
-
-  protected onSaveFinalize(): void {
-    this.isSaving = false;
-  }
-
-  protected updateForm(externalCompany: IExternalCompany): void {
-    this.externalCompany = externalCompany;
-    this.externalCompanyFormService.resetForm(this.editForm, externalCompany);
-
-    this.internalServicesSharedCollection = this.internalServiceService.addInternalServiceToCollectionIfMissing<IInternalService>(
-      this.internalServicesSharedCollection,
-      externalCompany.internalService
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.internalServiceService
-      .query()
-      .pipe(map((res: HttpResponse<IInternalService[]>) => res.body ?? []))
-      .pipe(
-        map((internalServices: IInternalService[]) =>
-          this.internalServiceService.addInternalServiceToCollectionIfMissing<IInternalService>(
-            internalServices,
-            this.externalCompany?.internalService
-          )
-        )
-      )
-      .subscribe((internalServices: IInternalService[]) => (this.internalServicesSharedCollection = internalServices));
   }
 }

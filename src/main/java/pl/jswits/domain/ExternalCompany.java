@@ -29,7 +29,7 @@ public class ExternalCompany implements Serializable {
     @Column(name = "s_la_parameters")
     private String sLAParameters;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
         value = { "parameters", "serviceElements", "externalCompanies", "employee", "businessServices" },
         allowSetters = true
