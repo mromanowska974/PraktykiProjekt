@@ -11,6 +11,8 @@ import { IServiceElement } from 'app/entities/service-element/service-element.mo
 import { PaymentType } from 'app/entities/enumerations/payment-type.model';
 import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
 import { IExternalCompany } from 'app/entities/external-company/external-company.model';
+import { IProduct } from 'app/entities/product/product.model';
+import { ProductType } from 'app/entities/enumerations/product-type.model';
 
 export type PartialUpdateInternalService = Partial<IInternalService> & Pick<IInternalService, 'id'>;
 
@@ -101,6 +103,7 @@ export class InternalServiceService {
   serviceElementIndex: number;
   parameterIndex: number;
   externalCompanyIndex: number;
+  productIndex: number;
   action: string = '';
 
   private serviceElementToSend = new BehaviorSubject<IServiceElement>({} as IServiceElement);
@@ -125,6 +128,11 @@ export class InternalServiceService {
   externalCompanies: IExternalCompany[] = [];
   oldExternalCompanies: IExternalCompany[] = [];
 
+  oldImportantProducts: IProduct[] = [];
+  importantProducts: IProduct[] = [];
+  oldCriticalProducts: IProduct[] = [];
+  criticalProducts: IProduct[] = [];
+
   formattedStartDatesMonthly: string[] = [];
   formattedEndDatesMonthly: string[] = [];
   formattedStartDatesOneTime: string[] = [];
@@ -133,8 +141,10 @@ export class InternalServiceService {
   parametersToDelete: IParameter[] | null = [];
   serviceElementsToDelete: IServiceElement[] | null = [];
   externalCompaniesToDelete: IExternalCompany[] = [];
+  productsToDelete: IProduct[] = [];
 
   parametersToEdit: { index: number; parameterType: ParameterType }[] | null = [];
   serviceElementsToEdit: { index: number; paymentType: PaymentType }[] | null = [];
   externalCompaniesToEdit: number[] = [];
+  productsToEdit: { index: number; productType: ProductType }[] = [];
 }

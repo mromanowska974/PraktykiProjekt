@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -13,98 +13,49 @@ import { ProductService } from '../service/product.service';
 import { IInternalService } from 'app/entities/internal-service/internal-service.model';
 import { InternalServiceService } from 'app/entities/internal-service/service/internal-service.service';
 import { ProductType } from 'app/entities/enumerations/product-type.model';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ParameterUpdateComponent } from 'app/entities/parameter/update/parameter-update.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-product-update',
   templateUrl: './product-update.component.html',
+  styleUrls: ['./product-update.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ProductUpdateComponent implements OnInit {
-  isSaving = false;
-  product: IProduct | null = null;
-  productTypeValues = Object.keys(ProductType);
+  product: IProduct | null = {} as IProduct;
 
-  internalServicesSharedCollection: IInternalService[] = [];
-
-  editForm: ProductFormGroup = this.productFormService.createProductFormGroup();
+  isNameEntered: boolean = false;
+  isSaveBtnClicked: boolean = false;
 
   constructor(
     protected productService: ProductService,
     protected productFormService: ProductFormService,
     protected internalServiceService: InternalServiceService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    @Inject(MAT_DIALOG_DATA) public data,
+    private dialogRef: MatDialogRef<ParameterUpdateComponent>
   ) {}
 
-  compareInternalService = (o1: IInternalService | null, o2: IInternalService | null): boolean =>
-    this.internalServiceService.compareInternalService(o1, o2);
-
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ product }) => {
-      this.product = product;
-      if (product) {
-        this.updateForm(product);
-      }
+    if (this.data.action === 'ADD') this.product!.type = this.data.productType;
 
-      this.loadRelationshipsOptions();
-    });
+    if (this.data.action === 'EDIT') this.product = this.data.product;
   }
 
-  previousState(): void {
-    window.history.back();
+  onCancel() {
+    this.dialogRef.close();
   }
 
-  save(): void {
-    this.isSaving = true;
-    const product = this.productFormService.getProduct(this.editForm);
-    if (product.id !== null) {
-      this.subscribeToSaveResponse(this.productService.update(product));
+  onSave() {
+    this.isNameEntered = this.product!.name !== undefined && this.product!.name!.length > 0 ? true : false;
+
+    if (this.isNameEntered) {
+      this.productService.sendCreatedProduct(this.product!);
+      this.dialogRef.close();
     } else {
-      this.subscribeToSaveResponse(this.productService.create(product));
+      this.isSaveBtnClicked = true;
     }
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IProduct>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
-      error: () => this.onSaveError(),
-    });
-  }
-
-  protected onSaveSuccess(): void {
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
-
-  protected onSaveFinalize(): void {
-    this.isSaving = false;
-  }
-
-  protected updateForm(product: IProduct): void {
-    this.product = product;
-    this.productFormService.resetForm(this.editForm, product);
-
-    this.internalServicesSharedCollection = this.internalServiceService.addInternalServiceToCollectionIfMissing<IInternalService>(
-      this.internalServicesSharedCollection,
-      product.internalService
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.internalServiceService
-      .query()
-      .pipe(map((res: HttpResponse<IInternalService[]>) => res.body ?? []))
-      .pipe(
-        map((internalServices: IInternalService[]) =>
-          this.internalServiceService.addInternalServiceToCollectionIfMissing<IInternalService>(
-            internalServices,
-            this.product?.internalService
-          )
-        )
-      )
-      .subscribe((internalServices: IInternalService[]) => (this.internalServicesSharedCollection = internalServices));
   }
 }

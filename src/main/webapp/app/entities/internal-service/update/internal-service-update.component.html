@@ -222,28 +222,14 @@
       <div class="ul-box">
         <div class="row3">
           <p>Produkty krytyczne:</p>
-          <button jhiOrange3dButton>Dodaj produkt</button>
+          <button jhiOrange3dButton (click)="onAddProduct(productType.CRITICAL)">Dodaj produkt</button>
         </div>
         <ul>
-          <li>
-            1
+          <li *ngFor="let product of criticalProducts; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
+            {{ product.name }}
             <div>
-              <button>E</button>
-              <button>U</button>
-            </div>
-          </li>
-          <li>
-            2
-            <div>
-              <button>E</button>
-              <button>U</button>
-            </div>
-          </li>
-          <li>
-            3
-            <div>
-              <button>E</button>
-              <button>U</button>
+              <button (click)="onEditProduct(product, i)">E</button>
+              <button (click)="onDeleteProduct(product, i)">U</button>
             </div>
           </li>
         </ul>
@@ -251,28 +237,14 @@
       <div class="ul-box">
         <div class="row3">
           <p>Produkty ważne:</p>
-          <button jhiOrange3dButton>Dodaj produkt</button>
+          <button jhiOrange3dButton (click)="onAddProduct(productType.IMPORTANT)">Dodaj produkt</button>
         </div>
         <ul>
-          <li>
-            1
+          <li *ngFor="let product of importantProducts; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
+            {{ product.name }}
             <div>
-              <button>E</button>
-              <button>U</button>
-            </div>
-          </li>
-          <li>
-            2
-            <div>
-              <button>E</button>
-              <button>U</button>
-            </div>
-          </li>
-          <li>
-            3
-            <div>
-              <button>E</button>
-              <button>U</button>
+              <button (click)="onEditProduct(product, i)">E</button>
+              <button (click)="onDeleteProduct(product, i)">U</button>
             </div>
           </li>
         </ul>

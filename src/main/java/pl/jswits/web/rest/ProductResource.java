@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.jswits.domain.Product;
+import pl.jswits.domain.enumeration.ProductType;
 import pl.jswits.repository.ProductRepository;
 import pl.jswits.web.rest.errors.BadRequestAlertException;
 import tech.jhipster.web.util.HeaderUtil;
@@ -147,6 +148,12 @@ public class ProductResource {
     public List<Product> getAllProducts() {
         log.debug("REST request to get all Products");
         return productRepository.findAll();
+    }
+
+    @GetMapping("/products/byIS")
+    public List<Product> getProductsByInternalServiceAndProductType(@RequestParam Long id, @RequestParam ProductType productType) {
+        log.debug("REST request to get all Products By Internal Service");
+        return productRepository.findProductsByInternalServiceIdAndType(id, productType);
     }
 
     /**

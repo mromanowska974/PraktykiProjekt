@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IProduct, NewProduct } from '../product.model';
+import { ProductType } from 'app/entities/enumerations/product-type.model';
 
 export type PartialUpdateProduct = Partial<IProduct> & Pick<IProduct, 'id'>;
 
@@ -18,7 +19,8 @@ export class ProductService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(product: NewProduct): Observable<EntityResponseType> {
+  //API
+  create(product: IProduct): Observable<EntityResponseType> {
     return this.http.post<IProduct>(this.resourceUrl, product, { observe: 'response' });
   }
 
@@ -32,6 +34,13 @@ export class ProductService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IProduct>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findByInternalService(id: number, productType: ProductType): Observable<EntityArrayResponseType> {
+    return this.http.get<IProduct[]>(`${this.resourceUrl}/byIS`, {
+      params: new HttpParams().append('id', id).append('productType', productType),
+      observe: 'response',
+    });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
@@ -69,5 +78,13 @@ export class ProductService {
       return [...productsToAdd, ...productCollection];
     }
     return productCollection;
+  }
+
+  //NON-API
+  private product = new Subject<IProduct>();
+  toReceive = this.product.asObservable();
+
+  sendCreatedProduct(product: IProduct) {
+    this.product.next(product);
   }
 }

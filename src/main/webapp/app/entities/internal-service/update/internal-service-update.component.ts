@@ -31,6 +31,10 @@ import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d
 import { ExternalCompanyService } from 'app/entities/external-company/service/external-company.service';
 import { IExternalCompany } from 'app/entities/external-company/external-company.model';
 import { ExternalCompanyUpdateComponent } from 'app/entities/external-company/update/external-company-update.component';
+import { IProduct } from 'app/entities/product/product.model';
+import { ProductType } from 'app/entities/enumerations/product-type.model';
+import { ProductUpdateComponent } from 'app/entities/product/update/product-update.component';
+import { ProductService } from 'app/entities/product/service/product.service';
 
 @Component({
   standalone: true,
@@ -71,20 +75,29 @@ export class InternalServiceUpdateComponent implements OnInit {
   oldExternalCompanies: IExternalCompany[] = [];
   externalCompanies: IExternalCompany[] = [];
 
+  oldImportantProducts: IProduct[] = [];
+  importantProducts: IProduct[] = [];
+  oldCriticalProducts: IProduct[] = [];
+  criticalProducts: IProduct[] = [];
+
   paymentType: typeof PaymentType = PaymentType;
   parameterType: typeof ParameterType = ParameterType;
+  productType: typeof ProductType = ProductType;
 
   serviceElementSub: Subscription;
   parameterSub: Subscription;
   externalCompanySub: Subscription;
+  productSub: Subscription;
 
   parametersToDelete: IParameter[] | null = [];
   serviceElementsToDelete: IServiceElement[] | null = [];
   externalCompaniesToDelete: IExternalCompany[] = [];
+  productsToDelete: IProduct[] = [];
 
   parametersToEdit: { index: number; parameterType: ParameterType }[] | null = [];
   serviceElementsToEdit: { index: number; paymentType: PaymentType }[] | null = [];
   externalCompaniesToEdit: number[] = [];
+  productsToEdit: { index: number; productType: ProductType }[] = [];
 
   formattedStartDatesMonthly: string[] = [];
   formattedEndDatesMonthly: string[] = [];
@@ -94,6 +107,7 @@ export class InternalServiceUpdateComponent implements OnInit {
   editedServiceElementIndex: number;
   editedParameterIndex: number;
   editedExternalCompanyIndex: number;
+  editedProductIndex: number;
   action: string;
 
   public TypeOfPeriodMapping: typeof TypeOfPeriodMapping = TypeOfPeriodMapping;
@@ -110,6 +124,7 @@ export class InternalServiceUpdateComponent implements OnInit {
     private serviceElementService: ServiceElementService,
     private externalCompanyService: ExternalCompanyService,
     private parameterService: ParameterService,
+    private productService: ProductService,
     private dialogRef: MatDialog
   ) {
     this.statusEnumValues = Object.values(StatusOfServiceCard);
@@ -145,6 +160,11 @@ export class InternalServiceUpdateComponent implements OnInit {
       this.externalCompanies = this.internalServiceService.externalCompanies;
       this.oldExternalCompanies = this.internalServiceService.oldExternalCompanies;
 
+      this.oldCriticalProducts = this.internalServiceService.oldCriticalProducts;
+      this.criticalProducts = this.internalServiceService.criticalProducts;
+      this.oldImportantProducts = this.internalServiceService.oldImportantProducts;
+      this.importantProducts = this.internalServiceService.importantProducts;
+
       this.formattedStartDatesMonthly = this.internalServiceService.formattedStartDatesMonthly;
       this.formattedEndDatesMonthly = this.internalServiceService.formattedEndDatesMonthly;
       this.formattedStartDatesOneTime = this.internalServiceService.formattedStartDatesOneTime;
@@ -156,6 +176,8 @@ export class InternalServiceUpdateComponent implements OnInit {
       this.serviceElementsToEdit = this.internalServiceService.serviceElementsToEdit;
       this.externalCompaniesToDelete = this.internalServiceService.externalCompaniesToDelete;
       this.externalCompaniesToEdit = this.internalServiceService.externalCompaniesToEdit;
+      this.productsToDelete = this.internalServiceService.productsToDelete;
+      this.productsToEdit = this.internalServiceService.productsToEdit;
 
       this.internalServiceService.isInternalServiceSaved = false;
       this.isDataLoaded = true;
@@ -203,6 +225,17 @@ export class InternalServiceUpdateComponent implements OnInit {
       this.externalCompanyService.findByInternalService(this.internalServiceId).subscribe(resp => {
         this.oldExternalCompanies = resp.body!;
         this.externalCompanies = JSON.parse(JSON.stringify(this.oldExternalCompanies));
+      });
+
+      //products
+      this.productService.findByInternalService(this.internalServiceId, ProductType.CRITICAL).subscribe(resp => {
+        this.oldCriticalProducts = resp.body!;
+        this.criticalProducts = JSON.parse(JSON.stringify(this.oldCriticalProducts));
+      });
+
+      this.productService.findByInternalService(this.internalServiceId, ProductType.IMPORTANT).subscribe(resp => {
+        this.oldImportantProducts = resp.body!;
+        this.importantProducts = JSON.parse(JSON.stringify(this.oldImportantProducts));
       });
     }
 
@@ -325,6 +358,41 @@ export class InternalServiceUpdateComponent implements OnInit {
         }
       }
     });
+
+    //receiving new product
+    this.productSub = this.productService.toReceive.subscribe(resp => {
+      resp.internalService = this.internalService;
+
+      if (this.action === 'ADD') {
+        if (resp.type === ProductType.CRITICAL) {
+          this.criticalProducts?.push(resp);
+        } else if (resp.type === ProductType.IMPORTANT) {
+          this.importantProducts?.push(resp);
+        }
+      } else if (this.action === 'EDIT') {
+        this.editedProductIndex = this.internalServiceService.productIndex;
+
+        if (
+          resp.type === 'CRITICAL' &&
+          !this.productsToEdit?.find(el => {
+            return el.index === this.editedProductIndex && el.productType === 'CRITICAL';
+          }) &&
+          resp.id !== undefined
+        ) {
+          this.productsToEdit?.push({ index: this.editedProductIndex, productType: ProductType.CRITICAL });
+          console.log(this.productsToEdit);
+        } else if (
+          resp.type === 'IMPORTANT' &&
+          !this.productsToEdit?.find(el => {
+            return el.index === this.editedProductIndex && el.productType === 'IMPORTANT';
+          }) &&
+          resp.id !== undefined
+        ) {
+          this.productsToEdit?.push({ index: this.editedProductIndex, productType: ProductType.IMPORTANT });
+          console.log(this.productsToEdit);
+        }
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -338,6 +406,10 @@ export class InternalServiceUpdateComponent implements OnInit {
 
     if (this.externalCompanySub) {
       this.externalCompanySub.unsubscribe();
+    }
+
+    if (this.productSub) {
+      this.productSub.unsubscribe();
     }
   }
 
@@ -381,6 +453,15 @@ export class InternalServiceUpdateComponent implements OnInit {
       if (externalCompany.id === undefined) this.externalCompanyService.create(externalCompany).subscribe();
     });
 
+    //adding products
+    this.criticalProducts.forEach(product => {
+      if (product.id === undefined) this.productService.create(product).subscribe();
+    });
+
+    this.importantProducts.forEach(product => {
+      if (product.id === undefined) this.productService.create(product).subscribe();
+    });
+
     //deleting parameters
     this.parametersToDelete!.forEach(parameter => {
       this.parameterService.delete(parameter.id).subscribe();
@@ -394,6 +475,11 @@ export class InternalServiceUpdateComponent implements OnInit {
     //deleting external services
     this.externalCompaniesToDelete.forEach(externalCompany => {
       this.externalCompanyService.delete(externalCompany.id).subscribe();
+    });
+
+    //deleting products
+    this.productsToDelete.forEach(product => {
+      this.productService.delete(product.id).subscribe();
     });
 
     //updating parameters
@@ -417,6 +503,15 @@ export class InternalServiceUpdateComponent implements OnInit {
     //updating external company
     this.externalCompaniesToEdit.forEach(externalCompany => {
       this.externalCompanyService.update(this.externalCompanies![externalCompany]).subscribe();
+    });
+
+    //updating products
+    this.productsToEdit.forEach(product => {
+      if (product.productType === 'CRITICAL') {
+        this.productService.update(this.criticalProducts[product.index]).subscribe();
+      } else if (product.productType === 'IMPORTANT') {
+        this.productService.update(this.importantProducts[product.index]).subscribe();
+      }
     });
 
     //updating business service
@@ -446,6 +541,12 @@ export class InternalServiceUpdateComponent implements OnInit {
     this.internalServiceService.oldExternalCompanies = this.oldExternalCompanies;
     this.internalServiceService.externalCompanies = this.externalCompanies;
 
+    this.internalServiceService.oldCriticalProducts = this.oldCriticalProducts;
+    this.internalServiceService.oldImportantProducts = this.oldImportantProducts;
+
+    this.internalServiceService.criticalProducts = this.criticalProducts;
+    this.internalServiceService.importantProducts = this.importantProducts;
+
     //formatted dates
     this.internalServiceService.formattedStartDatesMonthly = this.formattedStartDatesMonthly;
     this.internalServiceService.formattedEndDatesMonthly = this.formattedEndDatesMonthly;
@@ -461,6 +562,9 @@ export class InternalServiceUpdateComponent implements OnInit {
 
     this.internalServiceService.externalCompaniesToDelete = this.externalCompaniesToDelete;
     this.internalServiceService.externalCompaniesToEdit = this.externalCompaniesToEdit;
+
+    this.internalServiceService.productsToDelete = this.productsToDelete;
+    this.internalServiceService.productsToEdit = this.productsToEdit;
 
     this.internalServiceService.isInternalServiceSaved = true;
   }
@@ -576,6 +680,44 @@ export class InternalServiceUpdateComponent implements OnInit {
 
       this.externalCompanies?.splice(index, 1);
     }
+  }
+
+  onAddProduct(productType: ProductType) {
+    this.action = 'ADD';
+
+    this.dialogRef.open(ProductUpdateComponent, {
+      data: {
+        productType: productType,
+        action: this.action,
+      },
+    });
+  }
+
+  onDeleteProduct(product: IProduct, index: number) {
+    if (confirm('Czy na pewno chcesz usunąć ten parametr?')) {
+      if (product.id !== undefined) {
+        this.productsToDelete?.push(product);
+      }
+
+      if (product.type === ProductType.IMPORTANT) {
+        this.importantProducts?.splice(index, 1);
+      } else if (product.type === ProductType.CRITICAL) {
+        this.criticalProducts?.splice(index, 1);
+      }
+    }
+  }
+
+  onEditProduct(product: IProduct, index: number) {
+    this.internalServiceService.productIndex = index;
+    this.action = 'EDIT';
+    this.internalServiceService.action = this.action;
+
+    this.dialogRef.open(ProductUpdateComponent, {
+      data: {
+        product: product,
+        action: this.action,
+      },
+    });
   }
 
   onCreateDocxFile() {
