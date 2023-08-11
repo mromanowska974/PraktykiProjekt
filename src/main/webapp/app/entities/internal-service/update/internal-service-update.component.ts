@@ -725,6 +725,10 @@ export class InternalServiceUpdateComponent implements OnInit {
     let serviceElementRowsMonthly: TableRow[] = [];
     let parameterRowsQuantity: TableRow[] = [];
     let serviceElementRowsOneTime: TableRow[] = [];
+    let criticalProductsRows: TableRow[] = [];
+    let importantProductsRows: TableRow[] = [];
+    let externalCompaniesRows: TableRow[] = [];
+    let businessServicesRows: TableRow[] = [];
 
     this.oldParametersOfQualityType!.forEach(element => {
       const newRow: TableRow = new TableRow({
@@ -843,20 +847,69 @@ export class InternalServiceUpdateComponent implements OnInit {
       serviceElementRowsOneTime.push(newRow);
     });
 
+    this.oldCriticalProducts.forEach(element => {
+      const newRow = new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph({ text: element.name! })],
+          }),
+        ],
+      });
+
+      criticalProductsRows.push(newRow);
+    });
+
+    this.oldImportantProducts.forEach(element => {
+      const newRow = new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph({ text: element.name! })],
+          }),
+        ],
+      });
+
+      importantProductsRows.push(newRow);
+    });
+
+    this.oldExternalCompanies.forEach(element => {
+      const newRow = new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph({ text: this.oldExternalCompanies.indexOf(element).toString() })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element.name ? element.name : 'nic' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element.contractNumber ? element.contractNumber : 'nic' })],
+          }),
+          new TableCell({
+            children: [new Paragraph({ text: element.sLAParameters ? element.sLAParameters : 'nic' })],
+          }),
+        ],
+      });
+
+      externalCompaniesRows.push(newRow);
+    });
+
+    this.businessServices.forEach(element => {
+      const newRow = new TableRow({
+        children: [
+          new TableCell({
+            children: [new Paragraph({ text: element.symbol! + '-' + element.name! })],
+          }),
+        ],
+      });
+
+      businessServicesRows.push(newRow);
+    });
+
     const document = new Document({
       sections: [
         {
           properties: {},
           children: [
-            // new Paragraph({
-            //   children: [
-            //     new TextRun('Klient: '),
-            //     new TextRun({
-            //       text: this.oldInternalService!.client! ? this.oldInternalService!.client!.name! : 'nic',
-            //       bold: true,
-            //     }),
-            //   ],
-            // }),
+            //basic data
             new Paragraph({
               children: [
                 new TextRun('Symbol usługi: '),
@@ -875,15 +928,6 @@ export class InternalServiceUpdateComponent implements OnInit {
                 }),
               ],
             }),
-            // new Paragraph({
-            //   children: [
-            //     new TextRun('Dział: '),
-            //     new TextRun({
-            //       text: this.oldInternalService!.department! ? this.oldInternalService!.department!.name! : 'nic',
-            //       bold: true,
-            //     }),
-            //   ],
-            // }),
             new Paragraph({
               children: [
                 new TextRun('Właściciel: '),
@@ -895,11 +939,22 @@ export class InternalServiceUpdateComponent implements OnInit {
                 }),
               ],
             }),
+            //section A
             new Paragraph({
               children: [
                 new TextRun({ text: 'Opis funkcjonalny: ', break: 1 }),
                 new TextRun({
                   text: this.oldInternalService!.functionalDescription! ? this.oldInternalService!.functionalDescription! : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Zlecenie usługi: ', break: 1 }),
+                new TextRun({
+                  text: this.oldInternalService!.serviceComissions ? this.oldInternalService!.serviceComissions! : 'nic',
                   bold: true,
                   break: 1,
                 }),
@@ -935,6 +990,7 @@ export class InternalServiceUpdateComponent implements OnInit {
                 }),
               ],
             }),
+            //section B
             new Paragraph({
               children: [
                 new TextRun('Godziny gwarantowanego świadczenia usługi: '),
@@ -999,6 +1055,7 @@ export class InternalServiceUpdateComponent implements OnInit {
                 ...parameterRowsQuantity,
               ],
             }),
+            //section C
             new Paragraph({
               children: [
                 new TextRun('Koszty uruchomienia usługi: '),
@@ -1193,6 +1250,161 @@ export class InternalServiceUpdateComponent implements OnInit {
                   break: 1,
                 }),
               ],
+            }),
+            //section D
+            new Paragraph({
+              children: [
+                new TextRun('Status Karty Usługi IT: '),
+                new TextRun({
+                  text: this.oldInternalService!.status ? this.oldInternalService!.status : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Usługa krytyczna: '),
+                new TextRun({
+                  text:
+                    this.oldInternalService!.criticalService !== undefined ? this.oldInternalService!.criticalService!.toString() : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [new TextRun('Produkty krytyczne: ')],
+            }),
+            new Table({
+              rows: [...criticalProductsRows],
+            }),
+            new Paragraph({
+              children: [new TextRun('Produkty ważne: ')],
+            }),
+            new Table({
+              rows: [...importantProductsRows],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Gwarantowane Poziomy Świadczenia Usługi: '),
+                new TextRun({
+                  text: this.oldInternalService!.guaranteedLevelsOfProvisionOfService
+                    ? this.oldInternalService!.guaranteedLevelsOfProvisionOfService
+                    : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            //section E
+            new Paragraph({
+              children: [
+                new TextRun('Czas Świadczenia Usługi: '),
+                new TextRun({
+                  text: this.oldInternalService!.periodOfProvisionOfService ? this.oldInternalService!.periodOfProvisionOfService : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Okno Serwisowe: '),
+                new TextRun({
+                  text: this.oldInternalService!.windowOfService ? this.oldInternalService!.windowOfService : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('Poziom Dostępności: '),
+                new TextRun({
+                  text: this.oldInternalService!.levelOfAccessibility ? this.oldInternalService!.levelOfAccessibility : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            //section F
+            new Paragraph({
+              children: [
+                new TextRun('Plan Disaster Recovery: '),
+                new TextRun({
+                  text: this.oldInternalService!.planDisasterRecovery ? this.oldInternalService!.planDisasterRecovery : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('RPO: '),
+                new TextRun({
+                  text: this.oldInternalService!.rPO ? this.oldInternalService!.rPO : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun('RTO: '),
+                new TextRun({
+                  text: this.oldInternalService!.rTO ? this.oldInternalService!.rTO : 'nic',
+                  bold: true,
+                  break: 1,
+                }),
+              ],
+            }),
+            //section G
+            new Paragraph({
+              children: [new TextRun('Firmy zewnętrzne wspierające realizację Usługi IT: ')],
+            }),
+            new Table({
+              rows: [
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      width: {
+                        size: 50,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Lp.')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 2900,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Firma zewnętrzna')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 2900,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Numer umowy')],
+                    }),
+                    new TableCell({
+                      width: {
+                        size: 2900,
+                        type: WidthType.DXA,
+                      },
+                      children: [new Paragraph('Parametry SLA')],
+                    }),
+                  ],
+                }),
+                ...externalCompaniesRows,
+              ],
+            }),
+            new Paragraph({
+              children: [new TextRun('Wspierane Usługi Biznesowe: ')],
+            }),
+            new Table({
+              rows: [...businessServicesRows],
             }),
           ],
         },
