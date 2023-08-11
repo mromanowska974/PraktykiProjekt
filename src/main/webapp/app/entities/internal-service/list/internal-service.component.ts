@@ -12,6 +12,8 @@ import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/conf
 import { EntityArrayResponseType, InternalServiceService } from '../service/internal-service.service';
 import { InternalServiceDeleteDialogComponent } from '../delete/internal-service-delete-dialog.component';
 import { SortService } from 'app/shared/sort/sort.service';
+import { BusinessService } from 'app/entities/business-service/business-service.model';
+import { BusinessServiceService } from 'app/entities/business-service/service/business-service.service';
 
 @Component({
   standalone: true,
@@ -31,9 +33,11 @@ import { SortService } from 'app/shared/sort/sort.service';
 })
 export class InternalServiceComponent implements OnInit {
   @Input() internalServices?: InternalService[] | null;
+  @Input() businessService: BusinessService = new BusinessService();
 
   constructor(
     protected internalServiceService: InternalServiceService,
+    protected businessServiceService: BusinessServiceService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
     protected sortService: SortService,
@@ -46,5 +50,12 @@ export class InternalServiceComponent implements OnInit {
     this.router.navigate(['/internal-service', internalService.id, 'edit']);
   }
 
-  onDelete() {}
+  onDelete(index: number) {
+    console.log(this.businessService);
+    console.log(index);
+    if (confirm('Czy chcesz usunąć tą Usługę Wewnętrzną z wybranej Usługi Biznesowej?')) {
+      this.businessService.internalServices?.splice(index, 1);
+      this.businessServiceService.update(this.businessService).subscribe();
+    }
+  }
 }

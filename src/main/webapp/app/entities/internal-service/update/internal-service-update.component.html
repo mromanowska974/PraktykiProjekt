@@ -232,6 +232,7 @@
               <button (click)="onDeleteProduct(product, i)">U</button>
             </div>
           </li>
+          <li *ngIf="criticalProducts.length === 0" class="empty-list-info">Brak produktów</li>
         </ul>
       </div>
       <div class="ul-box">
@@ -247,6 +248,7 @@
               <button (click)="onDeleteProduct(product, i)">U</button>
             </div>
           </li>
+          <li *ngIf="importantProducts.length === 0" class="empty-list-info">Brak produktów</li>
         </ul>
       </div>
       <div class="row2">
@@ -307,6 +309,9 @@
             </td>
           </tr>
         </table>
+        <div class="empty-list-info" *ngIf="externalCompanies.length === 0">
+          <p>Brak informacji o firmach zewnętrznych</p>
+        </div>
       </div>
       <div class="ul-box">
         <p>Wspierane Usługi Biznesowe:</p>

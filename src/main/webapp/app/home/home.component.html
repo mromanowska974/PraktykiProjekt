@@ -33,6 +33,7 @@
       <jhi-internal-service
         *ngIf="selectedBusinessService && selectedBusinessService.internalServices?.length !== 0"
         [internalServices]="selectedBusinessService.internalServices"
+        [businessService]="selectedBusinessService"
       ></jhi-internal-service>
       <p class="error-text" *ngIf="selectedBusinessService === undefined && isAddingISButtonClicked">Najpierw wybierz Usługę Biznesową</p>
       <div class="btn-box">
