@@ -1,34 +1,17 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    <div *ngIf="client">
-      <h2 data-cy="clientDetailsHeading">
-        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.client.detail.title">Client</span>
-      </h2>
-
-      <hr />
-
-      <jhi-alert-error></jhi-alert-error>
-
-      <jhi-alert></jhi-alert>
-
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
-        <dd>
-          <span>{{ client.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.client.name">Name</span></dt>
-        <dd>
-          <span>{{ client.name }}</span>
-        </dd>
-      </dl>
-
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Wstecz</span>
-      </button>
-
-      <button type="button" [routerLink]="['/client', client.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edytuj</span>
-      </button>
-    </div>
-  </div>
+<div class="container">
+  <table>
+    <tr>
+      <th>Lp.</th>
+      <th>Nazwa</th>
+      <th>Akcje</th>
+    </tr>
+    <tr *ngFor="let client of clients; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 !== 0 }">
+      <td>{{ i + 1 }}</td>
+      <td>{{ client.name }}</td>
+      <td>
+        <button>E</button>
+        <button>U</button>
+      </td>
+    </tr>
+  </table>
 </div>

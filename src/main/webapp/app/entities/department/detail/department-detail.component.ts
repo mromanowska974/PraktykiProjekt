@@ -1,22 +1,26 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IDepartment } from '../department.model';
+import { DepartmentService } from '../service/department.service';
 
 @Component({
   standalone: true,
   selector: 'jhi-department-detail',
   templateUrl: './department-detail.component.html',
+  styleUrls: ['./department-detail.component.css'],
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class DepartmentDetailComponent {
-  @Input() department: IDepartment | null = null;
+export class DepartmentDetailComponent implements OnInit {
+  departments: IDepartment[] | null = null;
 
-  constructor(protected activatedRoute: ActivatedRoute) {}
+  constructor(protected activatedRoute: ActivatedRoute, protected departmentService: DepartmentService) {}
 
-  previousState(): void {
-    window.history.back();
+  ngOnInit(): void {
+    this.departmentService.query().subscribe(resp => {
+      this.departments = resp.body;
+    });
   }
 }

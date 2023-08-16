@@ -20,14 +20,12 @@ import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import MainComponent from './layouts/main/main.component';
 import MainModule from './layouts/main/main.module';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
-import { BusinessServiceEditComponent } from './entities/business-service/edit/business-service-edit.component';
 import { FormsModule } from '@angular/forms';
-import { InternalServiceAddNewComponent } from './entities/internal-service/add-new/internal-service-add-new.component';
 import { InternalServiceAddExistingComponent } from './entities/internal-service/add-existing/internal-service-add-existing.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Orange3dButtonDirective } from './directives/orange3d-button/orange3d-button.directive';
+import { CumulativeEditPageComponent } from './entities/cumulative-edit-page/cumulative-edit-page.component';
 
 @NgModule({
   imports: [

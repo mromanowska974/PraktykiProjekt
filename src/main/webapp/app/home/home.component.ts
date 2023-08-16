@@ -94,4 +94,8 @@ export default class HomeComponent implements OnInit {
   onBusinessServiceSelected(event: BusinessService) {
     this.selectedBusinessService = event;
   }
+
+  onLoadCumulativeEditPage() {
+    this.router.navigate(['/edit/clients']);
+  }
 }

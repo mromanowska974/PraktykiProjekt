@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="button-box">
+    <button jhiOrange3dButton>Dodaj</button>
+  </div>
+  <div class="sections">
+    <a [ngClass]="{ 'selected-section': sectionSelected === 'clients' }" [routerLink]="['clients']" (click)="onSelectSection('clients')"
+      >Spółki</a
+    >
+    <a
+      [ngClass]="{ 'selected-section': sectionSelected === 'departments' }"
+      [routerLink]="['departments']"
+      (click)="onSelectSection('departments')"
+      >Działy</a
+    >
+    <a
+      [ngClass]="{ 'selected-section': sectionSelected === 'employees' }"
+      [routerLink]="['employees']"
+      (click)="onSelectSection('employees')"
+      >Pracownicy</a
+    >
+  </div>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+  <div class="button-box">
+    <button jhiOrange3dButton>Ok</button>
+    <button jhiOrange3dButton>Anuluj</button>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font-size: 20px !important;
+  margin-left: 15px;
+}
+
+.button-box {
+  display: flex;
+  justify-content: end;
+}
+
+.sections {
+  display: flex;
+  position: relative;
+  box-shadow: 0px 5px 5px -5px black;
+  margin-top: 10px;
+}
+
+.sections > a {
+  background-color: lightgray;
+  // border: 1px solid black;
+  text-align: center;
+  width: 33.3%;
+  height: 40px;
+  color: black;
+  text-decoration: none;
+}
+
+.selected-section,
+.sections > a:hover {
+  background: rgb(251, 156, 73) !important;
+  color: white !important;
+  /*najwyzej sie wywali jak sie nie spodoba xd*/
+  position: relative;
+  box-shadow: 3px 3px 10px inset rgb(255, 214, 179), -3px -3px 10px inset rgb(215, 133, 61);
+}

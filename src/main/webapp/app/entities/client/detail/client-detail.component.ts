@@ -1,22 +1,26 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { IClient } from '../client.model';
+import { ClientService } from '../service/client.service';
 
 @Component({
   standalone: true,
   selector: 'jhi-client-detail',
   templateUrl: './client-detail.component.html',
+  styleUrls: ['./client-detail.component.css'],
   imports: [SharedModule, RouterModule, DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe],
 })
-export class ClientDetailComponent {
-  @Input() client: IClient | null = null;
+export class ClientDetailComponent implements OnInit {
+  clients: IClient[] | null = null;
 
-  constructor(protected activatedRoute: ActivatedRoute) {}
+  constructor(protected activatedRoute: ActivatedRoute, protected clientService: ClientService) {}
 
-  previousState(): void {
-    window.history.back();
+  ngOnInit(): void {
+    this.clientService.query().subscribe(resp => {
+      this.clients = resp.body;
+    });
   }
 }

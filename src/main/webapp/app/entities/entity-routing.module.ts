@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
       },
       {
         path: 'client',
+        pathMatch: 'full',
         data: { pageTitle: 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.client.home.title' },
         loadChildren: () => import('./client/client.routes'),
       },
@@ -46,8 +47,13 @@ import { RouterModule } from '@angular/router';
       },
       {
         path: 'product',
-        data: { pageTitle: 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElement.home.title' },
+        data: { pageTitle: 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.product.home.title' },
         loadChildren: () => import('./product/product.routes'),
+      },
+      {
+        path: 'edit',
+        data: { pageTitle: 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.edit.home.title' },
+        loadChildren: () => import('./cumulative-edit-page/cumulative-edit-page.routes'),
       },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
