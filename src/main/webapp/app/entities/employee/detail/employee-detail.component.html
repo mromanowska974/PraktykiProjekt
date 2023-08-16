@@ -13,8 +13,8 @@
       <td>{{ employee.surname }}</td>
       <td>test@test.com</td>
       <td>
-        <button>E</button>
-        <button>U</button>
+        <button (click)="onEdit()">E</button>
+        <button (click)="onDelete(employee)">U</button>
       </td>
     </tr>
   </table>

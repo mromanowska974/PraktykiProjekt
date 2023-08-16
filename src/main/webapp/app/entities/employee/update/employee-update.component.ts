@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeFormService, EmployeeFormGroup } from './employee-form.service';
 import { IEmployee } from '../employee.model';
 import { EmployeeService } from '../service/employee.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
@@ -29,7 +29,8 @@ export class EmployeeUpdateComponent implements OnInit {
   constructor(
     protected employeeService: EmployeeService,
     protected activatedRoute: ActivatedRoute,
-    protected dialogRef: MatDialogRef<EmployeeUpdateComponent>
+    protected dialogRef: MatDialogRef<EmployeeUpdateComponent>,
+    @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
   ngOnInit(): void {}
@@ -39,10 +40,17 @@ export class EmployeeUpdateComponent implements OnInit {
     this.isSurnameEntered = this.employee!.surname !== undefined && this.employee!.surname!.length > 0 ? true : false;
 
     if (this.isNameEntered && this.isSurnameEntered) {
-      this.employeeService.create(this.employee!).subscribe(() => {
-        this.dialogRef.close();
-        window.location.reload();
-      });
+      if (this.data.action === 'ADD') {
+        this.employeeService.create(this.employee!).subscribe(() => {
+          this.dialogRef.close();
+          window.location.reload();
+        });
+      } else if (this.data.action === 'EDIT') {
+        this.employeeService.update(this.employee!).subscribe(() => {
+          this.dialogRef.close();
+          window.location.reload();
+        });
+      }
     } else {
       this.isSaveBtnClicked = true;
     }
