@@ -10,69 +10,45 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeFormService, EmployeeFormGroup } from './employee-form.service';
 import { IEmployee } from '../employee.model';
 import { EmployeeService } from '../service/employee.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
   selector: 'jhi-employee-update',
   templateUrl: './employee-update.component.html',
+  styleUrls: ['./employee-update.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class EmployeeUpdateComponent implements OnInit {
-  isSaving = false;
-  employee: IEmployee | null = null;
+  employee: IEmployee | null = {} as IEmployee;
 
-  editForm: EmployeeFormGroup = this.employeeFormService.createEmployeeFormGroup();
+  isNameEntered: boolean = false;
+  isSurnameEntered: boolean = false;
+  isSaveBtnClicked: boolean = false;
 
   constructor(
     protected employeeService: EmployeeService,
-    protected employeeFormService: EmployeeFormService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected dialogRef: MatDialogRef<EmployeeUpdateComponent>
   ) {}
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ employee }) => {
-      this.employee = employee;
-      if (employee) {
-        this.updateForm(employee);
-      }
-    });
-  }
+  ngOnInit(): void {}
 
-  previousState(): void {
-    window.history.back();
-  }
+  onSave() {
+    this.isNameEntered = this.employee!.name !== undefined && this.employee!.name!.length > 0 ? true : false;
+    this.isSurnameEntered = this.employee!.surname !== undefined && this.employee!.surname!.length > 0 ? true : false;
 
-  save(): void {
-    this.isSaving = true;
-    const employee = this.employeeFormService.getEmployee(this.editForm);
-    if (employee.id !== null) {
-      this.subscribeToSaveResponse(this.employeeService.update(employee));
+    if (this.isNameEntered && this.isSurnameEntered) {
+      this.employeeService.create(this.employee!).subscribe(() => {
+        this.dialogRef.close();
+        window.location.reload();
+      });
     } else {
-      this.subscribeToSaveResponse(this.employeeService.create(employee));
+      this.isSaveBtnClicked = true;
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IEmployee>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
-      error: () => this.onSaveError(),
-    });
-  }
-
-  protected onSaveSuccess(): void {
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
-
-  protected onSaveFinalize(): void {
-    this.isSaving = false;
-  }
-
-  protected updateForm(employee: IEmployee): void {
-    this.employee = employee;
-    this.employeeFormService.resetForm(this.editForm, employee);
+  onCancel() {
+    this.dialogRef.close();
   }
 }

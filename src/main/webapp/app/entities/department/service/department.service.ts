@@ -18,7 +18,7 @@ export class DepartmentService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(department: NewDepartment): Observable<EntityResponseType> {
+  create(department: IDepartment): Observable<EntityResponseType> {
     return this.http.post<IDepartment>(this.resourceUrl, department, { observe: 'response' });
   }
 

@@ -10,69 +10,43 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DepartmentFormService, DepartmentFormGroup } from './department-form.service';
 import { IDepartment } from '../department.model';
 import { DepartmentService } from '../service/department.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
   selector: 'jhi-department-update',
   templateUrl: './department-update.component.html',
+  styleUrls: ['./department-update.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class DepartmentUpdateComponent implements OnInit {
-  isSaving = false;
-  department: IDepartment | null = null;
+  department: IDepartment | null = {} as IDepartment;
 
-  editForm: DepartmentFormGroup = this.departmentFormService.createDepartmentFormGroup();
+  isNameEntered: boolean = false;
+  isSaveBtnClicked: boolean = false;
 
   constructor(
     protected departmentService: DepartmentService,
-    protected departmentFormService: DepartmentFormService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected dialogRef: MatDialogRef<DepartmentUpdateComponent>
   ) {}
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ department }) => {
-      this.department = department;
-      if (department) {
-        this.updateForm(department);
-      }
-    });
-  }
+  ngOnInit(): void {}
 
-  previousState(): void {
-    window.history.back();
-  }
+  onSave() {
+    this.isNameEntered = this.department!.name !== undefined && this.department!.name!.length > 0 ? true : false;
 
-  save(): void {
-    this.isSaving = true;
-    const department = this.departmentFormService.getDepartment(this.editForm);
-    if (department.id !== null) {
-      this.subscribeToSaveResponse(this.departmentService.update(department));
+    if (this.isNameEntered) {
+      this.departmentService.create(this.department!).subscribe(() => {
+        this.dialogRef.close();
+        window.location.reload();
+      });
     } else {
-      this.subscribeToSaveResponse(this.departmentService.create(department));
+      this.isSaveBtnClicked = true;
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IDepartment>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
-      error: () => this.onSaveError(),
-    });
-  }
-
-  protected onSaveSuccess(): void {
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
-
-  protected onSaveFinalize(): void {
-    this.isSaving = false;
-  }
-
-  protected updateForm(department: IDepartment): void {
-    this.department = department;
-    this.departmentFormService.resetForm(this.editForm, department);
+  onCancel() {
+    this.dialogRef.close();
   }
 }

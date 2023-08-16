@@ -10,69 +10,43 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClientFormService, ClientFormGroup } from './client-form.service';
 import { IClient } from '../client.model';
 import { ClientService } from '../service/client.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
   selector: 'jhi-client-update',
   templateUrl: './client-update.component.html',
+  styleUrls: ['./client-update.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule],
 })
 export class ClientUpdateComponent implements OnInit {
-  isSaving = false;
-  client: IClient | null = null;
-
-  editForm: ClientFormGroup = this.clientFormService.createClientFormGroup();
+  client: IClient | null = {} as IClient;
+  isNameEntered: boolean = false;
+  isSaveBtnClicked: boolean = false;
 
   constructor(
     protected clientService: ClientService,
     protected clientFormService: ClientFormService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected dialogRef: MatDialogRef<ClientUpdateComponent>
   ) {}
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ client }) => {
-      this.client = client;
-      if (client) {
-        this.updateForm(client);
-      }
-    });
-  }
+  ngOnInit(): void {}
 
-  previousState(): void {
-    window.history.back();
-  }
+  onSave() {
+    this.isNameEntered = this.client!.name !== undefined && this.client!.name!.length > 0 ? true : false;
 
-  save(): void {
-    this.isSaving = true;
-    const client = this.clientFormService.getClient(this.editForm);
-    if (client.id !== null) {
-      this.subscribeToSaveResponse(this.clientService.update(client));
+    if (this.isNameEntered) {
+      this.clientService.create(this.client!).subscribe(() => {
+        this.dialogRef.close();
+        window.location.reload();
+      });
     } else {
-      this.subscribeToSaveResponse(this.clientService.create(client));
+      this.isSaveBtnClicked = true;
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IClient>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
-      next: () => this.onSaveSuccess(),
-      error: () => this.onSaveError(),
-    });
-  }
-
-  protected onSaveSuccess(): void {
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    // Api for inheritance.
-  }
-
-  protected onSaveFinalize(): void {
-    this.isSaving = false;
-  }
-
-  protected updateForm(client: IClient): void {
-    this.client = client;
-    this.clientFormService.resetForm(this.editForm, client);
+  onCancel() {
+    this.dialogRef.close();
   }
 }

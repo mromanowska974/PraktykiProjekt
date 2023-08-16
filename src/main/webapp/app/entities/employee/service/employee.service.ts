@@ -19,7 +19,7 @@ export class EmployeeService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   //API
-  create(employee: NewEmployee): Observable<EntityResponseType> {
+  create(employee: IEmployee): Observable<EntityResponseType> {
     return this.http.post<IEmployee>(this.resourceUrl, employee, { observe: 'response' });
   }
 

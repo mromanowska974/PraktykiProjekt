@@ -1,6 +1,6 @@
 <div class="container">
   <div class="button-box">
-    <button jhiOrange3dButton>Dodaj</button>
+    <button jhiOrange3dButton (click)="onAddElement()">Dodaj</button>
   </div>
   <div class="sections">
     <a [ngClass]="{ 'selected-section': sectionSelected === 'clients' }" [routerLink]="['clients']" (click)="onSelectSection('clients')"
@@ -24,6 +24,6 @@
   </div>
   <div class="button-box">
     <button jhiOrange3dButton>Ok</button>
-    <button jhiOrange3dButton>Anuluj</button>
+    <button jhiOrange3dButton (click)="onCancel()">Anuluj</button>
   </div>
 </div>
