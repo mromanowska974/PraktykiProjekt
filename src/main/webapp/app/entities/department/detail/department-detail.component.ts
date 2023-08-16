@@ -26,10 +26,11 @@ export class DepartmentDetailComponent implements OnInit {
     });
   }
 
-  onEdit() {
+  onEdit(department: IDepartment) {
     this.dialog.open(DepartmentUpdateComponent, {
       data: {
         action: 'EDIT',
+        department: department,
       },
     });
   }

@@ -33,7 +33,11 @@ export class EmployeeUpdateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.data.action === 'EDIT') {
+      this.employee = this.data.employee;
+    }
+  }
 
   onSave() {
     this.isNameEntered = this.employee!.name !== undefined && this.employee!.name!.length > 0 ? true : false;

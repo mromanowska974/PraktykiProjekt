@@ -32,7 +32,11 @@ export class DepartmentUpdateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.data.action === 'EDIT') {
+      this.department = this.data.department;
+    }
+  }
 
   onSave() {
     this.isNameEntered = this.department!.name !== undefined && this.department!.name!.length > 0 ? true : false;

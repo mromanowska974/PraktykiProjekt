@@ -32,7 +32,11 @@ export class ClientUpdateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.data.action === 'EDIT') {
+      this.client = this.data.client;
+    }
+  }
 
   onSave() {
     this.isNameEntered = this.client!.name !== undefined && this.client!.name!.length > 0 ? true : false;

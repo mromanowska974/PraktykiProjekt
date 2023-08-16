@@ -26,10 +26,11 @@ export class EmployeeDetailComponent implements OnInit {
     });
   }
 
-  onEdit() {
+  onEdit(employee: IEmployee) {
     this.dialog.open(EmployeeUpdateComponent, {
       data: {
         action: 'EDIT',
+        employee: employee,
       },
     });
   }

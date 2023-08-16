@@ -25,10 +25,11 @@ export class ClientDetailComponent implements OnInit {
       this.clients = resp.body;
     });
   }
-  onEdit() {
+  onEdit(client: IClient) {
     this.dialog.open(ClientUpdateComponent, {
       data: {
         action: 'EDIT',
+        client: client,
       },
     });
   }
