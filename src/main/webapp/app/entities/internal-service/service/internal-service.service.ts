@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
@@ -44,6 +44,13 @@ export class InternalServiceService {
 
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<IInternalService>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findByEmployee(employeeId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IInternalService[]>(`${this.resourceUrl}/by-employee`, {
+      params: new HttpParams().append('employeeId', employeeId),
+      observe: 'response',
+    });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

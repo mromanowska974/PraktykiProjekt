@@ -7,6 +7,8 @@ import { IDepartment } from '../department.model';
 import { DepartmentService } from '../service/department.service';
 import { DepartmentUpdateComponent } from '../update/department-update.component';
 import { MatDialog } from '@angular/material/dialog';
+import { BusinessService } from 'app/entities/business-service/business-service.model';
+import { BusinessServiceService } from 'app/entities/business-service/service/business-service.service';
 
 @Component({
   standalone: true,
@@ -18,7 +20,12 @@ import { MatDialog } from '@angular/material/dialog';
 export class DepartmentDetailComponent implements OnInit {
   departments: IDepartment[] | null = null;
 
-  constructor(protected activatedRoute: ActivatedRoute, protected departmentService: DepartmentService, protected dialog: MatDialog) {}
+  constructor(
+    protected activatedRoute: ActivatedRoute,
+    protected departmentService: DepartmentService,
+    protected dialog: MatDialog,
+    protected businessServiceService: BusinessServiceService
+  ) {}
 
   ngOnInit(): void {
     this.departmentService.query().subscribe(resp => {
@@ -37,8 +44,15 @@ export class DepartmentDetailComponent implements OnInit {
 
   onDelete(department: IDepartment) {
     if (confirm('Czy na pewno chcesz usunąć wybranego pracownika?')) {
-      this.departmentService.delete(department.id).subscribe(() => {
-        window.location.reload();
+      this.businessServiceService.findByDepartment(department.id).subscribe(resp => {
+        if (resp.body?.length === 0) {
+          console.log('mozna usunac');
+          this.departmentService.delete(department.id).subscribe(() => {
+            window.location.reload();
+          });
+        } else {
+          confirm('Nie można usunąć wybranej spółki, ponieważ jest powiązana z co najmniej jedną Usługą Biznesową.');
+        }
       });
     }
   }

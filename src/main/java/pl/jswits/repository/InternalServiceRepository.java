@@ -13,4 +13,5 @@ import pl.jswits.domain.InternalService;
 @Repository
 public interface InternalServiceRepository extends JpaRepository<InternalService, Long> {
     List<InternalService> findInternalServicesByBusinessServices(BusinessService businessService);
+    List<InternalService> findInternalServicesByEmployeeId(Long id);
 }

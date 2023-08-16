@@ -63,6 +63,20 @@ export class BusinessServiceService {
     });
   }
 
+  findByDepartment(departmentId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IBusinessService[]>(`${this.resourceUrl}/by-department`, {
+      params: new HttpParams().append('departmentId', departmentId),
+      observe: 'response',
+    });
+  }
+
+  findByEmployee(employeeId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IBusinessService[]>(`${this.resourceUrl}/by-employee`, {
+      params: new HttpParams().append('employeeId', employeeId),
+      observe: 'response',
+    });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

@@ -225,6 +225,22 @@ public class BusinessServiceResource {
         return businessService;
     }
 
+    @GetMapping("/business-services/by-department")
+    public List<BusinessService> getBusinessServicesByDepartment(@RequestParam Long departmentId) {
+        log.debug("REST request to get BusinessServices by Department");
+        List<BusinessService> businessService = new ArrayList<>();
+        businessService = businessServiceRepository.findBusinessServicesByDepartmentId(departmentId);
+        return businessService;
+    }
+
+    @GetMapping("/business-services/by-employee")
+    public List<BusinessService> getBusinessServicesByEmployee(@RequestParam Long employeeId) {
+        log.debug("REST request to get BusinessServices by Employee");
+        List<BusinessService> businessService = new ArrayList<>();
+        businessService = businessServiceRepository.findBusinessServicesByEmployeeId(employeeId);
+        return businessService;
+    }
+
     @GetMapping("/business-services/byIS")
     public List<Map<String, String>> getBusinessServicesByInternalService(@RequestParam Long id) {
         log.debug("REST request to get BusinessServices by InternalService");

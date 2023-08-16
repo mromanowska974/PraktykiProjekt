@@ -226,6 +226,11 @@ public class InternalServiceResource {
         return internalServiceRepository.findInternalServicesByBusinessServices(businessService);
     }
 
+    @GetMapping("/internal-services/by-employee")
+    public List<InternalService> getInternalServicesByEmployee(@RequestParam Long employeeId) {
+        return internalServiceRepository.findInternalServicesByEmployeeId(employeeId);
+    }
+
     /**
      * {@code DELETE  /internal-services/:id} : delete the "id" internalService.
      *

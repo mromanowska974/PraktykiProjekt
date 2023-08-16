@@ -29,6 +29,8 @@ public interface BusinessServiceRepository extends BusinessServiceRepositoryWith
     }
 
     List<BusinessService> findBusinessServicesByClient_Id(Long id);
+    List<BusinessService> findBusinessServicesByDepartmentId(Long id);
+    List<BusinessService> findBusinessServicesByEmployeeId(Long id);
 
     @Query(
         value = "SELECT * FROM business_service bs \n" +

@@ -7,6 +7,8 @@ import { IEmployee } from '../employee.model';
 import { EmployeeService } from '../service/employee.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EmployeeUpdateComponent } from '../update/employee-update.component';
+import { BusinessServiceService } from 'app/entities/business-service/service/business-service.service';
+import { InternalServiceService } from 'app/entities/internal-service/service/internal-service.service';
 
 @Component({
   standalone: true,
@@ -18,7 +20,13 @@ import { EmployeeUpdateComponent } from '../update/employee-update.component';
 export class EmployeeDetailComponent implements OnInit {
   employees: IEmployee[] | null = null;
 
-  constructor(protected activatedRoute: ActivatedRoute, protected employeeService: EmployeeService, protected dialog: MatDialog) {}
+  constructor(
+    protected activatedRoute: ActivatedRoute,
+    protected employeeService: EmployeeService,
+    protected dialog: MatDialog,
+    protected businessServiceService: BusinessServiceService,
+    protected internalServiceService: InternalServiceService
+  ) {}
 
   ngOnInit(): void {
     this.employeeService.query().subscribe(resp => {
@@ -37,8 +45,22 @@ export class EmployeeDetailComponent implements OnInit {
 
   onDelete(employee: IEmployee) {
     if (confirm('Czy na pewno chcesz usunąć wybranego pracownika?')) {
-      this.employeeService.delete(employee.id).subscribe(() => {
-        window.location.reload();
+      this.businessServiceService.findByEmployee(employee.id).subscribe(resp => {
+        if (resp.body?.length === 0) {
+          this.internalServiceService.findByEmployee(employee.id).subscribe(resp2 => {
+            if (resp2.body?.length === 0) {
+              this.employeeService.delete(employee.id).subscribe(() => {
+                window.location.reload();
+              });
+            } else {
+              confirm(
+                'Nie można usunąć wybranego pracownika, ponieważ jest powiązany z co najmniej jedną Usługą Biznesową i/lub Wewnętrzną.'
+              );
+            }
+          });
+        } else {
+          confirm('Nie można usunąć wybranego pracownika, ponieważ jest powiązany z co najmniej jedną Usługą Biznesową i/lub Wewnętrzną.');
+        }
       });
     }
   }
