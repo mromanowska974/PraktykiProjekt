@@ -593,6 +593,7 @@ export class InternalServiceUpdateComponent implements OnInit {
       queryParams: {
         paymentType: serviceElement.paymentType,
         action: this.action,
+        serviceType: 'internal',
       },
     });
   }

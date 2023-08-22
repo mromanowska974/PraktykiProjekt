@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import utc from 'dayjs/esm/plugin/utc';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +24,7 @@ import { TypeOfPeriodOfProvisionOfService } from 'app/entities/enumerations/type
 import { TypeOfPeriodMapping } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
 import exp from 'constants';
 import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
+import { PluginFunc } from 'dayjs';
 
 @Component({
   standalone: true,
@@ -48,6 +50,7 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   isSaveBtnClicked: boolean = false;
 
   action: string;
+  serviceType: string;
 
   serviceElementSub: Subscription;
 
@@ -69,49 +72,52 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
     private location: Location
   ) {
     this.typeOfPeriodEnumValues = Object.values(TypeOfPeriodOfProvisionOfService);
+    dayjs.extend(utc);
   }
 
   ngOnInit(): void {
     this.action = this.activatedRoute.snapshot.queryParams['action'];
+    this.serviceType = this.activatedRoute.snapshot.queryParams['serviceType'];
     if (this.serviceElement) {
       this.serviceElement.paymentType = this.activatedRoute.snapshot.queryParams['paymentType'];
-      console.log(this.serviceElement.paymentType);
       this.serviceElement.status = StatusOfServiceElement.NOT_ACTIVE;
 
       if (this.action === 'EDIT') {
-        this.serviceElementSub = this.businessServiceService.toReceive.subscribe(serviceElement => {
-          this.serviceElement!.bmcRegistration = serviceElement.bmcRegistration;
-          this.serviceElement!.description = serviceElement.description;
-          this.serviceElement!.price = serviceElement.price;
-          this.serviceElement!.priceFromCalculation = serviceElement.priceFromCalculation;
-          this.serviceElement!.periodOfProvisionOfServiceInMonths = serviceElement.periodOfProvisionOfServiceInMonths;
-          this.serviceElement!.typeOfPeriodOfProvisionOfService = serviceElement.typeOfPeriodOfProvisionOfService;
-          this.serviceElement!.valuationNumber = serviceElement.valuationNumber;
-          this.serviceElement!.startDate = serviceElement.startDate;
-          this.startDate! = dayjs(this.serviceElement!.startDate).format('YYYY-MM-DDTHH:mm');
-          this.serviceElement!.endDate = serviceElement.endDate;
-          this.endDate! = dayjs(this.serviceElement!.endDate).format('YYYY-MM-DDTHH:mm');
-          this.serviceElement!.expirationDate = serviceElement.expirationDate;
-          this.expirationDate! = dayjs(this.serviceElement!.expirationDate).format('YYYY-MM-DDTHH:mm');
-          this.serviceElement!.status = serviceElement.status;
-        });
-
-        this.serviceElementSub = this.internalServiceService.toReceive.subscribe(serviceElement => {
-          this.serviceElement!.bmcRegistration = serviceElement.bmcRegistration;
-          this.serviceElement!.description = serviceElement.description;
-          this.serviceElement!.price = serviceElement.price;
-          this.serviceElement!.priceFromCalculation = serviceElement.priceFromCalculation;
-          this.serviceElement!.periodOfProvisionOfServiceInMonths = serviceElement.periodOfProvisionOfServiceInMonths;
-          this.serviceElement!.typeOfPeriodOfProvisionOfService = serviceElement.typeOfPeriodOfProvisionOfService;
-          this.serviceElement!.valuationNumber = serviceElement.valuationNumber;
-          this.serviceElement!.startDate = serviceElement.startDate;
-          this.startDate! = dayjs(this.serviceElement!.startDate).format('YYYY-MM-DDTHH:mm');
-          this.serviceElement!.endDate = serviceElement.endDate;
-          this.endDate! = dayjs(this.serviceElement!.endDate).format('YYYY-MM-DDTHH:mm');
-          this.serviceElement!.expirationDate = serviceElement.expirationDate;
-          this.expirationDate! = dayjs(this.serviceElement!.expirationDate).format('YYYY-MM-DDTHH:mm');
-          this.serviceElement!.status = serviceElement.status;
-        });
+        if (this.serviceType === 'business') {
+          this.serviceElementSub = this.businessServiceService.toReceive.subscribe(serviceElement => {
+            this.serviceElement!.bmcRegistration = serviceElement.bmcRegistration;
+            this.serviceElement!.description = serviceElement.description;
+            this.serviceElement!.price = serviceElement.price;
+            this.serviceElement!.priceFromCalculation = serviceElement.priceFromCalculation;
+            this.serviceElement!.periodOfProvisionOfServiceInMonths = serviceElement.periodOfProvisionOfServiceInMonths;
+            this.serviceElement!.typeOfPeriodOfProvisionOfService = serviceElement.typeOfPeriodOfProvisionOfService;
+            this.serviceElement!.valuationNumber = serviceElement.valuationNumber;
+            this.serviceElement!.startDate = serviceElement.startDate;
+            this.startDate! = dayjs(this.serviceElement!.startDate).utc().add(1, 'd').format('YYYY-MM-DDTHH:mm');
+            this.serviceElement!.endDate = serviceElement.endDate;
+            this.endDate! = dayjs(this.serviceElement!.endDate).utc().format('YYYY-MM-DDTHH:mm');
+            this.serviceElement!.expirationDate = serviceElement.expirationDate;
+            this.expirationDate! = dayjs(this.serviceElement!.expirationDate).utc().format('YYYY-MM-DDTHH:mm');
+            this.serviceElement!.status = serviceElement.status;
+          });
+        } else if (this.serviceType === 'internal') {
+          this.serviceElementSub = this.internalServiceService.toReceive.subscribe(serviceElement => {
+            this.serviceElement!.bmcRegistration = serviceElement.bmcRegistration;
+            this.serviceElement!.description = serviceElement.description;
+            this.serviceElement!.price = serviceElement.price;
+            this.serviceElement!.priceFromCalculation = serviceElement.priceFromCalculation;
+            this.serviceElement!.periodOfProvisionOfServiceInMonths = serviceElement.periodOfProvisionOfServiceInMonths;
+            this.serviceElement!.typeOfPeriodOfProvisionOfService = serviceElement.typeOfPeriodOfProvisionOfService;
+            this.serviceElement!.valuationNumber = serviceElement.valuationNumber;
+            this.serviceElement!.startDate = serviceElement.startDate;
+            this.startDate! = dayjs(this.serviceElement!.startDate).utc().add(1, 'd').format('YYYY-MM-DDTHH:mm');
+            this.serviceElement!.endDate = serviceElement.endDate;
+            this.endDate! = dayjs(this.serviceElement!.endDate).utc().format('YYYY-MM-DDTHH:mm');
+            this.serviceElement!.expirationDate = serviceElement.expirationDate;
+            this.expirationDate! = dayjs(this.serviceElement!.expirationDate).utc().format('YYYY-MM-DDTHH:mm');
+            this.serviceElement!.status = serviceElement.status;
+          });
+        }
       }
       //for testing only
       else {
@@ -131,9 +137,7 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   }
 
   setEndDate() {
-    this.endDate = dayjs(this.serviceElement?.startDate)
-      .add(this.serviceElement!.periodOfProvisionOfServiceInMonths!, 'month')
-      .format('YYYY-MM-DDTHH:mm');
+    this.endDate = dayjs(this.startDate).add(this.serviceElement!.periodOfProvisionOfServiceInMonths!, 'month').format('YYYY-MM-DDTHH:mm');
     this.serviceElement!.endDate = dayjs(this.endDate);
 
     if (this.serviceElement?.typeOfPeriodOfProvisionOfService === TypeOfPeriodOfProvisionOfService.FIXED) {
@@ -147,7 +151,12 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
 
   onSaveServiceElement() {
     //validation
-    this.serviceElement!.expirationDate = dayjs(this.expirationDate);
+    this.serviceElement!.expirationDate = dayjs(this.expirationDate).utc();
+    this.serviceElement!.startDate = dayjs(this.startDate);
+
+    console.log(this.serviceElement?.expirationDate);
+    console.log(this.serviceElement?.endDate);
+    console.log(this.serviceElement?.startDate);
     this.isBMCRegistrationEntered =
       this.serviceElement?.bmcRegistration !== undefined && this.serviceElement.bmcRegistration!.length > 0 ? true : false;
     this.isDescriptionEntered =
@@ -182,7 +191,6 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
       this.isTypeOfPeriodOfProvisionOfServiceEntered &&
       this.isValuationNumberEntered;
 
-    console.log(this.expirationDate);
     if (this.isDataValidated) {
       this.serviceElementService.sendCreatedServiceElement(this.serviceElement!);
       this.location.back();

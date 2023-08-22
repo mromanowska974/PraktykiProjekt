@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center"></div>
 <div class="container">
-  <h2>Dodaj lub edytuj spółkę</h2>
+  <h2><span *ngIf="data.action === 'ADD'">Dodaj</span><span *ngIf="data.action === 'EDIT'">Edytuj</span> spółkę</h2>
   <div>
     <p>Nazwa spółki</p>
     <input type="text" [(ngModel)]="client!.name" [ngClass]="{ 'error-input': !isNameEntered && isSaveBtnClicked }" />

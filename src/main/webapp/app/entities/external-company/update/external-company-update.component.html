@@ -1,5 +1,7 @@
 <div class="container">
-  <h2>Dodaj lub edytuj informacje o firmie zewnętrznej</h2>
+  <h2>
+    <span *ngIf="data.action === 'ADD'">Dodaj</span><span *ngIf="data.action === 'EDIT'">Edytuj</span> informacje o firmie zewnętrznej
+  </h2>
   <div>
     <p>Nazwa firmy</p>
     <input type="text" [(ngModel)]="externalCompany!.name" [ngClass]="{ 'error-input': !isNameEntered && isSaveBtnClicked }" />

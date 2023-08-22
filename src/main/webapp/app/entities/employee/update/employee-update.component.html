@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Dodaj lub edytuj pracownika</h2>
+  <h2><span *ngIf="data.action === 'ADD'">Dodaj</span><span *ngIf="data.action === 'EDIT'">Edytuj</span> pracownika</h2>
   <div>
     <p>Imię pracownika</p>
     <input type="text" [(ngModel)]="employee!.name" [ngClass]="{ 'error-input': !isNameEntered && isSaveBtnClicked }" />

@@ -27,7 +27,9 @@ h2 {
   width: 300px;
 }
 
-.btn-box > button:last-child {
+.btn-box > button:last-child,
+.row-1 > button,
+.box-4 > button {
   width: 150px;
 }
 
@@ -35,11 +37,26 @@ h2 {
   width: 250px;
 }
 
-.box-2 {
+.box-2,
+.box-4 {
   display: flex;
   flex-direction: column;
-  margin: 50px 0px;
+}
+
+.box-2 {
+  margin-bottom: 50px;
   width: 80%;
+}
+
+.box-4 {
+  margin: 30px 0px;
+  width: 67.5%;
+  display: flex;
+}
+
+.box-4 > button {
+  align-self: flex-end;
+  height: 40px;
 }
 
 .box-3 {
@@ -116,4 +133,25 @@ h2 {
 
 .error-input {
   border: 3px solid red;
+}
+
+table {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px;
+}
+
+tr {
+  display: flex;
+}
+
+th {
+  font-weight: 500;
+}
+
+table > tr:first-child {
+  background-color: gray;
+  color: white;
+  position: relative;
+  box-shadow: 0px -6px 5px -5px inset rgb(62, 62, 62), 0px 6px 5px -5px inset rgb(234, 234, 234);
 }

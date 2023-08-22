@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Dodaj lub edytuj dział</h2>
+  <h2><span *ngIf="data.action === 'ADD'">Dodaj</span><span *ngIf="data.action === 'EDIT'">Edytuj</span> dział</h2>
   <div>
     <p>Nazwa działu</p>
     <input type="text" [(ngModel)]="department!.name" [ngClass]="{ 'error-input': !isNameEntered && isSaveBtnClicked }" />

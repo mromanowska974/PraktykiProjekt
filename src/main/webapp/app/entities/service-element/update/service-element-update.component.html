@@ -29,6 +29,39 @@
     <p>Nazwa_wsadu.docx</p>
     <button jhiOrange3dButton>Pokaż wsad</button>
   </div>
+  <div class="box-1">
+    <p>Lokalizacja oferty na sharepoint</p>
+    <input
+      type="text"
+      [(ngModel)]="serviceElement!.bmcRegistration"
+      [ngClass]="{ 'error-input': !isBMCRegistrationEntered && isSaveBtnClicked }"
+    />
+  </div>
+  <div class="box-4">
+    <div class="row-1">
+      <p>Działy wymagane do akceptacji wyceny (Karta Uzgodnień):</p>
+      <button jhiOrange3dButton>Dodaj dział</button>
+    </div>
+    <table>
+      <tr>
+        <th width="25%">Nazwa działu</th>
+        <th width="10%">Dział wiodący</th>
+        <th width="25%">Zakres potwierdzony przez</th>
+        <th width="25%">Data zatwierdzenia zakresu</th>
+        <th width="15%"></th>
+      </tr>
+      <tr>
+        <td width="25%">Dział 1</td>
+        <td width="10%">Tak</td>
+        <td width="25%">Jan Kowalski</td>
+        <td width="25%">22.08.2023 10:30</td>
+        <td width="15%">
+          <button>Potwierdź</button>
+        </td>
+      </tr>
+    </table>
+    <button jhiOrange3dButton>Drukuj KU</button>
+  </div>
   <div class="box-2">
     <p>Wartość <span *ngIf="serviceElement!.paymentType === 'MONTHLY'">miesięcznej </span>opłaty za usługę</p>
     <div class="box-3">
@@ -72,7 +105,7 @@
         <p>Data rozpoczęcia świadczenia usługi</p>
         <input
           type="datetime-local"
-          [(ngModel)]="serviceElement!.startDate"
+          [(ngModel)]="startDate"
           class="date-input"
           [ngClass]="{ 'error-input': !isStartDateEntered && isSaveBtnClicked }"
           (change)="setEndDate()"
@@ -96,6 +129,7 @@
           type="number"
           [(ngModel)]="serviceElement!.periodOfProvisionOfServiceInMonths"
           [ngClass]="{ 'error-input': !isPeriodOfProvisionOfServiceInMonthsEntered && isSaveBtnClicked }"
+          (change)="setEndDate()"
         />
       </div>
       <div class="row-1">

@@ -15,7 +15,7 @@ import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
 import { IParameter } from 'app/entities/parameter/parameter.model';
 import { ParameterService } from 'app/entities/parameter/service/parameter.service';
 import dayjs from 'dayjs';
-import { Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, WidthType } from 'docx';
+import { BorderStyle, Document, HeadingLevel, Packer, Paragraph, SectionType, Table, TableCell, TableRow, TextRun, WidthType } from 'docx';
 import { saveAs } from 'file-saver';
 import { TypeOfPeriodMapping } from 'app/entities/enumerations/type-of-period-of-provision-of-service.model';
 import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
@@ -132,7 +132,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
         this.serviceElementsOfMonthlyPaymentType = JSON.parse(JSON.stringify(this.oldServiceElementsOfMonthlyPaymentType));
 
         this.serviceElementsOfMonthlyPaymentType?.forEach(serviceElement => {
-          this.formattedStartDatesMonthly.push(dayjs(serviceElement.startDate!).format('DD.MM.YYYY').toString());
+          this.formattedStartDatesMonthly.push(dayjs(serviceElement.startDate!).add(1, 'd').format('DD.MM.YYYY').toString());
           this.formattedEndDatesMonthly.push(dayjs(serviceElement.endDate!).format('DD.MM.YYYY').toString());
         });
       });
@@ -142,7 +142,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
         this.serviceElementsOfOneTimePaymentType = JSON.parse(JSON.stringify(this.oldServiceElementsOfOneTimePaymentType));
 
         this.serviceElementsOfOneTimePaymentType?.forEach(serviceElement => {
-          this.formattedStartDatesOneTime.push(dayjs(serviceElement.startDate!).format('DD.MM.YYYY').toString());
+          this.formattedStartDatesOneTime.push(dayjs(serviceElement.startDate!).add(1, 'd').format('DD.MM.YYYY').toString());
           this.formattedEndDatesOneTime.push(dayjs(serviceElement.endDate!).format('DD.MM.YYYY').toString());
         });
       });
@@ -233,7 +233,6 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
         }
       } else if (this.action === 'EDIT') {
         this.editedParameterIndex = this.businessServiceService.parameterIndex;
-        console.log(this.editedParameterIndex);
 
         if (
           resp.type === 'QUALITY' &&
@@ -242,7 +241,6 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
           }) &&
           resp.id !== undefined
         ) {
-          console.log('weszlo');
           this.parametersToEdit?.push({ index: this.editedParameterIndex, parameterType: ParameterType.QUALITY });
         } else if (
           resp.type === 'QUANTITY' &&
@@ -253,10 +251,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
         ) {
           this.parametersToEdit?.push({ index: this.editedParameterIndex, parameterType: ParameterType.QUANTITY });
         }
-        console.log(this.parametersToEdit);
       }
-
-      //this.parameterService.isParameterReceived = false;
     });
   }
 
@@ -393,6 +388,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       queryParams: {
         paymentType: serviceElement.paymentType,
         action: this.action,
+        serviceType: 'business',
       },
     });
   }
@@ -579,98 +575,250 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
           children: [
             new Paragraph({
               children: [
-                new TextRun('Klient: '),
+                new TextRun({
+                  text: 'Klient: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService!.client! ? this.oldBusinessService!.client!.name! : 'nic',
-                  bold: true,
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
             new Paragraph({
               children: [
-                new TextRun('Symbol usługi: '),
+                new TextRun({
+                  text: 'Symbol usługi: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService! ? this.oldBusinessService!.symbol! : 'nic',
-                  bold: true,
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
             new Paragraph({
               children: [
-                new TextRun('Nazwa usługi: '),
+                new TextRun({
+                  text: 'Nazwa usługi: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService! ? this.oldBusinessService!.name! : 'nic',
-                  bold: true,
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
             new Paragraph({
               children: [
-                new TextRun('Dział: '),
+                new TextRun({
+                  text: 'Dział: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService!.department! ? this.oldBusinessService!.department!.name! : 'nic',
-                  bold: true,
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
             new Paragraph({
               children: [
-                new TextRun('Właściciel: '),
+                new TextRun({
+                  text: 'Właściciel: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService!.employee!
                     ? this.oldBusinessService!.employee!.name! + ' ' + this.oldBusinessService!.employee!.surname
                     : 'nic',
-                  bold: true,
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
+          ],
+        },
+        {
+          properties: {
+            type: SectionType.CONTINUOUS,
+          },
+          children: [
             new Paragraph({
+              heading: HeadingLevel.HEADING_1,
+              spacing: {
+                before: 200,
+                after: 200,
+              },
               children: [
-                new TextRun({ text: 'Opis funkcjonalny: ', break: 1 }),
                 new TextRun({
-                  text: this.oldBusinessService!.functionalDescription! ? this.oldBusinessService!.functionalDescription! : 'nic',
-                  bold: true,
-                  break: 1,
+                  text: 'A. Informacje podstawowe',
+                  font: 'Arial',
                 }),
               ],
             }),
             new Paragraph({
+              spacing: {
+                after: 100,
+              },
               children: [
-                new TextRun('Wykluczenia: '),
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: 'Opis funkcjonalny: ',
+                      bold: true,
+                      size: 25,
+                      font: 'Arial',
+                    }),
+                  ],
+                }),
+                new Paragraph({
+                  border: {
+                    top: {
+                      color: 'auto',
+                      space: 1,
+                      style: BorderStyle.SINGLE,
+                      size: 10,
+                    },
+                  },
+                  children: [
+                    new TextRun({
+                      text: this.oldBusinessService!.functionalDescription! ? this.oldBusinessService!.functionalDescription! : 'nic',
+                      size: 25,
+                      font: 'Arial',
+                      break: 1,
+                    }),
+                  ],
+                }),
+              ],
+            }),
+            new Paragraph({
+              spacing: {
+                after: 100,
+              },
+              children: [
+                new TextRun({
+                  text: 'Wykluczenia: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService!.exclusions! ? this.oldBusinessService!.exclusions! : 'nic',
-                  bold: true,
                   break: 1,
+                  border: {
+                    color: 'auto',
+                    space: 1,
+                    style: BorderStyle.SINGLE,
+                    size: 10,
+                  },
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
             new Paragraph({
               children: [
-                new TextRun('Obowiązki i odpowiedzialności stron: '),
+                new TextRun({
+                  text: 'Obowiązki i odpowiedzialności stron: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService!.dutiesAndResponsibilities ? this.oldBusinessService!.dutiesAndResponsibilities : 'nic',
-                  bold: true,
                   break: 1,
+                  border: {
+                    color: 'auto',
+                    space: 1,
+                    style: BorderStyle.SINGLE,
+                    size: 10,
+                  },
+                  size: 25,
+                  font: 'Arial',
+                }),
+              ],
+            }),
+          ],
+        },
+        {
+          properties: {
+            type: SectionType.CONTINUOUS,
+          },
+          children: [
+            new Paragraph({
+              heading: HeadingLevel.HEADING_1,
+              spacing: {
+                before: 200,
+                after: 200,
+              },
+              children: [
+                new TextRun({
+                  text: 'B. Parametry uzgodnione w ramach umowy',
+                  font: 'Arial',
                 }),
               ],
             }),
             new Paragraph({
+              spacing: {
+                after: 100,
+              },
               children: [
-                new TextRun('Osoba odpowiedzialna za usługę po stronie Zamawiającego: '),
+                new TextRun({
+                  text: 'Osoba odpowiedzialna za usługę po stronie Zamawiającego: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService!.personResponsibleForService ? this.oldBusinessService!.personResponsibleForService : 'nic',
-                  bold: true,
                   break: 1,
+                  border: {
+                    color: 'auto',
+                    space: 1,
+                    style: BorderStyle.SINGLE,
+                    size: 10,
+                  },
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
             new Paragraph({
+              spacing: {
+                after: 100,
+              },
               children: [
-                new TextRun('Godziny gwarantowanego świadczenia usługi: '),
+                new TextRun({
+                  text: 'Godziny gwarantowanego świadczenia usługi: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService!.hoursOfService ? this.oldBusinessService!.hoursOfService : 'nic',
-                  bold: true,
                   break: 1,
+                  border: {
+                    color: 'auto',
+                    space: 1,
+                    style: BorderStyle.SINGLE,
+                    size: 10,
+                  },
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
@@ -728,23 +876,73 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
                 ...parameterRowsQuantity,
               ],
             }),
+          ],
+        },
+        {
+          properties: {
+            type: SectionType.CONTINUOUS,
+          },
+          children: [
             new Paragraph({
+              heading: HeadingLevel.HEADING_1,
+              spacing: {
+                before: 200,
+                after: 200,
+              },
               children: [
-                new TextRun('Koszty uruchomienia usługi: '),
                 new TextRun({
-                  text: this.oldBusinessService!.serviceActivatingCost ? this.oldBusinessService!.serviceActivatingCost : 'nic',
-                  bold: true,
-                  break: 1,
+                  text: 'C. Rozliczenie kosztów usługi',
+                  font: 'Arial',
                 }),
               ],
             }),
             new Paragraph({
+              spacing: {
+                after: 100,
+              },
               children: [
-                new TextRun('Cennik usługi: '),
+                new TextRun({
+                  text: 'Koszty uruchomienia usługi: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
+                new TextRun({
+                  text: this.oldBusinessService!.serviceActivatingCost ? this.oldBusinessService!.serviceActivatingCost : 'nic',
+                  break: 1,
+                  border: {
+                    color: 'auto',
+                    space: 1,
+                    style: BorderStyle.SINGLE,
+                    size: 10,
+                  },
+                  size: 25,
+                  font: 'Arial',
+                }),
+              ],
+            }),
+            new Paragraph({
+              spacing: {
+                after: 100,
+              },
+              children: [
+                new TextRun({
+                  text: 'Cennik usługi: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService!.priceListOfService ? this.oldBusinessService!.priceListOfService : 'nic',
-                  bold: true,
                   break: 1,
+                  border: {
+                    color: 'auto',
+                    space: 1,
+                    style: BorderStyle.SINGLE,
+                    size: 10,
+                  },
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
@@ -915,11 +1113,23 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
             }),
             new Paragraph({
               children: [
-                new TextRun('Uwagi: '),
+                new TextRun({
+                  text: 'Uwagi: ',
+                  bold: true,
+                  size: 25,
+                  font: 'Arial',
+                }),
                 new TextRun({
                   text: this.oldBusinessService!.notes ? this.oldBusinessService!.notes : 'nic',
-                  bold: true,
                   break: 1,
+                  border: {
+                    color: 'auto',
+                    space: 1,
+                    style: BorderStyle.SINGLE,
+                    size: 10,
+                  },
+                  size: 25,
+                  font: 'Arial',
                 }),
               ],
             }),
