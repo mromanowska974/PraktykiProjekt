@@ -25,7 +25,6 @@ import { InternalServiceAddExistingComponent } from './entities/internal-service
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CumulativeEditPageComponent } from './entities/cumulative-edit-page/cumulative-edit-page.component';
 
 @NgModule({
   imports: [

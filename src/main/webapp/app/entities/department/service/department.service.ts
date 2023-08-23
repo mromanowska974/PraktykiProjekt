@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IDepartment, NewDepartment } from '../department.model';
+import { IServiceElement } from 'app/entities/service-element/service-element.model';
 
 export type PartialUpdateDepartment = Partial<IDepartment> & Pick<IDepartment, 'id'>;
 
@@ -18,6 +19,7 @@ export class DepartmentService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
+  //API
   create(department: IDepartment): Observable<EntityResponseType> {
     return this.http.post<IDepartment>(this.resourceUrl, department, { observe: 'response' });
   }
@@ -73,5 +75,20 @@ export class DepartmentService {
       return [...departmentsToAdd, ...departmentCollection];
     }
     return departmentCollection;
+  }
+
+  //NON-API
+  private departmentsListToSend = new BehaviorSubject<IDepartment[]>([]);
+  departmentsListToReceive = this.departmentsListToSend.asObservable();
+
+  sendDepartmentList(departments: IDepartment[]) {
+    this.departmentsListToSend.next(departments);
+  }
+
+  private leadingDepartmentToSend = new BehaviorSubject<IDepartment>({} as IDepartment);
+  leadingDepartmentToReceive = this.leadingDepartmentToSend.asObservable();
+
+  sendLeadingDepartment(department: IDepartment) {
+    this.leadingDepartmentToSend.next(department);
   }
 }

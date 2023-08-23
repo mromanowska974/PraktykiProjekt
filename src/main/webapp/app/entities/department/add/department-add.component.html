@@ -1,0 +1,33 @@
+<div class="container">
+  <h2>Dodaj działy</h2>
+  <div class="grid-container">
+    <div class="header">
+      <p class="col-2">Zaznacz dział wiodący</p>
+      <p class="col-3">Zaznacz wiele</p>
+    </div>
+    <div class="item-row" *ngFor="let department of departments; let i = index">
+      <p class="col-1">{{ department.name }}</p>
+      <input
+        class="col-2"
+        type="radio"
+        name="leadingDepartment"
+        (change)="onRadioItemClick(i)"
+        [value]="department"
+        [(ngModel)]="leadingDepartment"
+      />
+      <input
+        class="col-3"
+        type="checkbox"
+        name="department"
+        [value]="department"
+        (change)="onCheckboxItemClick(checkbox, department)"
+        #checkbox
+        [checked]="isLeadingDepartmentSelected && leadingDepartmentIndex === i"
+      />
+    </div>
+  </div>
+  <div class="btn-box">
+    <p *ngIf="!isLeadingDepartmentSelected && isSaveBtnClicked" class="error-info">Najpierw wybierz dział wiodący</p>
+    <button jhiOrange3dButton (click)="onSave()">Ok</button>
+  </div>
+</div>

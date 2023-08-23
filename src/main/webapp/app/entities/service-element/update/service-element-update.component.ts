@@ -25,6 +25,9 @@ import { TypeOfPeriodMapping } from 'app/entities/enumerations/type-of-period-of
 import exp from 'constants';
 import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
 import { PluginFunc } from 'dayjs';
+import { MatDialog } from '@angular/material/dialog';
+import { DepartmentAddComponent } from 'app/entities/department/add/department-add.component';
+import { DepartmentService } from 'app/entities/department/service/department.service';
 
 @Component({
   standalone: true,
@@ -68,7 +71,9 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
     protected serviceElementFormService: ServiceElementFormService,
     protected businessServiceService: BusinessServiceService,
     protected internalServiceService: InternalServiceService,
+    protected departmentService: DepartmentService,
     protected activatedRoute: ActivatedRoute,
+    protected dialog: MatDialog,
     private location: Location
   ) {
     this.typeOfPeriodEnumValues = Object.values(TypeOfPeriodOfProvisionOfService);
@@ -130,6 +135,10 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
         this.serviceElement.valuationNumber = 'test';
       }
     }
+
+    this.departmentService.departmentsListToReceive.subscribe(resp => {
+      console.log(resp);
+    });
   }
 
   ngOnDestroy(): void {
@@ -197,6 +206,10 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
     } else {
       this.isSaveBtnClicked = true;
     }
+  }
+
+  onAddDepartments() {
+    this.dialog.open(DepartmentAddComponent);
   }
 
   onToggleStatus() {

@@ -1,0 +1,6 @@
+
+entity ServiceElementVerificationInfo{
+	isDepartmentLeading Boolean,
+    verifiedBy String,
+    verifyDate Instant
+}

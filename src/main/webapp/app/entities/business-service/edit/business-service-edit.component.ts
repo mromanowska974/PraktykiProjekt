@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
   imports: [Orange3dButtonDirective, FormsModule, CommonModule],
 })
 export class BusinessServiceEditComponent implements OnInit, OnDestroy {
-  sectionSelected: string = 'B';
+  sectionSelected: string = 'C';
 
   businessServiceId: number;
   businessService: BusinessService | null = new BusinessService();
