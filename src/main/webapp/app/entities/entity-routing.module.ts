@@ -55,6 +55,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.edit.home.title' },
         loadChildren: () => import('./cumulative-edit-page/cumulative-edit-page.routes'),
       },
+      {
+        path: 'service-element-verification-info',
+        data: { pageTitle: 'zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.home.title' },
+        loadChildren: () => import('./service-element-verification-info/service-element-verification-info.routes'),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

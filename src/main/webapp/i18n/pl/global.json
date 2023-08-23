@@ -16,6 +16,7 @@
         "parameter": "Parameter",
         "serviceElement": "Service Element",
         "product": "Product",
+        "serviceElementVerificationInfo": "Service Element Verification Info",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

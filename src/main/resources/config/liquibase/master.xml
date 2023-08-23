@@ -31,6 +31,11 @@
     <include file="/config/liquibase/changelog/20230807121200_edited_column_in_ServiceElement.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/20230810112132_added_entity_Product.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/20230810112132_added_entity_constraints_Product.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20230823084854_added_entity_ServiceElementVerificationInfo.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20230823084854_added_entity_constraints_ServiceElementVerificationInfo.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20230823113000_added_column_ServiceElement.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20230823112700_added_entity_constraints_ServiceElement.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20230823120200_modified_column_ServiceElement.xml" relativeToChangelogFile="false"/>
 
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->

@@ -1,0 +1,28 @@
+{
+  "zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp": {
+    "serviceElementVerificationInfo": {
+      "home": {
+        "title": "Service Element Verification Info",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Dodaj Service Element Verification Info",
+        "createOrEditLabel": "Dodaj lub edytuj: Service Element Verification Info",
+        "notFound": "No Service Element Verification Infos found"
+      },
+      "created": "Utworzono nowy obiekt typu Service Element Verification Info z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono obiekt typu Service Element Verification Info z identyfikatorem {{ param }}",
+      "deleted": "Usunięto obiekt typu Service Element Verification Info z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć Service Element Verification Info {{ id }}?"
+      },
+      "detail": {
+        "title": "Service Element Verification Info"
+      },
+      "id": "ID",
+      "isDepartmentLeading": "Is Department Leading",
+      "verifiedBy": "Verified By",
+      "verifyDate": "Verify Date",
+      "department": "Department",
+      "serviceElement": "Service Element"
+    }
+  }
+}

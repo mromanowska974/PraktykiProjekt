@@ -1,0 +1,33 @@
+{
+  "applications": "*",
+  "changelogDate": "20230823084854",
+  "entityTableName": "service_element_verification_info",
+  "fields": [
+    {
+      "fieldName": "isDepartmentLeading",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "verifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "verifyDate",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "ServiceElementVerificationInfo",
+  "relationships": [
+    {
+      "id": false,
+      "otherEntityField": "id",
+      "otherEntityName": "department",
+      "otherEntityRelationshipName": "serviceElementVerificationInfo",
+      "ownerSide": true,
+      "relationshipName": "department",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

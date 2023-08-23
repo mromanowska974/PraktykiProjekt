@@ -30,8 +30,10 @@
       "priceFromCalculation": "Price From Calculation",
       "expirationDate": "Expiration Date",
       "typeOfPeriodOfProvisionOfService": "Type Of Period Of Provision Of Service",
+      "offerLocationLink": "Offer Location Link",
       "businessService": "Business Service",
-      "internalService": "Internal Service"
+      "internalService": "Internal Service",
+      "serviceElementVerificationInfo": "Service Element Verification Info"
     }
   }
 }

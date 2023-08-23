@@ -53,6 +53,10 @@
       "fieldName": "typeOfPeriodOfProvisionOfService",
       "fieldType": "TypeOfPeriodOfProvisionOfService",
       "fieldValues": "MINIMAL,FIXED"
+    },
+    {
+      "fieldName": "offerLocationLink",
+      "fieldType": "String"
     }
   ],
   "name": "ServiceElement",
@@ -70,6 +74,13 @@
       "relationshipName": "internalService",
       "relationshipSide": "right",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "serviceElementVerificationInfo",
+      "otherEntityRelationshipName": "serviceElement",
+      "relationshipName": "serviceElementVerificationInfo",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
     }
   ],
   "searchEngine": "no"

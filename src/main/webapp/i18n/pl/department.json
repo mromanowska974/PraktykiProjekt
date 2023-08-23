@@ -19,7 +19,8 @@
       },
       "id": "ID",
       "name": "Name",
-      "businessService": "Business Service"
+      "businessService": "Business Service",
+      "serviceElementVerificationInfo": "Service Element Verification Info"
     }
   }
 }

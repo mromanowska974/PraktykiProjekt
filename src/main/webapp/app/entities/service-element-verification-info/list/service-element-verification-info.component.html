@@ -1,0 +1,157 @@
+<div>
+  <h2 id="page-heading" data-cy="ServiceElementVerificationInfoHeading">
+    <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.home.title"
+      >Service Element Verification Info</span
+    >
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.home.refreshListLabel"
+          >Refresh list</span
+        >
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-service-element-verification-info"
+        [routerLink]="['/service-element-verification-info/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.home.createLabel">
+          Dodaj Service Element Verification Info
+        </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="serviceElementVerificationInfos?.length === 0">
+    <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.home.notFound"
+      >No Service Element Verification Infos found</span
+    >
+  </div>
+
+  <div
+    class="table-responsive table-entities"
+    id="entities"
+    *ngIf="serviceElementVerificationInfos && serviceElementVerificationInfos.length > 0"
+  >
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="isDepartmentLeading">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.isDepartmentLeading"
+                >Is Department Leading</span
+              >
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="verifiedBy">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.verifiedBy"
+                >Verified By</span
+              >
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="verifyDate">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.verifyDate"
+                >Verify Date</span
+              >
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="department.id">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.department"
+                >Department</span
+              >
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="serviceElement.id">
+            <div class="d-flex">
+              <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.serviceElement"
+                >Service Element</span
+              >
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let serviceElementVerificationInfo of serviceElementVerificationInfos; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/service-element-verification-info', serviceElementVerificationInfo.id, 'view']">{{
+              serviceElementVerificationInfo.id
+            }}</a>
+          </td>
+          <td>{{ serviceElementVerificationInfo.isDepartmentLeading }}</td>
+          <td>{{ serviceElementVerificationInfo.verifiedBy }}</td>
+          <td>{{ serviceElementVerificationInfo.verifyDate | formatMediumDatetime }}</td>
+          <td>
+            <div *ngIf="serviceElementVerificationInfo.department">
+              <a [routerLink]="['/department', serviceElementVerificationInfo.department.id, 'view']">{{
+                serviceElementVerificationInfo.department.id
+              }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="serviceElementVerificationInfo.serviceElement">
+              <a [routerLink]="['/service-element', serviceElementVerificationInfo.serviceElement.id, 'view']">{{
+                serviceElementVerificationInfo.serviceElement.id
+              }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/service-element-verification-info', serviceElementVerificationInfo.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Widok</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/service-element-verification-info', serviceElementVerificationInfo.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edytuj</span>
+              </button>
+
+              <button
+                type="submit"
+                (click)="delete(serviceElementVerificationInfo)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Usuń</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -19,6 +19,7 @@ export interface IServiceElement {
   priceFromCalculation?: number | null;
   expirationDate?: dayjs.Dayjs | null;
   typeOfPeriodOfProvisionOfService?: keyof typeof TypeOfPeriodOfProvisionOfService | null;
+  offerLocationLink?: string | null;
   businessService?: Pick<IBusinessService, 'id'> | null;
   internalService?: Pick<IInternalService, 'id'> | null;
 }
@@ -37,8 +38,8 @@ export class ServiceElement implements IServiceElement {
   priceFromCalculation?: number | null;
   expirationDate?: dayjs.Dayjs | null;
   typeOfPeriodOfProvisionOfService?: keyof typeof TypeOfPeriodOfProvisionOfService | null;
+  offerLocationLink?: string | null;
   businessService?: Pick<IBusinessService, 'id'> | null;
   internalService?: Pick<IInternalService, 'id'> | null;
 }
-
 export type NewServiceElement = Omit<IServiceElement, 'id'> & { id: null };

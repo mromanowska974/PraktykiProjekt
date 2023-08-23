@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import pl.jswits.domain.enumeration.PaymentType;
 import pl.jswits.domain.enumeration.StatusOfServiceElement;
 import pl.jswits.domain.enumeration.TypeOfPeriodOfProvisionOfService;
@@ -63,6 +65,9 @@ public class ServiceElement implements Serializable {
     @Column(name = "type_of_period_of_provision_of_service")
     private TypeOfPeriodOfProvisionOfService typeOfPeriodOfProvisionOfService;
 
+    @Column(name = "offer_location_link")
+    private String offerLocationLink;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
         value = { "parameters", "serviceElements", "internalServices", "client", "employee", "department" },
@@ -76,6 +81,10 @@ public class ServiceElement implements Serializable {
         allowSetters = true
     )
     private InternalService internalService;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "serviceElement")
+    @JsonIgnoreProperties(value = { "department", "serviceElement" }, allowSetters = true)
+    private Set<ServiceElementVerificationInfo> serviceElementVerificationInfos = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -248,6 +257,19 @@ public class ServiceElement implements Serializable {
         this.typeOfPeriodOfProvisionOfService = typeOfPeriodOfProvisionOfService;
     }
 
+    public String getOfferLocationLink() {
+        return this.offerLocationLink;
+    }
+
+    public ServiceElement offerLocationLink(String offerLocationLink) {
+        this.setOfferLocationLink(offerLocationLink);
+        return this;
+    }
+
+    public void setOfferLocationLink(String offerLocationLink) {
+        this.offerLocationLink = offerLocationLink;
+    }
+
     public BusinessService getBusinessService() {
         return this.businessService;
     }
@@ -271,6 +293,37 @@ public class ServiceElement implements Serializable {
 
     public ServiceElement internalService(InternalService internalService) {
         this.setInternalService(internalService);
+        return this;
+    }
+
+    public Set<ServiceElementVerificationInfo> getServiceElementVerificationInfos() {
+        return this.serviceElementVerificationInfos;
+    }
+
+    public void setServiceElementVerificationInfos(Set<ServiceElementVerificationInfo> serviceElementVerificationInfos) {
+        if (this.serviceElementVerificationInfos != null) {
+            this.serviceElementVerificationInfos.forEach(i -> i.setServiceElement(null));
+        }
+        if (serviceElementVerificationInfos != null) {
+            serviceElementVerificationInfos.forEach(i -> i.setServiceElement(this));
+        }
+        this.serviceElementVerificationInfos = serviceElementVerificationInfos;
+    }
+
+    public ServiceElement serviceElementVerificationInfos(Set<ServiceElementVerificationInfo> serviceElementVerificationInfos) {
+        this.setServiceElementVerificationInfos(serviceElementVerificationInfos);
+        return this;
+    }
+
+    public ServiceElement addServiceElementVerificationInfo(ServiceElementVerificationInfo serviceElementVerificationInfo) {
+        this.serviceElementVerificationInfos.add(serviceElementVerificationInfo);
+        serviceElementVerificationInfo.setServiceElement(this);
+        return this;
+    }
+
+    public ServiceElement removeServiceElementVerificationInfo(ServiceElementVerificationInfo serviceElementVerificationInfo) {
+        this.serviceElementVerificationInfos.remove(serviceElementVerificationInfo);
+        serviceElementVerificationInfo.setServiceElement(null);
         return this;
     }
 
@@ -310,6 +363,7 @@ public class ServiceElement implements Serializable {
             ", priceFromCalculation=" + getPriceFromCalculation() +
             ", expirationDate='" + getExpirationDate() + "'" +
             ", typeOfPeriodOfProvisionOfService='" + getTypeOfPeriodOfProvisionOfService() + "'" +
+            ", offerLocationLink='" + getOfferLocationLink() + "'" +
             "}";
     }
 }

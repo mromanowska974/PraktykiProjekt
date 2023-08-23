@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="serviceElementVerificationInfo">
+      <h2 data-cy="serviceElementVerificationInfoDetailsHeading">
+        <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.detail.title"
+          >Service Element Verification Info</span
+        >
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ serviceElementVerificationInfo.id }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.isDepartmentLeading"
+            >Is Department Leading</span
+          >
+        </dt>
+        <dd>
+          <span>{{ serviceElementVerificationInfo.isDepartmentLeading }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.verifiedBy">Verified By</span>
+        </dt>
+        <dd>
+          <span>{{ serviceElementVerificationInfo.verifiedBy }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.verifyDate">Verify Date</span>
+        </dt>
+        <dd>
+          <span>{{ serviceElementVerificationInfo.verifyDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.department">Department</span>
+        </dt>
+        <dd>
+          <div *ngIf="serviceElementVerificationInfo.department">
+            <a [routerLink]="['/department', serviceElementVerificationInfo.department.id, 'view']">{{
+              serviceElementVerificationInfo.department.id
+            }}</a>
+          </div>
+        </dd>
+        <dt>
+          <span jhiTranslate="zarzadzanieUslugamiBiznesowymiIWewnetrznymiApp.serviceElementVerificationInfo.serviceElement"
+            >Service Element</span
+          >
+        </dt>
+        <dd>
+          <div *ngIf="serviceElementVerificationInfo.serviceElement">
+            <a [routerLink]="['/service-element', serviceElementVerificationInfo.serviceElement.id, 'view']">{{
+              serviceElementVerificationInfo.serviceElement.id
+            }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Wstecz</span>
+      </button>
+
+      <button
+        type="button"
+        [routerLink]="['/service-element-verification-info', serviceElementVerificationInfo.id, 'edit']"
+        class="btn btn-primary"
+      >
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edytuj</span>
+      </button>
+    </div>
+  </div>
+</div>
