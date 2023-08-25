@@ -7,7 +7,7 @@ export interface IServiceElementVerificationInfo {
   isDepartmentLeading?: boolean | null;
   verifiedBy?: string | null;
   verifyDate?: dayjs.Dayjs | null;
-  department?: Pick<IDepartment, 'id'> | null;
+  department?: Pick<IDepartment, 'id' | 'name'> | null;
   serviceElement?: Pick<IServiceElement, 'id'> | null;
 }
 

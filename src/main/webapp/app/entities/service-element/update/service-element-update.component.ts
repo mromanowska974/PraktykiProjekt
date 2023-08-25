@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, forkJoin } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import utc from 'dayjs/esm/plugin/utc';
@@ -28,6 +28,8 @@ import { PluginFunc } from 'dayjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DepartmentAddComponent } from 'app/entities/department/add/department-add.component';
 import { DepartmentService } from 'app/entities/department/service/department.service';
+import { IDepartment } from 'app/entities/department/department.model';
+import { IServiceElementVerificationInfo } from 'app/entities/service-element-verification-info/service-element-verification-info.model';
 
 @Component({
   standalone: true,
@@ -36,7 +38,7 @@ import { DepartmentService } from 'app/entities/department/service/department.se
   styleUrls: ['./service-element-update.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule, Orange3dButtonDirective],
 })
-export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
+export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChanges {
   serviceElement: IServiceElement | null = {} as IServiceElement;
 
   isDescriptionEntered: boolean = false;
@@ -56,6 +58,7 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   serviceType: string;
 
   serviceElementSub: Subscription;
+  departmentSub: Subscription;
 
   startDate: string;
   endDate: string;
@@ -65,6 +68,12 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   public typeOfPeriodEnumValues: any = [];
 
   typeOfPeriodOfProvisionOfService: typeof TypeOfPeriodOfProvisionOfService = TypeOfPeriodOfProvisionOfService;
+
+  o1: Observable<IDepartment>;
+  o2: Observable<IDepartment[]>;
+
+  // requiredDepartments: IDepartment[] = [];
+  verificationInfo: IServiceElementVerificationInfo[] = [];
 
   constructor(
     protected serviceElementService: ServiceElementService,
@@ -136,13 +145,33 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.departmentService.departmentsListToReceive.subscribe(resp => {
-      console.log(resp);
+    this.departmentSub = this.departmentService.dataToReceive.subscribe(resp => {
+      let departments = resp.departments;
+      let leadingDepartment = resp.leadingDepartment;
+      //console.log(departments)
+      this.verificationInfo = [];
+
+      departments.forEach(element => {
+        let infoElement: IServiceElementVerificationInfo = {} as IServiceElementVerificationInfo;
+
+        infoElement.department = element;
+        if (JSON.stringify(leadingDepartment) === JSON.stringify(element)) infoElement.isDepartmentLeading = true;
+        else infoElement.isDepartmentLeading = false;
+        infoElement.verifiedBy = '';
+        infoElement.verifyDate = null;
+
+        this.verificationInfo.push(infoElement);
+      });
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('zmiana');
   }
 
   ngOnDestroy(): void {
     if (this.serviceElementSub) this.serviceElementSub.unsubscribe();
+    if (this.departmentSub) this.departmentSub.unsubscribe();
   }
 
   setEndDate() {
@@ -209,6 +238,11 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   }
 
   onAddDepartments() {
+    this.verificationInfo.forEach(el => {
+      if (el.isDepartmentLeading) {
+        this.serviceElementService.sendData(this.verificationInfo, el.department!);
+      }
+    });
     this.dialog.open(DepartmentAddComponent);
   }
 

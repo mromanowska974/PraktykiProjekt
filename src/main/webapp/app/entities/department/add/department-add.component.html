@@ -1,6 +1,6 @@
 <div class="container">
   <h2>Dodaj działy</h2>
-  <div class="grid-container">
+  <div class="grid-container" *ngIf="departments">
     <div class="header">
       <p class="col-2">Zaznacz dział wiodący</p>
       <p class="col-3">Zaznacz wiele</p>
@@ -11,18 +11,18 @@
         class="col-2"
         type="radio"
         name="leadingDepartment"
-        (change)="onRadioItemClick(i)"
         [value]="department"
-        [(ngModel)]="leadingDepartment"
+        (change)="onRadioItemClick(i)"
+        [checked]="leadingDepartmentIndex === i && isLeadingDepartmentSelected"
       />
       <input
         class="col-3"
         type="checkbox"
         name="department"
         [value]="department"
-        (change)="onCheckboxItemClick(checkbox, department)"
+        (change)="onCheckboxItemClick(checkbox, department, i)"
         #checkbox
-        [checked]="isLeadingDepartmentSelected && leadingDepartmentIndex === i"
+        [checked]="(isLeadingDepartmentSelected && leadingDepartmentIndex === i) || checkedDepartmentsIndexes.includes(i)"
       />
     </div>
   </div>

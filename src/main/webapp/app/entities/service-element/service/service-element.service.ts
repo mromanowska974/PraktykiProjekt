@@ -11,6 +11,8 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { IServiceElement, NewServiceElement, ServiceElement } from '../service-element.model';
 import { PaymentType } from 'app/entities/enumerations/payment-type.model';
+import { IServiceElementVerificationInfo } from 'app/entities/service-element-verification-info/service-element-verification-info.model';
+import { IDepartment } from 'app/entities/department/department.model';
 
 export type PartialUpdateServiceElement = Partial<IServiceElement> & Pick<IServiceElement, 'id'>;
 
@@ -162,5 +164,18 @@ export class ServiceElementService {
   sendCreatedServiceElement(serviceElement: IServiceElement) {
     this.serviceElement.next(serviceElement);
     this.isServiceElementReceived = true;
+  }
+
+  private dataToSend = new BehaviorSubject<{ verificationInfo: IServiceElementVerificationInfo[]; leadingDepartment: IDepartment }>({
+    verificationInfo: [],
+    leadingDepartment: {} as IDepartment,
+  });
+  dataToReceive = this.dataToSend.asObservable();
+
+  sendData(verificationInfo: IServiceElementVerificationInfo[], leadingDepartment: IDepartment) {
+    this.dataToSend.next({
+      verificationInfo: verificationInfo,
+      leadingDepartment: leadingDepartment,
+    });
   }
 }

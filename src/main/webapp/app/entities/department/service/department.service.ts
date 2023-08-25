@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, forkJoin } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -78,17 +78,18 @@ export class DepartmentService {
   }
 
   //NON-API
-  private departmentsListToSend = new BehaviorSubject<IDepartment[]>([]);
-  departmentsListToReceive = this.departmentsListToSend.asObservable();
+  private dataToSend = new BehaviorSubject<{ departments: IDepartment[]; leadingDepartment: IDepartment }>({
+    departments: [],
+    leadingDepartment: {} as IDepartment,
+  });
+  dataToReceive = this.dataToSend.asObservable();
 
-  sendDepartmentList(departments: IDepartment[]) {
-    this.departmentsListToSend.next(departments);
+  sendData(departments: IDepartment[], leadingDepartment: IDepartment) {
+    this.dataToSend.next({
+      departments: departments,
+      leadingDepartment: leadingDepartment,
+    });
   }
 
-  private leadingDepartmentToSend = new BehaviorSubject<IDepartment>({} as IDepartment);
-  leadingDepartmentToReceive = this.leadingDepartmentToSend.asObservable();
-
-  sendLeadingDepartment(department: IDepartment) {
-    this.leadingDepartmentToSend.next(department);
-  }
+  isDataSent: boolean = false;
 }

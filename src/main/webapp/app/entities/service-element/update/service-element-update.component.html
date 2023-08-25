@@ -50,15 +50,16 @@
         <th width="25%">Data zatwierdzenia zakresu</th>
         <th width="15%"></th>
       </tr>
-      <tr>
-        <td width="25%">Dział 1</td>
-        <td width="10%">Tak</td>
-        <td width="25%">Jan Kowalski</td>
-        <td width="25%">22.08.2023 10:30</td>
+      <tr *ngFor="let info of verificationInfo; let i = index" [ngClass]="{ rowN: i % 2 === 0, rowN1: i % 2 === 1 }">
+        <td width="25%">{{ info.department!.name }}</td>
+        <td width="10%">{{ info.isDepartmentLeading ? 'Tak' : 'Nie' }}</td>
+        <td width="25%">{{ info.verifiedBy }}</td>
+        <td width="25%">{{ info.verifyDate ? info.verifyDate : 'Jeszcze nie zweryfikowano' }}</td>
         <td width="15%">
           <button>Potwierdź</button>
         </td>
       </tr>
+      <p *ngIf="verificationInfo.length === 0" class="empty-list-info">Brak działów wyznaczonych do weryfikacji oferty.</p>
     </table>
     <button jhiOrange3dButton>Drukuj KU</button>
   </div>
