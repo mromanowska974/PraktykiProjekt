@@ -33,7 +33,7 @@ export class ServiceElementVerificationInfoService {
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-  create(serviceElementVerificationInfo: NewServiceElementVerificationInfo): Observable<EntityResponseType> {
+  create(serviceElementVerificationInfo: IServiceElementVerificationInfo): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(serviceElementVerificationInfo);
     return this.http
       .post<RestServiceElementVerificationInfo>(this.resourceUrl, copy, { observe: 'response' })

@@ -242,57 +242,58 @@ export class InternalServiceUpdateComponent implements OnInit {
     //receiving new service element
     if (this.serviceElementService.isServiceElementReceived) {
       this.serviceElementSub = this.serviceElementService.toReceive.subscribe(resp => {
+        let serviceElement = resp.serviceElement;
         if (this.action === 'ADD') {
-          resp.internalService = this.internalService;
+          serviceElement.internalService = this.internalService;
 
-          if (resp.paymentType === PaymentType.MONTHLY) {
-            this.serviceElementsOfMonthlyPaymentType!.push(resp);
-            this.formattedStartDatesMonthly.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
-            this.formattedEndDatesMonthly.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
-          } else if (resp.paymentType === PaymentType.DISPOSABLE) {
-            this.serviceElementsOfOneTimePaymentType!.push(resp);
-            this.formattedStartDatesOneTime.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
-            this.formattedEndDatesOneTime.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
+          if (serviceElement.paymentType === PaymentType.MONTHLY) {
+            this.serviceElementsOfMonthlyPaymentType!.push(serviceElement);
+            this.formattedStartDatesMonthly.push(dayjs(serviceElement.startDate).format('DD.MM.YYYY'));
+            this.formattedEndDatesMonthly.push(dayjs(serviceElement.endDate).format('DD.MM.YYYY'));
+          } else if (serviceElement.paymentType === PaymentType.DISPOSABLE) {
+            this.serviceElementsOfOneTimePaymentType!.push(serviceElement);
+            this.formattedStartDatesOneTime.push(dayjs(serviceElement.startDate).format('DD.MM.YYYY'));
+            this.formattedEndDatesOneTime.push(dayjs(serviceElement.endDate).format('DD.MM.YYYY'));
           }
         } else if (this.action === 'EDIT') {
           this.editedServiceElementIndex = this.internalServiceService.serviceElementIndex;
-          resp.internalService = this.internalService;
+          serviceElement.internalService = this.internalService;
 
-          if (resp.paymentType === PaymentType.MONTHLY) {
+          if (serviceElement.paymentType === PaymentType.MONTHLY) {
             console.log(this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex]);
 
             //if exists in "old" list
             if (this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex]) {
-              resp.id = this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex].id;
+              serviceElement.id = this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex].id;
             }
 
-            this.serviceElementsOfMonthlyPaymentType![this.editedServiceElementIndex] = resp;
-            this.formattedStartDatesMonthly[this.editedServiceElementIndex] = dayjs(resp.startDate).format('DD.MM.YYYY');
-            this.formattedEndDatesMonthly[this.editedServiceElementIndex] = dayjs(resp.endDate).format('DD.MM.YYYY');
+            this.serviceElementsOfMonthlyPaymentType![this.editedServiceElementIndex] = serviceElement;
+            this.formattedStartDatesMonthly[this.editedServiceElementIndex] = dayjs(serviceElement.startDate).format('DD.MM.YYYY');
+            this.formattedEndDatesMonthly[this.editedServiceElementIndex] = dayjs(serviceElement.endDate).format('DD.MM.YYYY');
 
             if (
               !this.serviceElementsToEdit?.find(el => {
                 return el.index === this.editedServiceElementIndex && el.paymentType === 'MONTHLY';
               }) &&
-              resp.id !== undefined
+              serviceElement.id !== undefined
             ) {
               this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.MONTHLY });
             }
-          } else if (resp.paymentType === PaymentType.DISPOSABLE) {
+          } else if (serviceElement.paymentType === PaymentType.DISPOSABLE) {
             //if exists in "old" list
             if (this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex]) {
-              resp.id = this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex].id;
+              serviceElement.id = this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex].id;
             }
 
-            this.serviceElementsOfOneTimePaymentType![this.editedServiceElementIndex] = resp;
-            this.formattedStartDatesOneTime[this.editedServiceElementIndex] = dayjs(resp.startDate).format('DD.MM.YYYY');
-            this.formattedEndDatesOneTime[this.editedServiceElementIndex] = dayjs(resp.endDate).format('DD.MM.YYYY');
+            this.serviceElementsOfOneTimePaymentType![this.editedServiceElementIndex] = serviceElement;
+            this.formattedStartDatesOneTime[this.editedServiceElementIndex] = dayjs(serviceElement.startDate).format('DD.MM.YYYY');
+            this.formattedEndDatesOneTime[this.editedServiceElementIndex] = dayjs(serviceElement.endDate).format('DD.MM.YYYY');
 
             if (
               !this.serviceElementsToEdit?.find(el => {
                 return el.index === this.editedServiceElementIndex && el.paymentType === 'DISPOSABLE';
               }) &&
-              resp.id !== undefined
+              serviceElement.id !== undefined
             ) {
               this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.DISPOSABLE });
             }

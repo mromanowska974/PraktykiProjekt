@@ -72,7 +72,6 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
   o1: Observable<IDepartment>;
   o2: Observable<IDepartment[]>;
 
-  // requiredDepartments: IDepartment[] = [];
   verificationInfo: IServiceElementVerificationInfo[] = [];
 
   constructor(
@@ -98,7 +97,8 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
 
       if (this.action === 'EDIT') {
         if (this.serviceType === 'business') {
-          this.serviceElementSub = this.businessServiceService.toReceive.subscribe(serviceElement => {
+          this.serviceElementSub = this.businessServiceService.toReceive.subscribe(resp => {
+            let serviceElement = resp.serviceElement;
             this.serviceElement!.bmcRegistration = serviceElement.bmcRegistration;
             this.serviceElement!.description = serviceElement.description;
             this.serviceElement!.price = serviceElement.price;
@@ -113,6 +113,17 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
             this.serviceElement!.expirationDate = serviceElement.expirationDate;
             this.expirationDate! = dayjs(this.serviceElement!.expirationDate).utc().format('YYYY-MM-DDTHH:mm');
             this.serviceElement!.status = serviceElement.status;
+            this.verificationInfo = resp.verificationInfo;
+
+            let departments: IDepartment[] = [];
+            let leadingDepartment: IDepartment = {} as IDepartment;
+            this.verificationInfo.forEach(element => {
+              departments.push(element.department!);
+
+              if (element.isDepartmentLeading) leadingDepartment = element.department!;
+            });
+            this.departmentService.sendData(departments, leadingDepartment);
+            //this.serviceElementService.isDataReceived = true;
           });
         } else if (this.serviceType === 'internal') {
           this.serviceElementSub = this.internalServiceService.toReceive.subscribe(serviceElement => {
@@ -148,7 +159,6 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
     this.departmentSub = this.departmentService.dataToReceive.subscribe(resp => {
       let departments = resp.departments;
       let leadingDepartment = resp.leadingDepartment;
-      //console.log(departments)
       this.verificationInfo = [];
 
       departments.forEach(element => {
@@ -192,9 +202,6 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
     this.serviceElement!.expirationDate = dayjs(this.expirationDate).utc();
     this.serviceElement!.startDate = dayjs(this.startDate);
 
-    console.log(this.serviceElement?.expirationDate);
-    console.log(this.serviceElement?.endDate);
-    console.log(this.serviceElement?.startDate);
     this.isBMCRegistrationEntered =
       this.serviceElement?.bmcRegistration !== undefined && this.serviceElement.bmcRegistration!.length > 0 ? true : false;
     this.isDescriptionEntered =
@@ -230,7 +237,10 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
       this.isValuationNumberEntered;
 
     if (this.isDataValidated) {
-      this.serviceElementService.sendCreatedServiceElement(this.serviceElement!);
+      this.verificationInfo.forEach(element => {
+        element.serviceElement = this.serviceElement;
+      });
+      this.serviceElementService.sendCreatedServiceElement(this.serviceElement!, this.verificationInfo!);
       this.location.back();
     } else {
       this.isSaveBtnClicked = true;
@@ -243,7 +253,21 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
         this.serviceElementService.sendData(this.verificationInfo, el.department!);
       }
     });
-    this.dialog.open(DepartmentAddComponent);
+    let departments: IDepartment[] = [];
+    let leadingDepartment: IDepartment = {} as IDepartment;
+    this.verificationInfo.forEach(element => {
+      departments.push(element.department!);
+
+      if (element.isDepartmentLeading) leadingDepartment = element.department!;
+    });
+    //this.departmentService.sendData(departments, leadingDepartment)
+    //this.departmentService.isDataReceived = false;
+    this.dialog.open(DepartmentAddComponent, {
+      data: {
+        departments: departments,
+        leadingDepartment: leadingDepartment,
+      },
+    });
   }
 
   onToggleStatus() {

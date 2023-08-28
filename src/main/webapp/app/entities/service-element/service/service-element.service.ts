@@ -158,14 +158,21 @@ export class ServiceElementService {
 
   //NON-API
   isServiceElementReceived: boolean = false;
-  private serviceElement = new BehaviorSubject<IServiceElement>({} as IServiceElement);
+  private serviceElement = new BehaviorSubject<{ serviceElement: IServiceElement; verificationInfo: IServiceElementVerificationInfo[] }>({
+    serviceElement: {} as IServiceElement,
+    verificationInfo: [],
+  });
   toReceive = this.serviceElement.asObservable();
 
-  sendCreatedServiceElement(serviceElement: IServiceElement) {
-    this.serviceElement.next(serviceElement);
+  sendCreatedServiceElement(serviceElement: IServiceElement, verificationInfo: IServiceElementVerificationInfo[]) {
+    this.serviceElement.next({
+      serviceElement: serviceElement,
+      verificationInfo: verificationInfo,
+    });
     this.isServiceElementReceived = true;
   }
 
+  isDataReceived: boolean = false;
   private dataToSend = new BehaviorSubject<{ verificationInfo: IServiceElementVerificationInfo[]; leadingDepartment: IDepartment }>({
     verificationInfo: [],
     leadingDepartment: {} as IDepartment,
@@ -177,5 +184,6 @@ export class ServiceElementService {
       verificationInfo: verificationInfo,
       leadingDepartment: leadingDepartment,
     });
+    this.isDataReceived = true;
   }
 }

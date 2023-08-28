@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, combineLatest, forkJoin } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, forkJoin } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
@@ -78,10 +78,8 @@ export class DepartmentService {
   }
 
   //NON-API
-  private dataToSend = new BehaviorSubject<{ departments: IDepartment[]; leadingDepartment: IDepartment }>({
-    departments: [],
-    leadingDepartment: {} as IDepartment,
-  });
+  isDataReceived: boolean = false;
+  private dataToSend = new Subject<{ departments: IDepartment[]; leadingDepartment: IDepartment }>();
   dataToReceive = this.dataToSend.asObservable();
 
   sendData(departments: IDepartment[], leadingDepartment: IDepartment) {
@@ -89,6 +87,7 @@ export class DepartmentService {
       departments: departments,
       leadingDepartment: leadingDepartment,
     });
+    //this.isDataReceived = true;
   }
 
   isDataSent: boolean = false;

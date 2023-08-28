@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, QueryList, ViewChild } from '@angular/core';
 import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
 import { IDepartment } from '../department.model';
 import { DepartmentService } from '../service/department.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Observable, combineLatest, forkJoin, startWith, take } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -15,7 +16,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class DepartmentAddComponent implements OnInit {
   departments: IDepartment[] = [];
-  isLeadingDepartmentSelected: boolean = false;
+  isLeadingDepartmentSelected: boolean;
   leadingDepartmentIndex: number;
   checkedDepartmentsIndexes: number[] = [];
   leadingDepartment: IDepartment = {} as IDepartment;
@@ -23,34 +24,40 @@ export class DepartmentAddComponent implements OnInit {
   selectedDepartments: IDepartment[] = [];
   isSaveBtnClicked: boolean = false;
 
-  constructor(private departmentService: DepartmentService, private dialogRef: MatDialogRef<DepartmentAddComponent>) {}
+  constructor(
+    private departmentService: DepartmentService,
+    private dialogRef: MatDialogRef<DepartmentAddComponent>,
+    @Inject(MAT_DIALOG_DATA) public data
+  ) {}
 
   ngOnInit(): void {
-    this.departmentService.query().subscribe(resp => {
-      this.departments = resp.body!;
+    this.departmentService.query().subscribe(result => {
+      console.log(result);
+      this.departments = result.body!;
+      console.log(this.departments);
 
-      this.departmentService.dataToReceive.subscribe(res => {
-        if (res.departments.length !== 0) {
-          this.departments.forEach(element => {
-            if (JSON.stringify(element) === JSON.stringify(res.leadingDepartment)) {
-              this.leadingDepartment = res.leadingDepartment;
-              this.previousElement = this.leadingDepartment;
-              this.leadingDepartmentIndex = this.departments.indexOf(element);
-              this.isLeadingDepartmentSelected = true;
-            }
-
-            if (res.departments.find(el => JSON.stringify(el) === JSON.stringify(element))) {
-              this.checkedDepartmentsIndexes.push(this.departments.indexOf(element));
-            }
-          });
-
-          res.departments.forEach(element => {
-            if (!this.selectedDepartments.find(el => JSON.stringify(el) === JSON.stringify(element)))
-              this.selectedDepartments.push(element);
+      if (this.data.departments.length !== 0) {
+        this.departments.forEach(element => {
+          if (JSON.stringify(element) === JSON.stringify(this.data.leadingDepartment)) {
+            this.leadingDepartment = this.data.leadingDepartment;
+            this.previousElement = this.leadingDepartment;
             console.log(element);
-          });
-        }
-      });
+            console.log(this.departments.indexOf(element));
+            this.leadingDepartmentIndex = this.departments.indexOf(element);
+            this.isLeadingDepartmentSelected = true;
+          }
+
+          if (this.data.departments.find(el => JSON.stringify(el) === JSON.stringify(element))) {
+            this.checkedDepartmentsIndexes.push(this.departments.indexOf(element));
+            console.log(this.checkedDepartmentsIndexes);
+          }
+        });
+
+        this.data.departments.forEach(element => {
+          if (!this.selectedDepartments.find(el => JSON.stringify(el) === JSON.stringify(element))) this.selectedDepartments.push(element);
+        });
+      }
+      console.log(this.isLeadingDepartmentSelected);
     });
   }
 

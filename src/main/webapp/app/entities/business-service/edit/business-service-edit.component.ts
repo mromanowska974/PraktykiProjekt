@@ -21,6 +21,8 @@ import { TypeOfPeriodMapping } from 'app/entities/enumerations/type-of-period-of
 import { Orange3dButtonDirective } from 'app/directives/orange3d-button/orange3d-button.directive';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { IServiceElementVerificationInfo } from 'app/entities/service-element-verification-info/service-element-verification-info.model';
+import { ServiceElementVerificationInfoService } from 'app/entities/service-element-verification-info/service/service-element-verification-info.service';
 
 @Component({
   standalone: true,
@@ -73,6 +75,8 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
   formattedStartDatesOneTime: string[] = [];
   formattedEndDatesOneTime: string[] = [];
 
+  verificationInfoList: IServiceElementVerificationInfo[] = [];
+
   editedServiceElementIndex: number;
   editedParameterIndex: number;
   action: string;
@@ -86,6 +90,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     private businessServiceService: BusinessServiceService,
     private serviceElementService: ServiceElementService,
     private parameterService: ParameterService,
+    private verificationInfoService: ServiceElementVerificationInfoService,
     private dialog: MatDialog
   ) {}
 
@@ -121,12 +126,17 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       this.serviceElementsToDelete = this.businessServiceService.serviceElementsToDelete;
       this.serviceElementsToEdit = this.businessServiceService.serviceElementsToEdit;
 
+      this.verificationInfoList = this.businessServiceService.verificationInfoList;
+      console.log(this.verificationInfoList);
+
       this.businessServiceService.isBusinessServiceSaved = false;
       this.isDataLoaded = true;
     }
     //if clicked Edit Business Service from Home page
     else {
       this.getBusinessService();
+
+      //get all service elements
       this.serviceElementService.findByBusinessServiceAndPaymentType(this.businessServiceId, PaymentType.MONTHLY).subscribe(resp => {
         this.oldServiceElementsOfMonthlyPaymentType = resp.body;
         this.serviceElementsOfMonthlyPaymentType = JSON.parse(JSON.stringify(this.oldServiceElementsOfMonthlyPaymentType));
@@ -147,6 +157,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
         });
       });
 
+      //get all parameters
       this.parameterService.findByBusinessServiceIdAndParameterType(this.businessServiceId, ParameterType.QUALITY).subscribe(resp => {
         this.oldParametersOfQualityType = resp.body;
         this.parametersOfQualityType = JSON.parse(JSON.stringify(this.oldParametersOfQualityType));
@@ -156,67 +167,77 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
         this.oldParametersOfQuantityType = resp.body;
         this.parametersOfQuantityType = JSON.parse(JSON.stringify(this.oldParametersOfQuantityType));
       });
+
+      //get verification info
+      this.verificationInfoService.query().subscribe(resp => {
+        this.verificationInfoList = resp.body!;
+      });
     }
 
     //receiving new service element
     if (this.serviceElementService.isServiceElementReceived) {
       this.serviceElementSub = this.serviceElementService.toReceive.subscribe(resp => {
-        if (this.action === 'ADD') {
-          resp.businessService = this.businessService;
+        let serviceElement = resp.serviceElement;
+        let verificationInfo = resp.verificationInfo;
 
-          if (resp.paymentType === PaymentType.MONTHLY) {
-            this.serviceElementsOfMonthlyPaymentType!.push(resp);
-            this.formattedStartDatesMonthly.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
-            this.formattedEndDatesMonthly.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
-          } else if (resp.paymentType === PaymentType.DISPOSABLE) {
-            this.serviceElementsOfOneTimePaymentType!.push(resp);
-            this.formattedStartDatesOneTime.push(dayjs(resp.startDate).format('DD.MM.YYYY'));
-            this.formattedEndDatesOneTime.push(dayjs(resp.endDate).format('DD.MM.YYYY'));
+        if (this.action === 'ADD') {
+          serviceElement.businessService = this.businessService;
+          this.verificationInfoList.push(...verificationInfo);
+
+          if (serviceElement.paymentType === PaymentType.MONTHLY) {
+            this.serviceElementsOfMonthlyPaymentType!.push(serviceElement);
+            this.formattedStartDatesMonthly.push(dayjs(serviceElement.startDate).format('DD.MM.YYYY'));
+            this.formattedEndDatesMonthly.push(dayjs(serviceElement.endDate).format('DD.MM.YYYY'));
+          } else if (serviceElement.paymentType === PaymentType.DISPOSABLE) {
+            this.serviceElementsOfOneTimePaymentType!.push(serviceElement);
+            this.formattedStartDatesOneTime.push(dayjs(serviceElement.startDate).format('DD.MM.YYYY'));
+            this.formattedEndDatesOneTime.push(dayjs(serviceElement.endDate).format('DD.MM.YYYY'));
           }
         } else if (this.action === 'EDIT') {
           this.editedServiceElementIndex = this.businessServiceService.serviceElementIndex;
-          resp.businessService = this.businessService;
+          serviceElement.businessService = this.businessService;
+          this.verificationInfoList.push(...verificationInfo);
 
-          if (resp.paymentType === PaymentType.MONTHLY) {
+          if (serviceElement.paymentType === PaymentType.MONTHLY) {
             //if exists in "old" list
             if (this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex]) {
-              resp.id = this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex].id;
-              console.log(resp);
+              serviceElement.id = this.oldServiceElementsOfMonthlyPaymentType![this.editedServiceElementIndex].id;
             }
 
-            this.serviceElementsOfMonthlyPaymentType![this.editedServiceElementIndex] = resp;
-            this.formattedStartDatesMonthly[this.editedServiceElementIndex] = dayjs(resp.startDate).format('DD.MM.YYYY');
-            this.formattedEndDatesMonthly[this.editedServiceElementIndex] = dayjs(resp.endDate).format('DD.MM.YYYY');
+            this.serviceElementsOfMonthlyPaymentType![this.editedServiceElementIndex] = serviceElement;
+            this.formattedStartDatesMonthly[this.editedServiceElementIndex] = dayjs(serviceElement.startDate).format('DD.MM.YYYY');
+            this.formattedEndDatesMonthly[this.editedServiceElementIndex] = dayjs(serviceElement.endDate).format('DD.MM.YYYY');
 
             if (
               !this.serviceElementsToEdit?.find(el => {
                 return el.index === this.editedServiceElementIndex && el.paymentType === 'MONTHLY';
               }) &&
-              resp.id !== undefined
+              serviceElement.id !== undefined
             ) {
               this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.MONTHLY });
             }
-          } else if (resp.paymentType === PaymentType.DISPOSABLE) {
+          } else if (serviceElement.paymentType === PaymentType.DISPOSABLE) {
             //if exists in "old" list
             if (this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex]) {
-              resp.id = this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex].id;
+              serviceElement.id = this.oldServiceElementsOfOneTimePaymentType![this.editedServiceElementIndex].id;
             }
 
-            this.serviceElementsOfOneTimePaymentType![this.editedServiceElementIndex] = resp;
-            this.formattedStartDatesOneTime[this.editedServiceElementIndex] = dayjs(resp.startDate).format('DD.MM.YYYY');
-            this.formattedEndDatesOneTime[this.editedServiceElementIndex] = dayjs(resp.endDate).format('DD.MM.YYYY');
+            this.serviceElementsOfOneTimePaymentType![this.editedServiceElementIndex] = serviceElement;
+            this.formattedStartDatesOneTime[this.editedServiceElementIndex] = dayjs(serviceElement.startDate).format('DD.MM.YYYY');
+            this.formattedEndDatesOneTime[this.editedServiceElementIndex] = dayjs(serviceElement.endDate).format('DD.MM.YYYY');
 
             if (
               !this.serviceElementsToEdit?.find(el => {
                 return el.index === this.editedServiceElementIndex && el.paymentType === 'DISPOSABLE';
               }) &&
-              resp.id !== undefined
+              serviceElement.id !== undefined
             ) {
               this.serviceElementsToEdit?.push({ index: this.editedServiceElementIndex, paymentType: PaymentType.DISPOSABLE });
             }
           }
         }
 
+        console.log(this.verificationInfoList);
         this.serviceElementService.isServiceElementReceived = false;
       });
     }
@@ -300,6 +321,11 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       if (parameter.id === undefined) this.parameterService.create(parameter).subscribe();
     });
 
+    //adding service elements verification info to db
+    this.verificationInfoList.forEach(verificationInfo => {
+      if (verificationInfo.id === undefined) this.verificationInfoService.create(verificationInfo).subscribe();
+    });
+
     //deleting parameters
     this.parametersToDelete!.forEach(parameter => {
       this.parameterService.delete(parameter.id).subscribe(() => console.log(parameter));
@@ -361,6 +387,8 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     this.businessServiceService.serviceElementsToDelete = this.serviceElementsToDelete;
     this.businessServiceService.serviceElementsToEdit = this.serviceElementsToEdit;
 
+    this.businessServiceService.verificationInfoList = this.verificationInfoList;
+
     this.businessServiceService.isBusinessServiceSaved = true;
   }
 
@@ -382,7 +410,21 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     this.action = 'EDIT';
     this.businessServiceService.action = this.action;
 
-    this.businessServiceService.sendServiceElement(serviceElement);
+    let verificationInfo: IServiceElementVerificationInfo[] = [];
+    this.verificationInfoList.forEach(el => {
+      if (serviceElement.id !== undefined && el.serviceElement!.id === serviceElement.id) {
+        console.log(el.serviceElement!.id);
+        console.log(serviceElement.id);
+        console.log(el.serviceElement!.id === serviceElement.id);
+        verificationInfo.push(el);
+      } else if (serviceElement.id === undefined && JSON.stringify(el.serviceElement) === JSON.stringify(serviceElement)) {
+        verificationInfo.push(el);
+      }
+    });
+    console.log(verificationInfo);
+    console.log(serviceElement);
+
+    this.businessServiceService.sendServiceElement(serviceElement, verificationInfo);
 
     this.router.navigate(['/service-element', 'new'], {
       queryParams: {

@@ -11,6 +11,7 @@ import { IServiceElement } from 'app/entities/service-element/service-element.mo
 import { IParameter } from 'app/entities/parameter/parameter.model';
 import { ParameterType } from 'app/entities/enumerations/parameter-type.model';
 import { PaymentType } from 'app/entities/enumerations/payment-type.model';
+import { IServiceElementVerificationInfo } from 'app/entities/service-element-verification-info/service-element-verification-info.model';
 
 export type PartialUpdateBusinessService = Partial<IBusinessService> & Pick<IBusinessService, 'id'>;
 
@@ -119,11 +120,22 @@ export class BusinessServiceService {
   parameterIndex: number;
   action: string = '';
 
-  private serviceElementToSend = new BehaviorSubject<IServiceElement>({} as IServiceElement);
+  isDataReceived: boolean = false;
+  private serviceElementToSend = new BehaviorSubject<{
+    serviceElement: IServiceElement;
+    verificationInfo: IServiceElementVerificationInfo[];
+  }>({
+    serviceElement: {} as IServiceElement,
+    verificationInfo: [],
+  });
   toReceive = this.serviceElementToSend.asObservable();
 
-  sendServiceElement(serviceElement: IServiceElement) {
-    this.serviceElementToSend.next(serviceElement);
+  sendServiceElement(serviceElement: IServiceElement, verificationInfo: IServiceElementVerificationInfo[]) {
+    this.serviceElementToSend.next({
+      serviceElement: serviceElement,
+      verificationInfo: verificationInfo,
+    });
+    this.isDataReceived = true;
   }
 
   serviceElementsOfMonthlyPaymentType: IServiceElement[] | null = [];
@@ -148,4 +160,6 @@ export class BusinessServiceService {
 
   parametersToEdit: { index: number; parameterType: ParameterType }[] | null = [];
   serviceElementsToEdit: { index: number; paymentType: PaymentType }[] | null = [];
+
+  verificationInfoList: IServiceElementVerificationInfo[] = [];
 }

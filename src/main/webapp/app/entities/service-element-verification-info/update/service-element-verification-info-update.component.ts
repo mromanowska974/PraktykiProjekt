@@ -68,7 +68,7 @@ export class ServiceElementVerificationInfoUpdateComponent implements OnInit {
     if (serviceElementVerificationInfo.id !== null) {
       this.subscribeToSaveResponse(this.serviceElementVerificationInfoService.update(serviceElementVerificationInfo));
     } else {
-      this.subscribeToSaveResponse(this.serviceElementVerificationInfoService.create(serviceElementVerificationInfo));
+      //this.subscribeToSaveResponse(this.serviceElementVerificationInfoService.create(serviceElementVerificationInfo));
     }
   }
 
