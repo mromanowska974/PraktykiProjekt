@@ -38,7 +38,7 @@ import { IServiceElementVerificationInfo } from 'app/entities/service-element-ve
   styleUrls: ['./service-element-update.component.css'],
   imports: [SharedModule, FormsModule, ReactiveFormsModule, Orange3dButtonDirective],
 })
-export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChanges {
+export class ServiceElementUpdateComponent implements OnInit, OnDestroy {
   serviceElement: IServiceElement | null = {} as IServiceElement;
 
   isDescriptionEntered: boolean = false;
@@ -122,8 +122,6 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
 
               if (element.isDepartmentLeading) leadingDepartment = element.department!;
             });
-            this.departmentService.sendData(departments, leadingDepartment);
-            //this.serviceElementService.isDataReceived = true;
           });
         } else if (this.serviceType === 'internal') {
           this.serviceElementSub = this.internalServiceService.toReceive.subscribe(serviceElement => {
@@ -155,28 +153,6 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
         this.serviceElement.valuationNumber = 'test';
       }
     }
-
-    this.departmentSub = this.departmentService.dataToReceive.subscribe(resp => {
-      let departments = resp.departments;
-      let leadingDepartment = resp.leadingDepartment;
-      this.verificationInfo = [];
-
-      departments.forEach(element => {
-        let infoElement: IServiceElementVerificationInfo = {} as IServiceElementVerificationInfo;
-
-        infoElement.department = element;
-        if (JSON.stringify(leadingDepartment) === JSON.stringify(element)) infoElement.isDepartmentLeading = true;
-        else infoElement.isDepartmentLeading = false;
-        infoElement.verifiedBy = '';
-        infoElement.verifyDate = null;
-
-        this.verificationInfo.push(infoElement);
-      });
-    });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('zmiana');
   }
 
   ngOnDestroy(): void {
@@ -237,9 +213,23 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
       this.isValuationNumberEntered;
 
     if (this.isDataValidated) {
+      let elementsWithID: IServiceElementVerificationInfo[] = [];
       this.verificationInfo.forEach(element => {
-        element.serviceElement = this.serviceElement;
+        console.log(this.verificationInfo);
+        if (element.id === undefined) {
+          element.serviceElement = this.serviceElement;
+          console.log(element);
+        } else {
+          console.log(this.verificationInfo.indexOf(element));
+          elementsWithID.push(element);
+        }
       });
+      elementsWithID.forEach(element => {
+        if (this.verificationInfo.find(el => el === element)) {
+          this.verificationInfo.splice(this.verificationInfo.indexOf(element), 1);
+        }
+      });
+      console.log(this.verificationInfo);
       this.serviceElementService.sendCreatedServiceElement(this.serviceElement!, this.verificationInfo!);
       this.location.back();
     } else {
@@ -253,20 +243,45 @@ export class ServiceElementUpdateComponent implements OnInit, OnDestroy, OnChang
         this.serviceElementService.sendData(this.verificationInfo, el.department!);
       }
     });
-    let departments: IDepartment[] = [];
-    let leadingDepartment: IDepartment = {} as IDepartment;
-    this.verificationInfo.forEach(element => {
-      departments.push(element.department!);
 
-      if (element.isDepartmentLeading) leadingDepartment = element.department!;
-    });
-    //this.departmentService.sendData(departments, leadingDepartment)
-    //this.departmentService.isDataReceived = false;
-    this.dialog.open(DepartmentAddComponent, {
+    const dialogRef = this.dialog.open(DepartmentAddComponent, {
       data: {
-        departments: departments,
-        leadingDepartment: leadingDepartment,
+        verificationInfo: this.verificationInfo,
       },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      let departments = result.selectedDepartments;
+      let leadingDepartment = result.leadingDepartment;
+      let verificationInfoElementsToEdit = result.verificationInfoElementsToEdit;
+      //this.verificationInfo = []; //-> zamiast tego zrobic zeby wyjebalo wszystko bez id lub elementy z id z listy do usuniecia
+
+      this.verificationInfo.forEach(element => {
+        if (element.id === undefined) {
+          this.verificationInfo.splice(this.verificationInfo.indexOf(element), 1);
+        }
+      });
+
+      departments.forEach(element => {
+        let infoElement: IServiceElementVerificationInfo = {} as IServiceElementVerificationInfo;
+
+        const foundEl = verificationInfoElementsToEdit.find(el => el.department.id === element.id);
+        if (foundEl) {
+          this.verificationInfo.push(foundEl);
+        } else {
+          infoElement.department = element;
+          if (leadingDepartment.id === element.id) infoElement.isDepartmentLeading = true;
+          else infoElement.isDepartmentLeading = false;
+          infoElement.verifiedBy = '';
+          infoElement.verifyDate = null;
+
+          if (!this.verificationInfo.find(el => el.department!.id === infoElement.department!.id)) {
+            console.log('xd');
+            this.verificationInfo.push(infoElement);
+          }
+        }
+      });
+      console.log(this.verificationInfo);
     });
   }
 

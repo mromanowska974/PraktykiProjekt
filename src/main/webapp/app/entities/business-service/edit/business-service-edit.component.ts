@@ -32,7 +32,7 @@ import { ServiceElementVerificationInfoService } from 'app/entities/service-elem
   imports: [Orange3dButtonDirective, FormsModule, CommonModule],
 })
 export class BusinessServiceEditComponent implements OnInit, OnDestroy {
-  sectionSelected: string = 'C';
+  sectionSelected: string = 'A';
 
   businessServiceId: number;
   businessService: BusinessService | null = new BusinessService();
@@ -174,7 +174,7 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
       });
     }
 
-    //receiving new service element
+    //receiving new or edited service element
     if (this.serviceElementService.isServiceElementReceived) {
       this.serviceElementSub = this.serviceElementService.toReceive.subscribe(resp => {
         let serviceElement = resp.serviceElement;
@@ -196,6 +196,15 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
         } else if (this.action === 'EDIT') {
           this.editedServiceElementIndex = this.businessServiceService.serviceElementIndex;
           serviceElement.businessService = this.businessService;
+
+          this.verificationInfoList.forEach(element => {
+            if (verificationInfo.find(el => JSON.stringify(el) === JSON.stringify(element))) {
+              console.log(verificationInfo.indexOf(element));
+              verificationInfo.splice(verificationInfo.indexOf(element), 1);
+            }
+          });
+          console.log(verificationInfo);
+
           this.verificationInfoList.push(...verificationInfo);
 
           if (serviceElement.paymentType === PaymentType.MONTHLY) {
@@ -237,12 +246,12 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
           }
         }
 
-        console.log(this.verificationInfoList);
+        //console.log(this.verificationInfoList);
         this.serviceElementService.isServiceElementReceived = false;
       });
     }
 
-    //receiving new parameter
+    //receiving new or edited parameter
     this.parameterSub = this.parameterService.toReceive.subscribe(resp => {
       resp.businessService = this.businessService;
 
@@ -411,18 +420,19 @@ export class BusinessServiceEditComponent implements OnInit, OnDestroy {
     this.businessServiceService.action = this.action;
 
     let verificationInfo: IServiceElementVerificationInfo[] = [];
-    this.verificationInfoList.forEach(el => {
-      if (serviceElement.id !== undefined && el.serviceElement!.id === serviceElement.id) {
-        console.log(el.serviceElement!.id);
-        console.log(serviceElement.id);
-        console.log(el.serviceElement!.id === serviceElement.id);
-        verificationInfo.push(el);
-      } else if (serviceElement.id === undefined && JSON.stringify(el.serviceElement) === JSON.stringify(serviceElement)) {
-        verificationInfo.push(el);
+    this.verificationInfoList.forEach(element => {
+      if (serviceElement.id !== undefined && element.serviceElement!.id === serviceElement.id) {
+        verificationInfo.push(element);
+      } else if (serviceElement.id === undefined && JSON.stringify(element.serviceElement) === JSON.stringify(serviceElement)) {
+        // const count = this.verificationInfoList.filter(el => el.department?.id === element.department?.id);
+        // console.log('xd')
+        // console.log(count.length);
+        // if(this.verificationInfoList.filter(el => el.department?.id === element.department?.id).length > 1){
+        //   console.log('powtorka')
+        // }
+        verificationInfo.push(element);
       }
     });
-    console.log(verificationInfo);
-    console.log(serviceElement);
 
     this.businessServiceService.sendServiceElement(serviceElement, verificationInfo);
 

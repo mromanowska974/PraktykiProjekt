@@ -78,17 +78,4 @@ export class DepartmentService {
   }
 
   //NON-API
-  isDataReceived: boolean = false;
-  private dataToSend = new Subject<{ departments: IDepartment[]; leadingDepartment: IDepartment }>();
-  dataToReceive = this.dataToSend.asObservable();
-
-  sendData(departments: IDepartment[], leadingDepartment: IDepartment) {
-    this.dataToSend.next({
-      departments: departments,
-      leadingDepartment: leadingDepartment,
-    });
-    //this.isDataReceived = true;
-  }
-
-  isDataSent: boolean = false;
 }
